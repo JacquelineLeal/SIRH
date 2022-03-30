@@ -1,0 +1,75 @@
+.container-fluid{
+    background-color: rgb(255, 255, 255);
+    margin: 1em 0px;
+    border-radius: 0.3rem;
+    
+    padding: 16px;
+    border-radius: 4px;
+
+}
+
+.foto{
+   background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.08) 3px 0px 15px ;
+    
+}
+h5{
+    color: orange;
+}
+
+.info{
+    
+}
+
+.avatar{
+    background-color: rgb(186, 186, 192);
+    border-radius: 50%;
+    margin-top: 8px;
+    margin-left: 45px;
+    width: 220px;
+    height: 220px;
+    box-shadow: rgba(0, 0, 0, 0.082) 3px 0px 15px ;
+
+    
+    
+}
+
+.raya{
+    height: 3px;
+    width: 100%;
+    background: aqua;
+    left: 0;
+    bottom: -12px;
+    transition: 0.4s ease-out;
+}
+
+.table{
+    background-color: white;
+}
+.btn{
+    color: white;
+    font-weight: 500;
+
+}
+
+
+.pdfview{
+    margin: auto;
+    display: block;
+    width: 850px;
+    height: 100vr;
+   
+    
+}
+
+
+
+
+.x{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+}
