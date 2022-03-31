@@ -27,18 +27,51 @@
         <td>Acta de nacimiento</td>
         <td>
             <button class="btn btn-primary" (click)="openDescargar(contDescargarDocs)">Ver / Descargar</button>
+            <button class="btn btn-danger" (click)="modal.open(contSubirDocs)">Cambiar</button>
         </td>
     </tbody>
   </table>
 
 
+  <br>
+  <br>
+  <h6>Documentos necesarios para tener un expediente completo:</h6><br><br>
+  <div class="row">
+    <div class="col-2  text-muted">
+      <li>Acta de nacimiento</li>
+      <li>Solicitud de empleo</li>
+      <li>Inventario</li>
+      <li>RFC</li>
+      <li>CURP</li>
+      <li>Curriculum</li>
+    </div>
+
+    <div class="col-3  text-muted">
+      <li>Carta de no antecedentes penales</li>
+      <li>Constancia no inhabilitación</li>
+      <li>Nombramiento o acta de designación</li>
+      <li>Cartilla del servicio militar</li>
+      <li>Certificado de estudios</li>
+    </div>
+
+    <div class="col-3  text-muted">
+      <li>Domicilio convencional</li>
+      <li>Carta gastos funerarios</li>
+      <li>Cartas seguro de vida</li>
+      <li>Certificado Médico</li>
+      <li>Antidoping</li>
+     
+    </div>
+  </div>
+
+  <small>Perito, Agente Ministerial de Investigación Criminal, Agente del Ministerio Público y Agente del Ministerio Público Auxiliar</small>
 
 
 
 
 
 <br><br>
-<button class="btn btn-primary">Guardar los cambios</button><br><br>
+<button class="btn btn-primary">Guardar los cambios</button>
 <p *ngIf="estaCompleto==true"; else incompleto>¡El Expediente está completo!</p>
 <ng-template #incompleto><p>Esta incompleto</p></ng-template>
 <br><br><br>

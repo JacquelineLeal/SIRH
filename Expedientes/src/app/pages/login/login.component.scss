@@ -19,7 +19,7 @@
     position:absolute;
     top: -50px;
     left: calc(50% - 50px);
-    background-color: aqua;
+    background-color: rgb(87, 19, 19);
     background-image: url('../login/logofiscalia.jpg');
   }
   
@@ -52,18 +52,20 @@
     font-size: 16px;
   }
   
-  .login-box input[type="submit"] {
+  .btnLogIn {
     border: none;
     outline: none;
     height: 40px;
+    width: 180px;
     background: orange;
     color: #fff;
     font-size: 18px;
     border-radius: 20px;
     font-weight: 500;
+    margin-left:15%;
   }
   
-  .login-box input[type="submit"]:hover {
+  .btnLogIn:hover {
     cursor: pointer;
     background: #ffc107;
     color: rgb(255, 255, 255);
@@ -79,3 +81,4 @@
   .login-box a:hover {
     color: rgb(247, 184, 12);
   }
+ 

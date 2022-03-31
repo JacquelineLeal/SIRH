@@ -7,13 +7,37 @@
     <br>
     <form>
       <!-- USERNAME INPUT -->
+     
       <label >Usuario:</label>
       <input type="text" placeholder="Ingresa tu nombre de usuario">
       <!-- PASSWORD INPUT -->
+     
       <label>Contraseña:</label>
       <input type="password" placeholder="Ingresa tu Contraseña">
-      <input type="submit" value="Log In">
-      <a href="#">Aún no tienes una cuenta?</a><br>
+      
+      <!--<input type="submit"  value="Log In">
+      <a></a><br>-->
+      <button class="btnLogIn" (click)="btnClickGoToRegistrarEmpleado()">Iniciar sesion</button>
      
+<!---->
+
     </form>
+    
   </div>
+
+  
+
+
+  <ng-template #contDoYouHaveAAcount let-modal>
+    <div class="modal-body">
+      Favor de pasar a la Dirección General de Recursos Humanos a solicitar una cuenta
+    </div>
+  
+  
+    <div class="modal-footer">
+        <button class="btn btn-success" (click)="modal.close()">Guardar</button>
+        <button class="btn btn-danger" (click)="modal.close()">Cancelar</button>
+  
+    </div>
+  </ng-template>
+ <!--<button (click)="modal.open(contDoYouHaveAAcount)">Aún no tienes una cuenta?</button><br>--> 
