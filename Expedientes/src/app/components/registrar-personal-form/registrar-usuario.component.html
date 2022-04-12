@@ -6,42 +6,44 @@
     <form class="form-inline" role="form">
        <div class="row">
             <div class="col-5">
-                <label class="form-label" for="typeText">Nombres:</label>
-                <input type="text" id="typeText" class="form-control" placeholder="Nombres"/>    
+                <label class="NOMBRE" for="typeText">Nombres:</label>
+                <input type="text" id="NOMBRE" class="form-control" name='NOMBRE' placeholder="Nombres"  [(ngModel)]="newRegistrarDatos.NOMBRE" value="newRegistarDatos.NOMBRE"/>    
             </div>
 
             <div class="col-3">
-                <label class="form-label" for="typeText">Apellido Paterno:</label>
-                <input type="text" id="typeText" class="form-control col-md-2"  placeholder="Apellido Paterno" />
+                <label class="form-label" for="APE_PATERNO">Apellido Paterno:</label>
+                <input type="text" id="APE_PATERNO" class="form-control col-md-2"  placeholder="Apellido Paterno" name="APE_PATERNO" [(ngModel)]="newRegistrarDatos.APE_PATERNO" />
             </div>
 
             <div class="col-3">
-                <label class="form-label" for="typeText">Apellido Materno:</label>
-                <input type="text" id="typeText" class="form-control col-4"  placeholder="Apellido Materno" />
+                <label class="form-label" for="APE_MATERNO">Apellido Materno:</label>
+                <input type="text" id="APE_MATERNO" class="form-control col-4"  placeholder="Apellido Materno" name="APE_MATERNO" [(ngModel)]="newRegistrarDatos.APE_MATERNO" />
             </div>
         </div>
-        <br>
+        <br> 
         <div class="row">
             <div class="col-2">
-                <label for="">Sexo:</label>
-                    <select id="" class="form-control">
+                <label for="SEXO">Sexo:</label>
+                    <select id="SEXO" class="form-control" name="SEXO" [(ngModel)]="newRegistrarDatos.SEXO">
                         <option selected disabled>Seleccione...</option>
+                        <option>F</option>
                         <option>Masculino</option>
                         <option>Femenino</option>
                     </select>    
             </div>
     
             <div class="col-3">
-                <label class="form-label" for="typeText">Fecha de Nacimiento:</label>
-                <input type="date" id="typeText" class="form-control"  placeholder="Seleccione" />
+                <label class="form-label" for="FECHA_NAC">Fecha de Nacimiento:</label>
+                <input type="date" id="FECHA_NAC" class="form-control"  placeholder="Seleccione" name="FECHA_NAC" [(ngModel)]="newRegistrarDatos.FECHA_NAC" />
                     
             </div>
             
             
             <div class="col-3">
-                <label class="form-label" for="typeText">Estado Civil:</label>
-                    <select id="" class="form-control">
+                <label class="form-label" for="EST_CIVIL">Estado Civil:</label>
+                    <select id="EST_CIVIL" class="form-control" name="EST_CIVIL" [(ngModel)]="newRegistrarDatos.EST_CIVIL">
                         <option selected disabled>Seleccione...</option>
+                        <option>3</option>
                         <option>SOLTERO(A)</option>
                         <option>CASADO(A)</option>
                         <option>VIUDO(A)</option>
@@ -56,37 +58,37 @@
 
         <div class="row">
             <div class="col-3">
-                <label class="form-label" for="typeText">RFC:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="RFC" />
+                <label class="form-label" for="CVE_RFC">RFC:</label>
+                <input type="text" id="CVE_RFC" class="form-control"  placeholder="RFC" name="CVE_RFC" [(ngModel)]="newRegistrarDatos.CVE_RFC" />
                     
             </div>
             <div class="col-3">
-                <label class="form-label" for="typeText">CURP:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="CURP" />        
+                <label class="form-label" for="CURP">CURP:</label>
+                <input type="text" id="CURP" class="form-control"  placeholder="CURP" name="CURP" [(ngModel)]="newRegistrarDatos.CURP" />        
                     
             </div>
             <div class="col-3">
-                <label class="form-label" for="typeText">Clave Elector:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Clave Elector"/>
+                <label class="form-label" for="CVE_ELECTOR">Clave Elector:</label>
+                <input type="text" id="CVE_ELECTOR" class="form-control"  placeholder="Clave Elector" name="CVE_ELECTOR" [(ngModel)]="newRegistrarDatos.CVE_ELECTOR"/>
                     
             </div>
             <div class="col-3">
-                <label class="form-label" for="typeText">Licencia:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Licencia" />
+                <label class="form-label" for="LICENCIA">Licencia:</label>
+                <input type="text" id="LICENCIA" class="form-control"  placeholder="Licencia" name="LICENCIA" [(ngModel)]="newRegistrarDatos.LICENCIA"/>
             </div>
 
         </div>
         <br>
         <div class="row">
             <div class="col-3">
-                <label class="form-label" for="typeText">Pasaporte:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Pasaporte" />
+                <label class="form-label" for="PASAPORTE">Pasaporte:</label>
+                <input type="text" id="PASAPORTE" class="form-control"  placeholder="Pasaporte" name="PASAPORTE" [(ngModel)]="newRegistrarDatos.PASAPORTE" />
         
                     
             </div>
             <div class="col-3">
-                <label class="form-label" for="typeText">Cartilla:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Cartilla" />
+                <label class="form-label" for="CARTILLA">Cartilla:</label>
+                <input type="text" id="CARTILLA" class="form-control"  placeholder="Cartilla" name="CARTILLA" [(ngModel)]="newRegistrarDatos.CARTILLA" />
                     
             </div>
             <br>
@@ -96,20 +98,20 @@
         <br>
         <div class="row">
             <div class="col-3">
-                <label class="form-label" for="typeText">País de nacimiento:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Pais" />   
+                <label class="form-label" for="PAIS_NAC">País de nacimiento:</label>
+                <input type="text" id="PAIS_NAC" class="form-control"  placeholder="Pais" name="PAIS_NAC" [(ngModel)]="newRegistrarDatos.PAIS_NAC" />   
             </div>
             <div class="col-3">
-                <label class="form-label" for="typeText">Estado de nacimiento:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Estado"/>       
+                <label class="form-label" for="EDO_NAC">Estado de nacimiento:</label>
+                <input type="text" id="EDO_NAC" class="form-control"  placeholder="Estado" name="EDO_NAC" [(ngModel)]="newRegistrarDatos.EDO_NAC"/>       
             </div>
             <div class="col-3">
-                <label class="form-label" for="typeText">Municipio de nacimiento:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Municipio" />
+                <label class="form-label" for="MUN_NAC">Municipio de nacimiento:</label>
+                <input type="text" id="MUN_NAC" class="form-control"  placeholder="Municipio" name="MUN_NAC" [(ngModel)]="newRegistrarDatos.MUN_NAC" />
             </div>
             <div class="col-3">    
-                <label class="form-label" for="typeText">Nacionalidad:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Nacionalidad"/>   
+                <label class="form-label" for="NACIONALIDAD">Nacionalidad:</label>
+                <input type="text" id="NACIONALIDAD" class="form-control"  placeholder="Nacionalidad" name="NACIONALIDAD" [(ngModel)]="newRegistrarDatos.NACIONALIDAD"/>   
             </div>
 
         </div>
@@ -124,16 +126,16 @@
     <form class="form-inline" role="form">
         <div class="row">
             <div class="col-4">
-                <label class="form-label" for="typeText">Email:</label>
-                <input type="email" id="typeText" class="form-control" placeholder="Email" />          
+                <label class="form-label" for="EMAIL">Email:</label>
+                <input type="email" id="EMAIL" class="form-control" placeholder="Email" name="EMAIL" [(ngModel)]="newRegistrarDatos.EMAIL" />          
             </div>
             <div class="form-group col-2">
-                <label class="form-label" for="typeText">Teléfono:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Telefono" /> 
+                <label class="form-label" for="TELEFONO">Teléfono:</label> 
+                <input type="text" id="TELEFONO" class="form-control"  placeholder="Telefono"  name="TELEFONO" [(ngModel)]="newRegistrarDatos.TELEFONO"/> 
             </div>
             <div class="form-group col-2">
-                <label class="form-label" for="typeText">Celular:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Celular" /> 
+                <label class="form-label" for="CELULAR">Celular:</label>
+                <input type="text" id="CELULAR" class="form-control"  placeholder="Celular" name="CELULAR" [(ngModel)]="newRegistrarDatos.CELULAR" /> 
 
             </div>
             
@@ -149,55 +151,55 @@
     <form class="form-inline" role="form">
         <div class="row">
             <div class="col-4">
-                <label class="form-label" for="typeText">Calle:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Calle" />
+                <label class="form-label" for="CALLE">Calle:</label>
+                <input type="text" id="CALLE" class="form-control"  placeholder="Calle"  name="CALLE" [(ngModel)]="newRegistrarDatos.CALLE"/>
                          
             </div>
             <div class="col-4">
-                <label class="form-label" for="typeText">Entre calle:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Entre"/>
+                <label class="form-label" for="ENTRE_CALLE">Entre calle:</label>
+                <input type="text" id="ENTRE_CALLE" class="form-control"  placeholder="Entre" name="ENTRE_CALLE" [(ngModel)]="newRegistrarDatos.ENTRE_CALLE"/>
                 
             </div>
             <div class="col-4">
-                <label class="form-label" for="typeText">Y calle:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="y" />
+                <label class="form-label" for="Y_CALLE">Y calle:</label>
+                <input type="text" id="Y_CALLE" class="form-control"  placeholder="y"  name="Y_CALLE" [(ngModel)]="newRegistrarDatos.Y_CALLE"/>
                
             </div>
         </div>
         <br>
         <div class="row">
             <div class="form-group col-1">
-                <label class="form-label" for="typeText">No.Exterior:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Ext" />
+                <label class="form-label" for="NO_EXTERIOR">No.Exterior:</label>
+                <input type="text" id="NO_EXTERIOR" class="form-control"  placeholder="Ext" name="NO_EXTERIOR" [(ngModel)]="newRegistrarDatos.NO_EXTERIOR"/>
 
             </div>
             <div class="form-group col-1">
-                <label class="form-label" for="typeText">No.Interior:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Int" />
+                <label class="form-label" for="NO_INTERIOR">No.Interior:</label>
+                <input type="text" id="NO_INTERIOR" class="form-control"  placeholder="Int" name="NO_INTERIOR" [(ngModel)]="newRegistrarDatos.NO_INTERIOR"/>
 
             </div>
             <div class="form-group col-2">
-                <label class="form-label" for="typeText">Colonia:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Colonia" />
+                <label class="form-label" for="COLONIA">Colonia:</label>
+                <input type="text" id="COLONIA" class="form-control"  placeholder="Colonia" name="COLONIA" [(ngModel)]="newRegistrarDatos.COLONIA" />
 
             </div>
 
             <div class="form-group col-2">
-                <label class="form-label" for="typeText">Código Postal:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Codigo Postal" />
+                <label class="form-label" for="CODIGO_POSTAL">Código Postal:</label>
+                <input type="text" id="CODIGO_POSTAL" class="form-control"  placeholder="Codigo Postal" name="CODIGO_POSTAL" [(ngModel)]="newRegistrarDatos.CODIGO_POSTAL" />
 
 
             </div>
 
             <div class="form-group col-3">
-                <label class="form-label" for="typeText">Entidad:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Entidad" />
+                <label class="form-label" for="ENTIDAD">Entidad:</label>
+                <input type="text" id="ENTIDAD" class="form-control"  placeholder="Entidad" name="ENTIDAD" [(ngModel)]="newRegistrarDatos.ENTIDAD" />
 
             </div>
 
             <div class="form-group col-3">
-                <label class="form-label" for="typeText">Municipio:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Municipio" />
+                <label class="form-label" for="MUNICIPIO">Municipio:</label>
+                <input type="text" id="MUNICIPIO" class="form-control"  placeholder="Municipio" name="MUNICIPIO" [(ngModel)]="newRegistrarDatos.MUNICIPIO" />
 
             </div>
 
@@ -205,8 +207,8 @@
         <br>
         <div class="row">
             <div class="form-group col-3">
-                <label class="form-label" for="typeText">Ciudad:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Ciudad" />
+                <label class="form-label" for="CIUDAD">Ciudad:</label>
+                <input type="text" id="CIUDAD" class="form-control"  placeholder="Ciudad"  name="CIUDAD" [(ngModel)]="newRegistrarDatos.CIUDAD"/>
 
             </div>
 
@@ -216,81 +218,8 @@
       
 
     </form>
-    <br><br>
 
 
-  
-    
-    <h3>Información Escolar</h3>
-    <form class="form-inline" role="form">
-        <div class="row">
-            <div class="form-group col-3">
-                <label class="form-label" for="typeText">Escolaridad:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Escolaridad"/>
-                       
-            </div>
-            <div class="form-group col-3">
-                <label class="form-label" for="typeText">Escuela:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Nombre escuela"/>
-            
-            </div>
-            <div class="form-group col-3">
-                <label class="form-label" for="typeText">Especialidad:</label>
-                <input type="text" id="typeText" class="form-control"  placeholder="Especialidad" />
-
-            </div>
-
-            <div class="form-group col-3">
-                <label class="form-label" for="typeText">Cédula:</label>
-                <input type="text" id="typeText" class="form-control"   placeholder="No. de cedula"/>
-
-            </div>
-        </div>
-        <br>
-        <div class="row">
-
-            <div class="col-2">
-                <label class="form-label" for="typeText">Tratamiento:</label>
-                <select id="" class="form-control">
-                    <option selected disabled>Seleccione...</option>
-                    <option>C.</option>
-                    <option>C.P.</option>
-                    <option>Lic.</option>
-                    <option>Ing.</option>
-                    <option>Arq.</option>
-                    <option>Mtro.</option>
-                    <option>Mtra.</option>
-                    <option>Dr.</option>
-                    <option>Dra.</option>
-                </select> 
-
-            </div>
-
-            <div class="col-3">
-                <label class="form-label" for="typeText">Fecha de Inicio:</label>
-                <input type="date" id="typeText" class="form-control"  placeholder="Seleccione" />
-
-            </div>
-
-            <div class="col-3">
-                <label class="form-label" for="typeText">Fecha de termino:</label>
-                <input type="date" id="typeText" class="form-control"  placeholder="Seleccione" />
-
-            </div>
-
-            
-            
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-8">
-                <label class="form-label" for="typeText">Observaciones:</label>
-                <textarea class="form-control" id="" rows="2"></textarea>
-
-            </div>
-
-        </div>
-    </form>
     <br><br><br>
 
     
@@ -302,4 +231,6 @@
     <br><br>
 
 
-    <button type="submit" class="btn btn-warning">Guardar Información</button>
+    <button type="submit" class="btn btn-warning" (click)="registrarDatosPDE()">Siguiente</button>
+
+   

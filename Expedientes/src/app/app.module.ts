@@ -16,6 +16,11 @@ import { ModalSubirDocsComponent } from './components/modal-subir-docs/modal-sub
 import { VerExpedienteComponent } from './components/ver-expediente/ver-expediente.component';
 import { LoginComponent } from './pages/login/login.component';
 
+import { CookieService } from 'ngx-cookie-service';
+import {HttpClientModule} from '@angular/common/http';
+import {FormsModule} from '@angular/forms';
+import { RegitroInfoEscolarComponent } from './pages/regitro-info-escolar/regitro-info-escolar.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,14 +34,17 @@ import { LoginComponent } from './pages/login/login.component';
     RegistrarPersonaComponent,
     ModalSubirDocsComponent,
     VerExpedienteComponent,
-    LoginComponent
+    LoginComponent,
+    RegitroInfoEscolarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

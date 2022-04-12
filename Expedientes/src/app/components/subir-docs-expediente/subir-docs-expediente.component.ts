@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation} from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; 
 
 
 
