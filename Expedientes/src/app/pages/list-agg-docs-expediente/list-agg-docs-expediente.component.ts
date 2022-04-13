@@ -20,10 +20,10 @@ export class ListAggDocsExpedienteComponent implements OnInit {
     this.listarDatos();
   }
  
-  btnClickGoToEditarEmpleado(){
+  btnClickGoToEditarEmpleado(){ 
     this.router.navigateByUrl('edit-info-personal');
   }
-
+ 
   btnClickGoToSubirDocs(){
     this.router.navigateByUrl('subir-docs-expediente');
   }
