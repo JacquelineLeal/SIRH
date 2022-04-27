@@ -1,19 +1,22 @@
 
-<nav class="navbar fixed-top navbar-expand-lg navbar-light nav justify-content-end ">
-  <a class="navbar-brand" href="#">SIRH-EXPEDIENTES</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li *ngFor="let items of menuItems" class="nav-item">
+<nav class="navbar fixed-top navbar-expand-lg navbar-light ">
+  <a class="navbar-brand" href="#">
+    <img src="../../../assets/img/solo_log (1).png" width="80" height="80" class="d-inline-block align-top" alt="">
+  </a>
+ 
+  <h5 >SIRH-EXPEDIENTES</h5> 
+  <div class="divlistas">
+    
+    <ul class="navbar-nav mr-auto  ">
+      <pre>     </pre>
+      <li *ngFor="let items of menuItems" class="nav-item nav justify-content-end">
         <a class="nav-link" href="{{items.linkUrl}}">{{items.linkName}} <span class="sr-only"></span></a>
       </li>
     </ul>
     
   </div>
 </nav>
+<br><br>
 
 
 

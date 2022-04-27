@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {DatosEscolares, TraerInfoEscolar, DatosInicialesExpedientesService} from '../../services/datos-iniciales-expedientes.service';
+import {DatosInicialesExpedientesService} from '../../services/datos-iniciales-expedientes.service';
+import {DatosEscolares,TraerInfoEscolar, DatosEscolaresServiService } from 'src/app/services/datos-escolares-servi.service';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -14,10 +16,11 @@ export class RegitroInfoEscolarComponent implements OnInit {
   arreglo: any =[];
   fechaIni: any;
   fechaFin: any;
+
   ParamsTraerInfoEsco: TraerInfoEscolar = {
-    NOMBRE: 'ANA',
-    APE_PATERNO:'LEAL',
-    APE_MATERNO:'RIVERA' 
+    NOMBRE: this.datosInicialesService.ValoresInputsRegistroDataPD.NOMBRE,
+    APE_PATERNO: this.datosInicialesService.ValoresInputsRegistroDataPD.APE_PATERNO,
+    APE_MATERNO:this.datosInicialesService.ValoresInputsRegistroDataPD.APE_MATERNO
   }
 
 
@@ -25,10 +28,10 @@ export class RegitroInfoEscolarComponent implements OnInit {
     
     IdEstudios:'',
    // NOMBRE: this.cookieService.get('Nombre'),
-    NOMBRE: 'ANA',
-    APE_PATERNO:'LEAL',
-    APE_MATERNO:'RIVERA',
-    CVE_EMPLEADO: this.cookieService.get('CveEmpleado'),
+    NOMBRE: this.datosInicialesService.ValoresInputsRegistroDataPD.NOMBRE,
+    APE_PATERNO:this.datosInicialesService.ValoresInputsRegistroDataPD.APE_PATERNO,
+    APE_MATERNO:this.datosInicialesService.ValoresInputsRegistroDataPD.APE_MATERNO,
+    CVE_EMPLEADO: '00000',
     ESCOLARIDAD:'',
     ESCUELA:'',
     ESPECIALIDAD:'',
@@ -41,6 +44,7 @@ export class RegitroInfoEscolarComponent implements OnInit {
   }
   constructor(
     public router:Router, 
+    private datosEscolaresService: DatosEscolaresServiService,
     private datosInicialesService: DatosInicialesExpedientesService,
     public modal:NgbModal, 
     private cookieService: CookieService
@@ -48,15 +52,19 @@ export class RegitroInfoEscolarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.cookieService.get('Nombre'));
+    //console.log(this.cookieService.get('Nombre'));
+    console.log(this.datosInicialesService.ValoresInputsRegistroDataPD.NOMBRE);
+    
+    
   this.getInfoEscolar();
     
   }
 
   getInfoEscolar(){
-    this.datosInicialesService.traerDatosEscolares(this.ParamsTraerInfoEsco).subscribe(
+    this.datosEscolaresService.traerDatosEscolares(this.ParamsTraerInfoEsco).subscribe(
       res=>{
         this.ListaEscolaridad=<any>res;
+        console.log('listaEscolaridad');
         console.log(this.ListaEscolaridad);
         
       },
@@ -67,18 +75,20 @@ export class RegitroInfoEscolarComponent implements OnInit {
   }
 
   getInfoEscolarParaEditar(IdEstudios:any){
-    this.datosInicialesService.getDatosEscolaresById(IdEstudios).subscribe(
+    this.datosEscolaresService.getDatosEscolaresById(IdEstudios).subscribe(
       res=>{
         
         this.arreglo = res;
         this.newRegistrarDatosEscolares = this.arreglo;
+
+        console.log('get1');
         console.log(this.newRegistrarDatosEscolares);
         
         this.fechaIni = this.newRegistrarDatosEscolares.FCH_INICIO?.slice(0,-14);
         this.fechaFin = this.newRegistrarDatosEscolares.FCH_TERMINO?.slice(0,-14);
         this.newRegistrarDatosEscolares.FCH_INICIO = this.fechaIni;
         this.newRegistrarDatosEscolares.FCH_TERMINO = this.fechaFin;
-        //console.log(this.fechaIni);
+        console.log('get2');
         console.log(this.newRegistrarDatosEscolares);
 
         
@@ -89,7 +99,7 @@ export class RegitroInfoEscolarComponent implements OnInit {
   }
 
   postInfoEscolar(){
-    this.datosInicialesService.addInfoEscolar(this.newRegistrarDatosEscolares).subscribe(
+    this.datosEscolaresService.addInfoEscolar(this.newRegistrarDatosEscolares).subscribe(
       res=>{
         alert("Datos registrados exitosamente");
         
@@ -101,8 +111,9 @@ export class RegitroInfoEscolarComponent implements OnInit {
     );
   }
 
-  putInfoEscolar(){
-    this.datosInicialesService.editarDatosEscolares(this.newRegistrarDatosEscolares).subscribe(
+ async putInfoEscolar(){
+    
+   await this.datosEscolaresService.editarDatosEscolares(this.newRegistrarDatosEscolares).subscribe(
       res=>{
         alert("Se han guardado los cambios");
         this.getInfoEscolar();

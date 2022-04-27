@@ -10,6 +10,14 @@ import { ModalSubirDocsComponent } from './components/modal-subir-docs/modal-sub
 import { VerExpedienteComponent } from './components/ver-expediente/ver-expediente.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegitroInfoEscolarComponent } from './pages/regitro-info-escolar/regitro-info-escolar.component';
+import { RegisIdiomasComponent } from './pages/regis-idiomas/regis-idiomas.component';
+import { EditoNewDataComponent } from './components/edito-new-data/edito-new-data.component';
+import { RegistroNewDataComponent } from './components/registro-new-data/registro-new-data.component';
+import { ConsultoNewDataComponent } from './components/consulto-new-data/consulto-new-data.component';
+import { RegistroInfoExisPersonalComponent } from './components/registro-info-exis-personal/registro-info-exis-personal.component';
+//import { RegistroDatosComponent } from './Componentes/registro-datos/registro-datos.component';
+//import { EditoDatosComponent } from './Componentes/edito-datos/edito-datos.component';
+//import { ConsultoDatosComponent } from './Componentes/consulto-datos/consulto-datos.component';
 
 const routes: Routes = [ 
   {path:'',redirectTo:'/login',pathMatch:'full'},  
@@ -20,7 +28,16 @@ const routes: Routes = [
   {path:'modal-subir-docs', component:ModalSubirDocsComponent},
   {path:'ver-expediente',component:VerExpedienteComponent},
   {path:'login',component:LoginComponent},
-  {path:'registrar-info-escolar', component:RegitroInfoEscolarComponent}
+  {path:'registrar-info-escolar', component:RegitroInfoEscolarComponent},
+  {path:'registrar-idiomas', component:RegisIdiomasComponent},
+  {path: 'registro-new-data', component: RegistroNewDataComponent},
+  {path: 'edit-new-data', component:EditoNewDataComponent},
+  {path: 'consulto-data',component: ConsultoNewDataComponent },
+  {path: 'registro-info-personal-existente', component: RegistroInfoExisPersonalComponent}
+ // {path:'registro-datos', component: RegistroDatosComponent},
+  //{path:'edito-datos', component: EditoDatosComponent},
+  //{path: 'consulto-datos', component: ConsultoDatosComponent}
+
  
 ];
 

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import {DatosInicialesExpedientesService} from '../../services/datos-iniciales-expedientes.service';
+import { eventListeners } from '@popperjs/core';
+import {IdsParaEditarDataPD, DatosInicialesExpedientesService} from '../../services/datos-iniciales-expedientes.service';
 
 @Component({
   selector: 'app-list-agg-docs-expediente',
@@ -8,28 +9,132 @@ import {DatosInicialesExpedientesService} from '../../services/datos-iniciales-e
   styleUrls: ['./list-agg-docs-expediente.component.scss']
 })
 export class ListAggDocsExpedienteComponent implements OnInit {
-  ListaNombres:any = [];
+  //InputIdsParaEditarDataPD:any;
+  @Input () InputIdParaEditarDataPD: String= ''; 
+  @Output() OutputIdParaEditarDataPD = new EventEmitter<String>();
+
+  @Input() InputIdDomiParaEditarDataPD: String = ''; 
+  @Output() OutputIdDomiParaEditarDataPD = new EventEmitter<String>();
+
+  //@Input () InputRegistrarDatos: any = {};
+  //@Output() OutputRegistroDatos = new EventEmitter();
+  
+  ListaNombres:any = []; 
   inputNombre:string="";
   inputAP:string="";
-  inputAM:string="";
+  inputAM:string=""; 
 
+  arreglo: any =[];
+
+  capturaIds: IdsParaEditarDataPD={
+    Id: '',
+    IdDomicilio : '',
+    IdEstudios: ''
+  }
+  
 //, private datosInicialesExpedientes:DatosInicialesExpedientesService
   constructor(public router:Router, private datosInicialesExpedientes:DatosInicialesExpedientesService) { }
 
   ngOnInit(): void {
     this.listarDatos();
   }
+
+  
  
-  btnClickGoToEditarEmpleado(){ 
-    this.router.navigateByUrl('edit-info-personal');
+  async btnClickGoToEditarEmpleado(Id: any, IdDomicilio: any, IdEstudios: any){ 
+    this.capturaIds.Id = Id;
+    this.capturaIds.IdDomicilio = IdDomicilio;
+    this.capturaIds.IdEstudios = IdEstudios;
+    await this.datosInicialesExpedientes.getDatosEmpleadoById(this.capturaIds).subscribe(
+      res =>{
+        this.arreglo = res;
+        //this.InputRegistrarDatos = res;
+        //this.OutputRegistroDatos.emit(this.InputRegistrarDatos);
+
+        this.datosInicialesExpedientes.newRegistrarDatos = this.arreglo[0];
+        console.log('list'); 
+        console.log(this.datosInicialesExpedientes.newRegistrarDatos);
+        this.router.navigateByUrl('edit-info-personal');
+
+
+      },
+      err =>{
+        console.log(err);
+        
+      }
+    )
+
+   
+   
+   /* this.InputIdParaEditarDataPD = Id;
+    this.InputIdDomiParaEditarDataPD = IdDomicilio;
+    console.log(this.InputIdParaEditarDataPD);
+    console.log(this.InputIdDomiParaEditarDataPD);
+
+    this.OutputIdParaEditarDataPD.emit(this.InputIdParaEditarDataPD);
+    this.OutputIdDomiParaEditarDataPD.emit(this.InputIdDomiParaEditarDataPD);
+
+    this.datosInicialesExpedientes.Id = this.InputIdParaEditarDataPD;
+    this.datosInicialesExpedientes.IdDomicilio = this.InputIdDomiParaEditarDataPD;
+    this.router.navigateByUrl('edit-info-personal'); */
+
+
   }
  
-  btnClickGoToSubirDocs(){
-    this.router.navigateByUrl('subir-docs-expediente');
+  async btnClickGoToSubirDocs(Id: any, IdDomicilio: any, IdEstudios: any){
+    this.capturaIds.Id = Id;
+    this.capturaIds.IdDomicilio = IdDomicilio;
+    this.capturaIds.IdEstudios = IdEstudios;
+    
+
+    await this.datosInicialesExpedientes.getDatosEmpleadoById(this.capturaIds).subscribe(
+      res =>{
+        this.arreglo = res;
+        //this.InputRegistrarDatos = res;
+        //this.OutputRegistroDatos.emit(this.InputRegistrarDatos);
+
+        this.datosInicialesExpedientes.newRegistrarDatos = this.arreglo[0];
+        console.log('list'); 
+        console.log(this.datosInicialesExpedientes.newRegistrarDatos);
+        this.router.navigateByUrl('subir-docs-expediente');
+
+      },
+      err =>{
+        console.log(err);
+        
+      }
+    )
+    
+
+    
+   
   }
 
-  btnClickGoToVerExpediente(){
-    this.router.navigateByUrl('ver-expediente');
+  async btnClickGoToVerExpediente(Id: any, IdDomicilio: any, IdEstudios: any){
+    this.capturaIds.Id = Id;
+    this.capturaIds.IdDomicilio = IdDomicilio;
+    this.capturaIds.IdEstudios = IdEstudios;
+    await this.datosInicialesExpedientes.getDatosEmpleadoById(this.capturaIds).subscribe(
+      res =>{
+        this.arreglo = res;
+        //this.InputRegistrarDatos = res;
+        //this.OutputRegistroDatos.emit(this.InputRegistrarDatos);
+
+        this.datosInicialesExpedientes.updateDatos = this.arreglo[0];
+        console.log('list'); 
+        console.log(this.datosInicialesExpedientes.updateDatos);
+        this.router.navigateByUrl('ver-expediente');
+
+
+      },
+      err =>{
+        console.log(err);
+        
+      }
+    )
+
+
+    
   }
 
   listarDatos(){
@@ -38,7 +143,9 @@ export class ListAggDocsExpedienteComponent implements OnInit {
       this.datosInicialesExpedientes.getListaDeNombresEmpleados().subscribe(
         res=>{
           this.ListaNombres=<any>res;
-          console.log(res);
+          console.log('lista nombres');
+          
+          console.log(this.ListaNombres);
           
         },
         err=> console.log(err)

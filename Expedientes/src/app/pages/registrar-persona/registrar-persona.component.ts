@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Datos, DatosInicialesExpedientesService} from '../../services/datos-iniciales-expedientes.service';
+import {DatosInicialesExpedientesService} from '../../services/datos-iniciales-expedientes.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,14 +9,18 @@ import { Router } from '@angular/router';
 })
 export class RegistrarPersonaComponent implements OnInit {
 
-  /*newRegistrarDatos: Datos = {
+  date: Date = new Date();
+
+ /* newRegistrarDatos: Datos = {
+
+    FECHA_REGISTRO_DATA_PERSONAL: this.date,
     ESTATUS : 'P',
     NOMBRE:'',
     APE_PATERNO:'',
     APE_MATERNO:'',
         
     SEXO:'',
-    FECHA_NAC:'',
+    FECHA_NAC: this.date,
     EST_CIVIL:'',
     CVE_RFC:'',
     CURP:'',
@@ -33,7 +37,7 @@ export class RegistrarPersonaComponent implements OnInit {
 
     CVE_EMPLEADO:'00000',
     TABLAS:'',
-    FCH_UAC: '',
+    FCH_UAC: this.date,
 
 
     OBSERVACIONES:'',
@@ -52,34 +56,43 @@ export class RegistrarPersonaComponent implements OnInit {
     CODIGO_POSTAL:'',
     ENTIDAD :'',
     MUNICIPIO:'',
-    CIUDAD:'',
+    CIUDAD:''
 
-
-    ESCOLARIDAD:'',
-    ESCUELA:'',
-    ESPECIALIDAD:'',
-    CEDULA:'',
-    TRATAMIENTO:'',
-    FCH_INICIO:'',
-    FCH_TERMINO:''        
-
-      
+     
   }*/
   constructor(public router:Router, private datosInicialesService: DatosInicialesExpedientesService) { }
 
   ngOnInit(): void {
+    //console.log(this.newRegistrarDatos);
+    
+    
+    
   }
 
-  /*registrarDatosPDE(){
-    this.datosInicialesService.addDatosPDE(this.newRegistrarDatos).subscribe(
+  registrarDatosPDE(){ 
+
+    this.datosInicialesService.addDatosPDE(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
       res=>{
         console.log(res);
-        this.router.navigateByUrl('list-agg-docs-expediente');
+        
+        //AQUI GUARDAR LAS VARIABLES PARA ENVIAR A REGISTRAR INFO ESCOLAR
+        
+
+        alert("Datos registrados exitosamente");
+        console.log(this.datosInicialesService.ValoresInputsRegistroDataPD);
+        this.router.navigateByUrl('registrar-info-escolar');
+        //this.router.navigateByUrl('list-agg-docs-expediente');
         
       },
-      err=>console.log(err)
+      
+      err=>{
+
+        alert("Ha ocurrido un error de conexión, favor de intentarlo nuevamente");
+        console.log(err)
+      }
+      
     );
 
-  }*/
+  }
 
 }

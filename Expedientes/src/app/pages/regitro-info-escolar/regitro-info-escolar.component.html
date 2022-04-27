@@ -10,7 +10,7 @@
         <th>Escuela</th>
         <th>Carrera/Especialidad</th> 
         <th>Fecha de inicio</th>
-        <th>Fecha de terminación</th>
+        <th>Fecha de terminación</th> 
     </thead>
     <tbody>
         <tr *ngFor="let datosEscolares of ListaEscolaridad" >
@@ -97,7 +97,7 @@
         
                 <div class="col-3">
                     <label class="form-label" for="FCH_TERMINO">Fecha de termino:</label>
-                    <input type="date" id="FCH_TERMINO" class="form-control"  placeholder="Seleccione"  name="FCH_TERMINO" [(ngModel)]="newRegistrarDatosEscolares.FCH_TERMINO"/>
+                    <input type="date" id="FCH_TERMINO" class="form-control"  placeholder="Seleccione"  name="FCH_TERMINO" [(ngModel)]="newRegistrarDatosEscolares.FCH_TERMINO" />
                     
                 </div>
         
