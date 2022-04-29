@@ -7,7 +7,7 @@
        <div class="row">
             <div class="col-5">
                 <label class="NOMBRE" for="typeText">Nombres:</label>
-                <input type="text" id="NOMBRE" class="form-control" name='NOMBRE' placeholder="Nombres"  [(ngModel)]="newRegistrarDatos.NOMBRE" value="newRegistarDatos.NOMBRE"/>    
+                <input type="text" id="NOMBRE" class="form-control" name='NOMBRE' placeholder="Nombres"  [(ngModel)]="newRegistrarDatos.NOMBRE" />    
             </div>
 
             <div class="col-3">
@@ -25,10 +25,10 @@
             <div class="col-2">
                 <label for="SEXO">Sexo:</label>
                     <select id="SEXO" class="form-control" name="SEXO" [(ngModel)]="newRegistrarDatos.SEXO">
-                        <option selected disabled>Seleccione...</option>
-                        <option>F</option>
-                        <option>Masculino</option>
-                        <option>Femenino</option>
+                        <option selected disabled>Seleccione...</option>  
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                        <option value="O">Otro</option>
                     </select>    
             </div>
     
@@ -39,17 +39,11 @@
             </div>
             
             
-            <div class="col-3">
+            <div class="col-3" >
                 <label class="form-label" for="EST_CIVIL">Estado Civil:</label>
-                    <select id="EST_CIVIL" class="form-control" name="EST_CIVIL" [(ngModel)]="newRegistrarDatos.EST_CIVIL">
-                        <option selected disabled>Seleccione...</option>
-                        <option>3</option>
-                        <option>SOLTERO(A)</option>
-                        <option>CASADO(A)</option>
-                        <option>VIUDO(A)</option>
-                        <option>DIVORCIADO(A)</option>
-                        <option>UNION LIBRE O CONCUBINATO</option>
-                        <option>SEPARADO(A)</option>
+                    <select id="EST_CIVIL"  aria-placeholder="Seleccc" class="form-control" name="EST_CIVIL" [(ngModel)]="newRegistrarDatos.EST_CIVIL">
+                        <option selected disabled>Seleccione...</option>  
+                        <option  *ngFor = "let estadoCivil of listaEstadoCivil" value={{estadoCivil.CVE_CIV}}>{{estadoCivil.EDO_CIV}}</option>
                     </select>  
             </div>
 
@@ -98,20 +92,30 @@
         <br>
         <div class="row">
             <div class="col-3">
-                <label class="form-label" for="PAIS_NAC">País de nacimiento:</label>
-                <input type="text" id="PAIS_NAC" class="form-control"  placeholder="Pais" name="PAIS_NAC" [(ngModel)]="newRegistrarDatos.PAIS_NAC" />   
+                <label class="form-label" for="PAIS_NAC">País de nacimiento:</label><!--(keyup)="mostrarPais($event)"-->
+                <select type="text" id="PAIS_NAC" class="form-control"  placeholder="Pais" name="PAIS_NAC" [(ngModel)]="newRegistrarDatos.PAIS_NAC" >   
+                    <option *ngFor = "let pais of listaPaisNac" value={{pais.CVE_PAIS}} >{{pais.PAIS}}</option>
+                </select>
             </div>
             <div class="col-3">
                 <label class="form-label" for="EDO_NAC">Estado de nacimiento:</label>
-                <input type="text" id="EDO_NAC" class="form-control"  placeholder="Estado" name="EDO_NAC" [(ngModel)]="newRegistrarDatos.EDO_NAC"/>       
+                
+                <select type="text" id="EDO_NAC" class="form-control"  placeholder="Estado" name="EDO_NAC" [(ngModel)]="newRegistrarDatos.EDO_NAC">
+                    <option *ngFor = "let estado of listaEstados" value={{estado.CVE_EDO}} >{{estado.ESTADO}}</option>
+                </select>       
             </div>
             <div class="col-3">
+                
                 <label class="form-label" for="MUN_NAC">Municipio de nacimiento:</label>
-                <input type="text" id="MUN_NAC" class="form-control"  placeholder="Municipio" name="MUN_NAC" [(ngModel)]="newRegistrarDatos.MUN_NAC" />
+                <select type="text" id="MUN_NAC" class="form-control"  placeholder="Municipio" name="MUN_NAC" [(ngModel)]="newRegistrarDatos.MUN_NAC" >
+                    <option *ngFor = "let municipio of listaMunicipios" value={{municipio.CVE_MUN}} >{{municipio.MUNIC}}</option>
+                </select>
             </div>
             <div class="col-3">    
                 <label class="form-label" for="NACIONALIDAD">Nacionalidad:</label>
-                <input type="text" id="NACIONALIDAD" class="form-control"  placeholder="Nacionalidad" name="NACIONALIDAD" [(ngModel)]="newRegistrarDatos.NACIONALIDAD"/>   
+                <select type="text" id="NACIONALIDAD" class="form-control"  placeholder="Nacionalidad" name="NACIONALIDAD" [(ngModel)]="newRegistrarDatos.NACIONALIDAD">   
+                    <option *ngFor = "let pais of listaPaisNac" value={{pais.CVE_PAIS}} >{{pais.NACIONALIDAD}}</option>
+                </select>
             </div>
 
         </div>
@@ -195,25 +199,30 @@
 
             <div class="form-group col-3">
                 <label class="form-label" for="ENTIDAD">Entidad:</label>
-                <input type="text" id="ENTIDAD" class="form-control"  placeholder="Entidad" name="ENTIDAD" [(ngModel)]="newRegistrarDatos.ENTIDAD" />
+                <select type="text" id="ENTIDAD" class="form-control"  placeholder="Entidad" name="ENTIDAD" [(ngModel)]="newRegistrarDatos.ENTIDAD" >
+                    <option *ngFor = "let estado of listaEstados" value={{estado.CVE_EDO}} >{{estado.ESTADO}}</option>
+                </select>  
 
             </div>
 
             <div class="form-group col-3">
                 <label class="form-label" for="MUNICIPIO">Municipio:</label>
-                <input type="text" id="MUNICIPIO" class="form-control"  placeholder="Municipio" name="MUNICIPIO" [(ngModel)]="newRegistrarDatos.MUNICIPIO" />
+                <select type="text" id="MUNICIPIO" class="form-control"  placeholder="Municipio" name="MUNICIPIO" [(ngModel)]="newRegistrarDatos.MUNICIPIO" >
+                    <option *ngFor = "let municipio of listaMunicipios" value={{municipio.CVE_MUN}} >{{municipio.MUNIC}}</option>
+                </select>
 
             </div>
 
         </div>
         <br>
+
         <div class="row">
             <div class="form-group col-3">
                 <label class="form-label" for="CIUDAD">Ciudad:</label>
-                <input type="text" id="CIUDAD" class="form-control"  placeholder="Ciudad"  name="CIUDAD" [(ngModel)]="newRegistrarDatos.CIUDAD"/>
-
+                <select type="text" id="CIUDAD" class="form-control"  placeholder="Ciudad"  name="CIUDAD" [(ngModel)]="newRegistrarDatos.CIUDAD">
+                    <option *ngFor = "let ciudad of listaCiudades" value={{ciudad.CveCiudad}} >{{ciudad.Ciudad}}</option>
+                </select>
             </div>
-
         </div>
             
             
@@ -232,36 +241,38 @@
             <div class="col-4">
                 <label class="form-label" for="EMAIL">¿Pertenece a alguna etnia indígena?</label><br>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" >
-                    <label class="form-check-label" for="inlineRadio1">Si</label>
+                    <input class="form-check-input" type="radio" name="PERTENECE_ETNIA" id="radioPerteneceEtdniaTrue" (change)="radioChangePerteneceEtnia($event)" [(ngModel)]="newRegistrarDatos.PERTENECE_ETNIA" value="1" >
+                    <label class="form-check-label" for="">Si</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" >
+                    <input class="form-check-input" type="radio" name="PERTENECE_ETNIA" id="radioPerteneceEtdniaFalse" (change)="radioChangePerteneceEtnia($event)" [(ngModel)]="newRegistrarDatos.PERTENECE_ETNIA" value="0">
                     <label class="form-check-label" for="inlineRadio2">No</label>
                   </div><br>
-                  <input type="text" id="" class="form-control"  placeholder="Especifique " name="" />  
+                  <input type="text" id="" class="form-control"  placeholder="Especifique " name="NOM_ETNIA" [(ngModel)]="newRegistrarDatos.NOM_ETNIA"/>  
             </div>  
     
         </div>
-        <br><br>
-    </form>
-    <form>
+
         <div class="row">
             <div class="col-4">
                 <label class="form-label" for="">¿Habla alguna lengua indígena?</label><br>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" >
+                    <input class="form-check-input" type="radio" name="HABLA_LEN_INDIGENA" id="radioHablaLenIndigenaT" (change)="radioChangeHablaInd($event)" [(ngModel)]="newRegistrarDatos.HABLA_LEN_INDIGENA" value="1" >
                     <label class="form-check-label" for="inlineRadio1">Si</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" >
+                    <input class="form-check-input" type="radio" name="HABLA_LEN_INDIGENA" id="radioHablaLenIndigenaF" (change)="radioChangeHablaInd($event)" [(ngModel)]="newRegistrarDatos.HABLA_LEN_INDIGENA" value="0">
                     <label class="form-check-label" for="inlineRadio2">No</label>
                 </div><br>
-                <input type="text" id="" class="form-control"  placeholder="Especifique" name="" />  
+                <input type="text" id="" class="form-control"  placeholder="Especifique" name="LENGUA_INDIGENA" [(ngModel)]="newRegistrarDatos.LENGUA_INDIGENA" />  
                 <br><br>
            
             </div>
         </div>
+        <br><br>
+    </form>
+    <form>
+       
     </form>
     <form>
         
@@ -269,11 +280,11 @@
             <div class="col-4">
                 <label class="form-label" for="CELULAR">¿Es padre o madre?</label><br>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" >
+                    <input class="form-check-input" type="radio" name="ES_PADRE" id="radioEsPadreT" [(ngModel)]="newRegistrarDatos.ES_PADRE" value="1" >
                     <label class="form-check-label" for="inlineRadio1">Si</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" >
+                    <input class="form-check-input" type="radio" name="ES_PADRE" id="radioEsPadreF" [(ngModel)]="newRegistrarDatos.ES_PADRE" value="0">
                     <label class="form-check-label" for="inlineRadio2">No</label>
                 </div><br><br><br>
 
@@ -288,15 +299,33 @@
             <div class="col-4">
                 <label class="form-label" for="">¿Cuenta con alguna discapacidad?</label><br>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" >
+                    <input class="form-check-input" type="radio" name="TIENE_DISCAPACIDAD" id="radioDiscapacidadT" [(ngModel)]="newRegistrarDatos.TIENE_DISCAPACIDAD" value="1">
                     <label class="form-check-label" for="inlineRadio1">Si</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" >
+                    <input class="form-check-input" type="radio" name="TIENE_DISCAPACIDAD" id="radioDiscapacidadF" [(ngModel)]="newRegistrarDatos.TIENE_DISCAPACIDAD" value="0">
                     <label class="form-check-label" for="inlineRadio2">No</label>
                 </div><br>
-                <input type="text" id="" class="form-control"  placeholder="Especifique" name="" />  
+                <input type="text" id="" class="form-control"  placeholder="Especifique" name="NOM_DISCAPACIDAD"  [(ngModel)]="newRegistrarDatos.NOM_DISCAPACIDAD"/>  
                 <br><br>
+           
+            </div>
+        </div>
+    </form>
+
+    <form>
+        <div class="row">
+            <div class="col-4">
+                <label class="form-label" for="">¿La persona tendrá un puesto como: Perito, Agente Ministerial de Investigación Criminal, Agente del Ministerio Público ó Agente del Ministerio Público Auxiliar?</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="ES_AGENTEMP_PERITO" id="radioPuestoAMP_T" [(ngModel)]="newRegistrarDatos.ES_AGENTEMP_PERITO" value="1" >
+                    <label class="form-check-label" for="inlineRadio1">Si</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="ES_AGENTEMP_PERITO" id="radioPuestoAMP_F" [(ngModel)]="newRegistrarDatos.ES_AGENTEMP_PERITO" value="0">
+                    <label class="form-check-label" for="inlineRadio2">No</label>
+                </div><br><br>
+               
            
             </div>
         </div>

@@ -11,9 +11,15 @@ import { CookieService } from 'ngx-cookie-service';
 export class RegistrarUsuarioComponent implements OnInit {
   date: Date = new Date();
   newRegistrarDatos: any = this.datosInicialesService.newRegistrarDatos;
-  
-  arreglo:any = {};
+  listaEstadoCivil: any = this.datosInicialesService.listaEstadoCivil;
+  listaPaisNac: any = this.datosInicialesService.listaPaisNac;
+  listaEstados: any = this.datosInicialesService.listaEstados;
+  listaMunicipios: any = this.datosInicialesService.listaMunicipios;
+  listaCiudades: any = this.datosInicialesService.listaCiudades;
 
+  arreglo:any = {};
+  value: any ='';
+  value2: any = '';
   arregloIdsParaTraerInfo: IdsParaEditarDataPD = {
     Id : this.datosInicialesService.Id,
     IdDomicilio: this.datosInicialesService.IdDomicilio,
@@ -38,9 +44,16 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   ngOnInit(): void {
     //this.traerValordeLosInputs();
-    //console.log(this.arreglo);
+    //console.log(this.arreglo); 
     console.log('oninitregis');
     console.log(this.newRegistrarDatos);
+   /* this.GetDataestadoCivil();
+    this.GetDatapaisNac();
+    this.GetDataEstados();
+    this.GetDataMunicipios();
+    this.GetDataCiudades();*/
+    
+    
     
     if(this.newRegistrarDatos.NOMBRE === ''){
       console.log('vacio');
@@ -57,83 +70,114 @@ export class RegistrarUsuarioComponent implements OnInit {
 
 
 
-   /* if(this.datosInicialesService.Id === ''){
-      console.log('true vacio');
-     // this.guardarDatosInputs();
-      
-
-    }else{
-      console.log('else');
-      if(this.newRegistrarDatos.NOMBRE === ''){
-        console.log(this.newRegistrarDatos);
-        
-      }else{
-        console.log('otroelse');
-         console.log(this.newRegistrarDatos);
-        
-      }
-     /// this.traerById();
-      
-      
-
-    }*/
-
-
-
-    
-    
-   // console.log(this.datosInicialesService.Id);  
-    //console.log(this.datosInicialesService.IdDomicilio);
-    
-
-
-    /*this.datosInicialesService.var$.subscribe(arre =>{
-      this.arreglo = arre;
-      g
-      if(this.newRegistrarDatos.NOMBRE === ''){
-  
-       console.log('estoy vacio');
-       
-  
-     }else{
-       console.log('else');
-     }
-     this.newRegistrarDatos = this.arreglo;
-     console.log('newdatos:', this.newRegistrarDatos);
-     
-     console.log('taerInoutsValor:', this.arreglo);
-      
-    })
-*/
-
-    //if(this.arregloParaVerSiEstaVacioLosInputs.NOMBRE === undefined || this.arregloParaVerSiEstaVacioLosInputs.NOMBRE ==='' || this.arregloParaVerSiEstaVacioLosInputs.NOMBRE === null){
-     // this.guardarDatosInputs();
-
-     // console.log('if name vacio valoresinputs');
-      //console.log(this.datosInicialesService.ValoresInputsR egistroDataPD);
-
-   // }else{
-            
-      //this.sitraevalores();
-     // console.log('else si trae datos');
-     // console.log(this.arregloParaVerSiEstaVacioLosInputs);
-      
-     // console.log('oninit:', this.newRegistrarDatos);
-
-      
-  
-   // }
-   // this.guardarDatosInputs();
    
-   // console.log(this.datosInicialesService.ValoresInputsRegistroDataPD);
   }
 
   //MANDAR INFO DE LOS INPUTS A REGISTRAR PERSONAL 
   guardarDatosInputs(){
     this.valorInputRegistro = this.newRegistrarDatos;
     this.valorOutputRegistro.emit(this.valorInputRegistro);
-    this.datosInicialesService.ValoresInputsRegistroDataPD = this.valorInputRegistro;
+    this.datosInicialesService.ValoresInputsRegistroDataPD = this.valorInputRegistro; 
   }
+
+  radioChangePerteneceEtnia(event:any){
+    this.value = event.target.value; 
+    console.log(this.value);
+  }
+
+
+  radioChangeHablaInd(event:any){
+    this.value2 = event.target.value; 
+    console.log(this.value2);
+
+  }
+
+ /* async GetDataestadoCivil(){
+    await this.datosInicialesService.getEstadosCivil().subscribe(
+      res=>{
+        this.listaEstadoCivil = res;
+        console.log(this.listaEstadoCivil);
+        
+
+      },
+      err =>{
+        console.log(err);
+        
+      }
+    )
+  }
+
+
+  mostrarPais(event: any){
+    this.value = event.target;
+    console.log(this.value);
+    
+    console.log('HIKEHDE');
+    
+  }
+
+  async GetDatapaisNac(){
+    await this.datosInicialesService.getPaisNac().subscribe(
+      res=>{
+        this.listaPaisNac = res;
+        console.log(this.listaPaisNac);
+        
+
+      },
+      err =>{
+        console.log(err);
+        
+      }
+    )
+  }
+
+  async GetDataEstados(){
+    await this.datosInicialesService.getEstados().subscribe(
+      res=>{
+        this.listaEstados = res;
+        console.log(this.listaEstados);
+        
+
+      },
+      err =>{
+        console.log(err);
+        
+      }
+    )
+  }
+
+
+  async GetDataMunicipios(){
+    await this.datosInicialesService.getMunicipios().subscribe(
+      res=>{
+        this.listaMunicipios = res;
+        console.log(this.listaMunicipios);
+        
+
+      },
+      err =>{
+        console.log(err);
+        
+      }
+    )
+  }
+
+  async GetDataCiudades(){
+    await this.datosInicialesService.getCiudades().subscribe(
+      res=>{
+        this.listaCiudades = res;
+        console.log(this.listaCiudades);
+        
+
+      },
+      err =>{
+        console.log(err);
+        
+      }
+    )
+  }*/
+
+  
 
   //MANDAR DATOS DE LOS INPUTS A EDITAR PERSONAL
   
@@ -168,7 +212,7 @@ export class RegistrarUsuarioComponent implements OnInit {
       }
       
     )
-
+ 
 
 
   

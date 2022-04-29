@@ -18,6 +18,12 @@ export class DatosInicialesExpedientesService {
    IdDomicilio: String = '';
    IdEstudios : String = '';
 
+   listaEstadoCivil: any = [];
+   listaPaisNac: any = [];
+   listaEstados: any = [];
+   listaMunicipios: any = [];
+   listaCiudades: any = [];
+
   //OBJETO PARA ALMACENAR LOS VALORES DE LOS INPUTS DEL COMPONENTE DE REGISTRO FORM TO REGISTRO PERSONA
    ValoresInputsRegistroDataPD:any = {};
    
@@ -29,6 +35,8 @@ export class DatosInicialesExpedientesService {
    date: Date = new Date();
   newRegistrarDatos: Datos = {
 
+    Id: '',
+    INFO_COMPLETA:'',
     FECHA_REGISTRO_DATA_PERSONAL: this.date,
     ESTATUS : 'P',
     NOMBRE:'',
@@ -52,7 +60,8 @@ export class DatosInicialesExpedientesService {
     NACIONALIDAD:0,
 
     CVE_EMPLEADO:'00000',
-    TABLAS:'0000001',
+    TABLAS:'1000000000000000000000000',
+   
     FCH_UAC: this.date,
 
 
@@ -72,7 +81,17 @@ export class DatosInicialesExpedientesService {
     CODIGO_POSTAL:'',
     ENTIDAD :'',
     MUNICIPIO:'',
-    CIUDAD:''
+    CIUDAD:'',
+
+    PERTENECE_ETNIA:'',
+    NOM_ETNIA:'',
+    HABLA_LEN_INDIGENA:'',
+    LENGUA_INDIGENA:'',
+    ES_PADRE:'',
+    TIENE_DISCAPACIDAD:'',
+    NOM_DISCAPACIDAD:'',
+    ES_AGENTEMP_PERITO:'',
+    IdEnlace: ''
 
 
   /*  ESCOLARIDAD:'',
@@ -84,6 +103,69 @@ export class DatosInicialesExpedientesService {
     FCH_TERMINO:''  */      
 
        
+  }
+
+  limpiarInputsRegistro:Datos={
+    
+    Id: '',
+    INFO_COMPLETA:'',
+    FECHA_REGISTRO_DATA_PERSONAL: this.date,
+    ESTATUS : 'P',
+    NOMBRE:'',
+    APE_PATERNO:'',
+    APE_MATERNO:'',
+        
+    SEXO:'',
+    FECHA_NAC: this.date,
+    EST_CIVIL:'',
+    CVE_RFC:'',
+    CURP:'',
+    CVE_ELECTOR:'',
+    LICENCIA:'',
+        
+    PASAPORTE:'',
+    CARTILLA:'',
+
+    PAIS_NAC:0,
+    EDO_NAC:0,
+    MUN_NAC:0,
+    NACIONALIDAD:0,
+
+    CVE_EMPLEADO:'00000',
+    TABLAS:'1000000000000000000000000',
+   
+    FCH_UAC: this.date,
+
+
+    OBSERVACIONES:'', 
+
+    EMAIL:'',
+    TELEFONO:'',
+    CELULAR:'',
+
+    CALLE:'',
+    ENTRE_CALLE:'',
+    Y_CALLE:'',
+
+    NO_EXTERIOR:'',
+    NO_INTERIOR:'',
+    COLONIA:'',
+    CODIGO_POSTAL:'',
+    ENTIDAD :'',
+    MUNICIPIO:'',
+    CIUDAD:'',
+
+    PERTENECE_ETNIA:'',
+    NOM_ETNIA:'',
+    HABLA_LEN_INDIGENA:'',
+    LENGUA_INDIGENA:'',
+    ES_PADRE:'',
+    TIENE_DISCAPACIDAD:'',
+    NOM_DISCAPACIDAD:'',
+    ES_AGENTEMP_PERITO:'',
+    IdEnlace: ''
+
+
   }
   
   updateDatos: DatosUpdate = {
@@ -150,6 +232,19 @@ export class DatosInicialesExpedientesService {
 
   urlTraerDatosPDByIDParaEditar = 'http://localhost:5000/datospersonales/get-by-ids';
   
+//--------------------------------------------------------------------------------------------
+
+  urlPostDatosPDomCom = 'http://localhost:5000/all-data/post';
+
+  urlGetEstadoCivil = 'http://localhost:5000/datos-inputs/get/estadoCivil';
+
+  urlGetPaisNac = 'http://localhost:5000/datos-inputs/get/paisNacionalidad';
+
+  urlGetEstados = 'http://localhost:5000/datos-inputs/get/estados';
+
+  urlGetMunicipios ='http://localhost:5000/datos-inputs/get/municipios';
+
+  urlGetCiudades ='http://localhost:5000/datos-inputs/get/ciudades';
 
 
   constructor(private http:HttpClient) { }
@@ -161,7 +256,7 @@ export class DatosInicialesExpedientesService {
   }
 
   
-// busquedas de los inputs 
+ // busquedas de los inputs 
   getListaNomSearchByNom(nombre:any){
     return this.http.post(this.urlListaNombreSearchByNombre, nombre);
   }
@@ -176,11 +271,12 @@ export class DatosInicialesExpedientesService {
   }
   //---------------------------------------------------------------------------------
 
-
+ 
   //agregar la info personal y domicilio del componente registrar-usuario  
   addDatosPDE(datos:Datos){
     return this.http.post(this.urlAgregarDatosPersonalesDomicilio,datos);
   }
+
 
 
   //editar datos personales y de domicilio 
@@ -191,6 +287,33 @@ export class DatosInicialesExpedientesService {
 
   getDatosEmpleadoById(Ids: IdsParaEditarDataPD){
     return this.http.post(this.urlTraerDatosPDByIDParaEditar, Ids);
+  }
+
+
+  //----------NUEVAS PETICIONES NEW DESING------------------
+
+  addDatosPDomCom(datos:Datos){
+    return this.http.post(this.urlPostDatosPDomCom, datos);
+  }
+
+  getEstadosCivil(){ 
+    return this.http.get(this.urlGetEstadoCivil);
+  }
+
+  getPaisNac(){ 
+    return this.http.get(this.urlGetPaisNac);
+  }
+
+  getEstados(){ 
+    return this.http.get(this.urlGetEstados);
+  }
+
+  getMunicipios(){ 
+    return this.http.get(this.urlGetMunicipios);
+  }
+
+  getCiudades(){ 
+    return this.http.get(this.urlGetCiudades);
   }
 
 }
@@ -253,7 +376,9 @@ export interface DatosUpdate{
 }
 
 
- export interface Datos{ 
+export interface Datos{ 
+  Id: String;
+  INFO_COMPLETA: String;
 
   FECHA_REGISTRO_DATA_PERSONAL : Date;
   ESTATUS: String;
@@ -298,7 +423,17 @@ export interface DatosUpdate{
   CODIGO_POSTAL: String;
   ENTIDAD: String;
   MUNICIPIO: String;
-  CIUDAD: String
+  CIUDAD: String;
+
+  PERTENECE_ETNIA: String;
+	NOM_ETNIA: String;
+	HABLA_LEN_INDIGENA: String;
+	LENGUA_INDIGENA:String;
+	ES_PADRE: String;
+	TIENE_DISCAPACIDAD: String;
+	NOM_DISCAPACIDAD: String;
+	ES_AGENTEMP_PERITO: String;
+	IdEnlace: String;
 }
 
 

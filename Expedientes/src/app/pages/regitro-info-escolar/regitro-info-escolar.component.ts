@@ -27,10 +27,11 @@ export class RegitroInfoEscolarComponent implements OnInit {
   newRegistrarDatosEscolares: DatosEscolares = {
     
     IdEstudios:'',
-   // NOMBRE: this.cookieService.get('Nombre'),
-    NOMBRE: this.datosInicialesService.ValoresInputsRegistroDataPD.NOMBRE,
-    APE_PATERNO:this.datosInicialesService.ValoresInputsRegistroDataPD.APE_PATERNO,
-    APE_MATERNO:this.datosInicialesService.ValoresInputsRegistroDataPD.APE_MATERNO,
+    IdEnlace: '',
+   // NOMBRE: this.cookieService.get('Nombrethis'),
+    NOMBRE: '',
+    APE_PATERNO:'',
+    APE_MATERNO:'',
     CVE_EMPLEADO: '00000',
     ESCOLARIDAD:'',
     ESCUELA:'',
@@ -56,11 +57,11 @@ export class RegitroInfoEscolarComponent implements OnInit {
     console.log(this.datosInicialesService.ValoresInputsRegistroDataPD.NOMBRE);
     
     
-  this.getInfoEscolar();
+  //this.getInfoEscolar();
     
   }
 
-  getInfoEscolar(){
+ /* getInfoEscolar(){
     this.datosEscolaresService.traerDatosEscolares(this.ParamsTraerInfoEsco).subscribe(
       res=>{
         this.ListaEscolaridad=<any>res;
@@ -96,14 +97,14 @@ export class RegitroInfoEscolarComponent implements OnInit {
       err => console.log(err)
       
     );
-  }
+  }*/
 
   postInfoEscolar(){
     this.datosEscolaresService.addInfoEscolar(this.newRegistrarDatosEscolares).subscribe(
       res=>{
         alert("Datos registrados exitosamente");
         
-        this.getInfoEscolar();
+        //this.getInfoEscolar();
 
       },
       err => console.log(err)
@@ -116,7 +117,7 @@ export class RegitroInfoEscolarComponent implements OnInit {
    await this.datosEscolaresService.editarDatosEscolares(this.newRegistrarDatosEscolares).subscribe(
       res=>{
         alert("Se han guardado los cambios");
-        this.getInfoEscolar();
+       // this.getInfoEscolar();
       },
       err => console.log(err)
       
@@ -133,7 +134,7 @@ export class RegitroInfoEscolarComponent implements OnInit {
     this.newRegistrarDatosEscolares.FCH_INICIO ='';
     this.newRegistrarDatosEscolares.FCH_TERMINO = '';
     this.modal.open(regisInfoEsc,{size:'xl'});
-  }
+  } 
 
   btnClicGoToListadoPersonas(){
     this.router.navigateByUrl('list-agg-docs-expediente');
@@ -141,7 +142,7 @@ export class RegitroInfoEscolarComponent implements OnInit {
 
   btnEditarInfoEsc(id:any, editInfoEsc:any){
     console.log(id);
-    this.getInfoEscolarParaEditar(id);
+    //this.getInfoEscolarParaEditar(id);
     this.modal.open(editInfoEsc,{size:'xl'});
     
   }

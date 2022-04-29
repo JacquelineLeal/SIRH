@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { eventListeners } from '@popperjs/core';
 import {IdsParaEditarDataPD, DatosInicialesExpedientesService} from '../../services/datos-iniciales-expedientes.service';
 
-@Component({
+@Component({ 
   selector: 'app-list-agg-docs-expediente',
   templateUrl: './list-agg-docs-expediente.component.html',
   styleUrls: ['./list-agg-docs-expediente.component.scss']

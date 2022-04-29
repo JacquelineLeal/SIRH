@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./registrar-persona.component.scss']
 })
 export class RegistrarPersonaComponent implements OnInit {
-
+ 
   date: Date = new Date();
 
  /* newRegistrarDatos: Datos = {
@@ -50,7 +50,7 @@ export class RegistrarPersonaComponent implements OnInit {
     ENTRE_CALLE:'',
     Y_CALLE:'',
 
-    NO_EXTERIOR:'',
+    NO_EXTERIOR:'', 
     NO_INTERIOR:'',
     COLONIA:'',
     CODIGO_POSTAL:'',
@@ -62,7 +62,7 @@ export class RegistrarPersonaComponent implements OnInit {
   }*/
   constructor(public router:Router, private datosInicialesService: DatosInicialesExpedientesService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
     //console.log(this.newRegistrarDatos);
     
     
@@ -73,17 +73,14 @@ export class RegistrarPersonaComponent implements OnInit {
 
     this.datosInicialesService.addDatosPDE(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
       res=>{
-        console.log(res);
-        
-        //AQUI GUARDAR LAS VARIABLES PARA ENVIAR A REGISTRAR INFO ESCOLAR
-        
 
+        console.log(res);
+        //AQUI GUARDAR LAS VARIABLES PARA ENVIAR A REGISTRAR INFO ESCOLAR
         alert("Datos registrados exitosamente");
         console.log(this.datosInicialesService.ValoresInputsRegistroDataPD);
         this.router.navigateByUrl('registrar-info-escolar');
-        //this.router.navigateByUrl('list-agg-docs-expediente');
-        
-      },
+        //this.router.navigateByUrl('list-agg-docs-expediente')
+      }, 
       
       err=>{
 
