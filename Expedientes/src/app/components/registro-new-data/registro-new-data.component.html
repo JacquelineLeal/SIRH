@@ -53,12 +53,12 @@
                         <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0z"/>
                     </svg>
                   </button>
-                  <button type="button" class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Idiomas/Lenguas" (click)="abrirModalInfoIdiomas(regisInfoIdiomas)">
+                  <button type="button" class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Idiomas/Lenguas" (click)="abrirModalInfoIdiomas(regisInfoIdiomas, nombres.Id,nombres.NOMBRE,nombres.APE_PATERNO,nombres.APE_MATERNO)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe" viewBox="0 0 16 16">
                         <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/>
                       </svg>
                   </button> 
-                  <button type="button" class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Subir documentación" (click)="abrirModalSubirDocumentos(subirDocumentos)">
+                  <button type="button" class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Subir documentación" (click)="abrirModalSubirDocumentos(subirDocumentos, nombres.Id,nombres.NOMBRE,nombres.APE_PATERNO,nombres.APE_MATERNO)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
                       <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
                     </svg>
@@ -211,26 +211,27 @@
     </div>
 
     <div class="modal-body">
-        <label><b>Nombre: </b>un nombre</label><br>
-        <label><b>Num. Empleado : </b> 123456</label><br><br><br>
+        <label><b>Nombre: </b>{{newRegistrarIdiomas.NOMBRE}}</label><br>
+        <label><b>Apellido Paterno: </b>{{newRegistrarIdiomas.APE_PATERNO}}</label><br>
+        <label><b>Apellido Materno: </b>{{newRegistrarIdiomas.APE_MATERNO}} </label><br><br><br>
         <form class="form-inline" role="form">
             <div class="row">
                 <div class="col-4">
                     <label class="form-label" for="">Idioma</label>
-                    <input type="email" id="" class="form-control" placeholder="Idioma" name=""  />          
+                    <input type="email" id="" class="form-control" placeholder="Idioma" name="IDIOMA"   [(ngModel)]="newRegistrarIdiomas.IDIOMA"/>          
                 </div>
                 <div class="form-group col-2">
                     <label class="form-label" for="">Lectura(%):</label> 
-                    <input type="text" id="" class="form-control"  placeholder="Lectura"  name="" /> 
+                    <input type="text" id="" class="form-control"  placeholder="Lectura"  name="LECTURA" [(ngModel)]="newRegistrarIdiomas.LECTURA"/> 
                 </div>
                 <div class="form-group col-2">
                     <label class="form-label" for="">Escritura(%):</label>
-                    <input type="text" id="" class="form-control"  placeholder="Escritura" name=""  /> 
+                    <input type="text" id="" class="form-control"  placeholder="Escritura" name="ESCRITURA" [(ngModel)]="newRegistrarIdiomas.ESCRITURA" /> 
         
                 </div>
                 <div class="form-group col-2">
                     <label class="form-label" for="">Conversación(%):</label>
-                    <input type="text" id="" class="form-control"  placeholder="Conversación" name=""  /> 
+                    <input type="text" id="" class="form-control"  placeholder="Conversación" name="CONVERSACION"  [(ngModel)]="newRegistrarIdiomas.CONVERSACION"/> 
         
                 </div>
                 
@@ -238,7 +239,7 @@
             </div>
         </form>
         <br>
-        <button class="btn btn-success">Agregar</button>
+        <button class="btn btn-success" (click)="postDatosIdiomas()">Agregar</button>
         <br>
         <br>
 
@@ -255,13 +256,13 @@
               </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>English</td>
-                    <td>50% </td>
-                    <td>30%</td>
-                    <td>40%</td>
-        
+                <tr *ngFor = "let idioma of listaDatosIdiomas">
+                    <td>{{idioma.IDIOMA}}</td>
+                    <td>{{idioma.LECTURA}}</td>
+                    <td>{{idioma.ESCRITURA}}</td>
+                    <td>{{idioma.CONVERSACION}}</td>
                 </tr>
+                
             </tbody>
           </table>
           <br><br><br>
@@ -291,8 +292,9 @@
             <div class="row">
                 <div class="col-3">
                     <label for="">Tipo de documento:</label>
-                    <select id="" class="form-control">
+                    <select id="" class="form-control" name="TIPO" [(ngModel)]="newRegisDocumentos.TIPO">
                         <option selected disabled>Seleccione...</option>
+                        <option> 2</option>
                         <option>Acta de nacimiento</option>
                         <option>Solicitud de empleo</option>
                         <option>Inventario</option>
@@ -312,13 +314,28 @@
                     </select>
                 </div>
                 <div class="col-5">
-                    <label>Elegir archivo:</label>
-                    <input class="form-control" type="file"><br>
+                    <label>Elegir archivo:</label> 
+                    <input class="form-control" (change)="capturarArchivo($event)" type="file" name="DOCUMENTO" [(ngModel)]="newRegisDocumentos.DOCUMENTO"><br>
                 </div>
             </div>
         </form>
-        <button type="submit" class="btn btn-info">Insertar</button>
+        <button type="submit" class="btn btn-info" (click)="postDatosDocumentos()">Insertar DATOS</button><br><br>
+        <button type="submit" class="btn btn-info" (click)="click2()">CONVERT ARRAY BUFFER </button><br>
+        <button type="submit" class="btn btn-info" (click)="clickk()">Insertar IMAGEN</button>
         <hr><br><br>
+        <div>
+           <!-- <embed src="previzualizacionDoc" 
+                style="width: 100%;height: 500px" 
+                type="application/pdf">
+              <img [src]="previzualizacionDoc">
+              <object data="previzualizacionDoc" type="application/pdf" height="800%" width="150%"></object>
+            -->
+            <img [src]="previzualizacionDoc" width="100%" height="500px"  >
+            
+            
+                
+          
+        </div>
         <table class="table table-bordered">
             <thead>
               <tr>
