@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {DatosBuscarInputs, DatosInicialesExpedientesService} from '../../services/datos-iniciales-expedientes.service';
 
 
 @Component({
@@ -10,9 +11,17 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class EditoNewDataComponent implements OnInit {
 
+  listaPersonas: any = [];
+  valoresInputBusqueda: DatosBuscarInputs={
+    CVE_EMPLEADO: '',
+    NOMBRE: '',
+    APE_PATERNO: '',
+    APE_MATERNO: ''
+  }
   constructor(
-    public router:Router,
-    public modal:NgbModal
+    public router:Router, 
+    public modal:NgbModal,
+    private datosInicialesService: DatosInicialesExpedientesService,
   ) { }
 
   ngOnInit(): void {
@@ -54,4 +63,106 @@ export class EditoNewDataComponent implements OnInit {
     this.modal.open(btnEditarDocs,{size:'xl'})
 
   }
+
+  buscarData(){
+    console.log(this.valoresInputBusqueda);
+    
+    if(this.valoresInputBusqueda.CVE_EMPLEADO == '' && this.valoresInputBusqueda.NOMBRE == '' && this.valoresInputBusqueda.APE_PATERNO == '' && this.valoresInputBusqueda.APE_MATERNO == '' ){
+      console.log('TODOS VACIOS');
+      alert('No hay datos para buscar');
+    }else{
+      if(this.valoresInputBusqueda.CVE_EMPLEADO != '' && this.valoresInputBusqueda.NOMBRE == '' && this.valoresInputBusqueda.APE_PATERNO == '' && this.valoresInputBusqueda.APE_MATERNO == ''){
+        console.log('cveEmpleado with valor');
+        this.getListaByCve();
+
+      }
+
+      if(this.valoresInputBusqueda.CVE_EMPLEADO == '' && this.valoresInputBusqueda.NOMBRE != '' && this.valoresInputBusqueda.APE_PATERNO == '' && this.valoresInputBusqueda.APE_MATERNO == ''){
+        console.log('nombre with valor');
+        this.getListaByNombre();
+      }
+
+      if(this.valoresInputBusqueda.CVE_EMPLEADO == '' && this.valoresInputBusqueda.NOMBRE != '' && this.valoresInputBusqueda.APE_PATERNO != '' && this.valoresInputBusqueda.APE_MATERNO == ''){
+        console.log('nombre y AP with valor');
+        this.getListaByNomAP();
+      }
+
+      if(this.valoresInputBusqueda.CVE_EMPLEADO == '' && this.valoresInputBusqueda.NOMBRE != '' && this.valoresInputBusqueda.APE_PATERNO != '' && this.valoresInputBusqueda.APE_MATERNO != ''){
+        console.log('nombre, AP Y AM  with valor');
+        this.getListaByNomCompleto();
+      }
+
+     
+      
+    }
+      
+    
+
+  }
+
+
+  async getListaByCve(){
+    await this.datosInicialesService.getListaNomSearchByCve(this.valoresInputBusqueda).subscribe(
+      res=>{
+        this.listaPersonas = res;
+        console.log(this.listaPersonas);
+        
+      },
+      err=>{
+        //alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+        console.log(err);
+        
+      }
+    )
+  }
+
+
+  async getListaByNombre(){
+    await this.datosInicialesService.getListaNomSearchByNom(this.valoresInputBusqueda).subscribe(
+      res=>{
+        this.listaPersonas = res;
+        console.log(this.listaPersonas);
+        
+      },
+      err=>{
+        //alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+        console.log(err);
+        
+      }
+    )
+  }
+
+  async getListaByNomAP(){
+    await this.datosInicialesService.getListaNomSearchByNomAP(this.valoresInputBusqueda).subscribe(
+      res=>{
+        this.listaPersonas = res;
+        console.log(this.listaPersonas);
+        
+      },
+      err=>{
+        //alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+        console.log(err);
+        
+      }
+    )
+  }
+
+  async getListaByNomCompleto(){
+    await this.datosInicialesService.getListaNomSearchByNomComplet(this.valoresInputBusqueda).subscribe(
+      res=>{
+        this.listaPersonas = res;
+        console.log(this.listaPersonas);
+        
+      },
+      err=>{
+        //alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+        console.log(err);
+        
+      }
+    )
+  }
+
+
+
+
 }  

@@ -116,8 +116,9 @@ export class RegistroNewDataComponent implements OnInit {
     CVE_EMPLEADO: '00000',
     CONSECUTIVO: 1,
     TIPO: 1,
-    DOCUMENTO: null,
+    DOCUMENTO: [],
     FCH_REGISTRO: this.date,
+  
     IdEnlace: 0,
     IdDocumentos: 0,
 
@@ -258,7 +259,7 @@ export class RegistroNewDataComponent implements OnInit {
 
   abrirModalSubirDocumentos(subirDocumentos: any,  Id: any, NOMBRE:any, APE_PATERNO:any,APE_MATERNO:any){
     this.previzualizacionDoc = '';
-    this.newRegisDocumentos.DOCUMENTO = undefined;
+    this.newRegisDocumentos.DOCUMENTO = '';
     this.newRegisDocumentos.IdEnlace = Id;
     this.newRegisDocumentos.NOMBRE = NOMBRE;
     this.newRegisDocumentos.APE_PATERNO = APE_PATERNO;
@@ -542,17 +543,20 @@ export class RegistroNewDataComponent implements OnInit {
     const archivo = event.target.files[0];
     
     this.extraerBase64(archivo).then((img: any) =>{
-      this.previzualizacionDoc = img.base;
+      //this.previzualizacionDoc = img.base;
+   
+     this.previzualizacionDoc = event.target.files[0];
       //this.newRegisDocumentos.DOCUMENTO=img.base;
       console.log(this.previzualizacionDoc);
+    
     });
    
-    this.archivoCapturado = event.target.files[0].blob;
+   // this.archivoCapturado = event.target.files[0].blob;
     //this.archivoCapturado.push(event.target.files[0]);
     //this.newRegisDocumentos.DOCUMENTO = this.archivoCapturado;
-    console.log('target');
+    //console.log('target');
     
-    console.log(this.archivoCapturado);
+    //console.log(this.archivoCapturado);
   }
   click2(){
     console.log(this.previzualizacionDoc.DOCUMENTO.data);
@@ -568,6 +572,7 @@ export class RegistroNewDataComponent implements OnInit {
     //this.base64ToArrayFile(this.previzualizacionDoc);
   }
 
+  //DE UNA IMAGEN LE SACA EL BASE64
   extraerBase64 = async($event: any) => new Promise((resolve, reject)=>{
     try{
       const unsafeImg = window.URL.createObjectURL($event);
@@ -599,90 +604,39 @@ export class RegistroNewDataComponent implements OnInit {
     }
   })
 
- /* crearArrayBuffer(imagen: any){
-    imagen = new ArrayBuffer(8);
-    const view = new Int32Array(imagen)
-    console.log('imagen crear array');
-    
-    console.log(imagen);
-  }*/
-
-  base64ToArrayFile(base64:any) {
-    const binary_string = base64;
-    const len = binary_string.length;
-    const bytes = new Uint8Array(len);
-    for(var i = 0; i<len; i++){
-      bytes[i] = binary_string.charCodeAt(i);
-    }
-    //this.newRegisDocumentos.DOCUMENTO = bytes.buffer;
-    console.log('base64toarra');
-    
-    console.log(atob(base64));
-    
-    return bytes.buffer;
-  /*  const arr = dataURL.split(',');
-    const mime = arr[0].match(/:(.*?);/)[1];
-    return (fetch(dataURL)
-      .then(function (result) {
-        const yaListo = result.arrayBuffer();
-        console.log('Listo');
-        console.log(yaListo);
-        
-        return result.arrayBuffer();
-    }));*/
-  }
-
-
- arrayBufferToBase64(Arraybuffer: any, Filetype: any) {
-  let binary = '';
-  const bytes = new Uint8Array(Arraybuffer);
-  const len = bytes.byteLength;
-  for (let i = 0; i < len; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  const file = window.btoa(binary);
-  const mimType = Filetype === 'pdf' ? 'application/pdf' : Filetype === 'xlsx' ? 'application/xlsx' :
-    Filetype === 'pptx' ? 'application/pptx' : Filetype === 'csv' ? 'application/csv' : Filetype === 'docx' ? 'application/docx' :
-      Filetype === 'jpg' ? 'application/jpg' : Filetype === 'png' ? 'application/png' : '';
-  const url = `data:${mimType};base64,` + file;
-
-  // url for the file
-  this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-
-  // download the file
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'holi'//fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-}
-
-clickk(){
  
-  this.bufferToBase64ImageSource(this.xd[0].DOCUMENTO.data);
+ 
+
+
+
+
+async clickk(){
+ 
+//  this.bufferToBase64ImageSource(this.xd[0].DOCUMENTO.data);--------------------------------------la buenaaaaa
  // this.base64ToArrayBuffer(this.previzualizacionDoc);
-  console.log('click');
+ // console.log('click');
+
+ // await this.handleUpload(this.previzualizacionDoc);
   
+  //this.buf2hex(this.previzualizacionDoc);
+  
+  //console.log(this.previzualizacionDoc);
+  
+ //this.otroIntentoConverArray(this.previzualizacionDoc);
+
+ //this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc;
+  ///console.log(this.newRegisDocumentos);
+
+ ///--------------------------------
+ this.bufferToBase64ImageSource(this.xd[0].DOCUMENTO.data);
+ 
   
 }
 
- /*base64ToArrayBuffer(base64: any) {
-  let binaryString = window.btoa(base64);
-  let binaryLength = binaryString.length;
-  let bytes = new Uint8Array(binaryLength);
-
-  for (let i = 0; i < binaryLength; i++) {
-      let ascii = binaryString.charCodeAt(i);
-      bytes[i] = ascii;
-  }
-  return bytes;
-   
-}*/
 
 
 
+//CONVERTIR A BASE 64 LOS ARRAY TRAIDOS DE LA BD
 bufferToBase64ImageSource(buffer: any) {
 
   const base64String = btoa(new Uint8Array(buffer).reduce((data, byte)=> {
@@ -700,65 +654,49 @@ bufferToBase64ImageSource(buffer: any) {
   return this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + base64String);
 }
 
+//----------------------------------------
+//SI CONVIERTE PERO NO SE PUEDE INSERTAR QE EL VALOR ES INVALIDO BUFFER INVALIDO
+async handleUpload(e:any){
+  console.log('handlerecivo', e);
+  
+  let image = e;
 
-/*async extraerBufferArray ($event: any){
-  const reader = new FileReader(); 
-  reader.readAsArrayBuffer($event);
-
-
-  reader.onload = () =>{
-    const arrayBuffer = new Uint8Array(reader);
-    console.log(arrayBuffer);
-    
-      //base:reader.result
-  };
+  console.log('image', image);
   
 
-}*/
-
-
-extraerBufferArray = async($event: any) => new Promise((resolve, reject)=>{
-  try{
-    
-    const reader = new FileReader();
-    const ab = $event.ArrayBuffer();
-   // reader.readAsArrayBuffer($event);
-   
-
-   // reader.readAsDataURL($event);
-    reader.onload = () =>{
-      resolve({
-        arrayBuffer: new Uint8Array(ab),
-        //base:reader.result
-      });
-      
-    
-    };
-    
-    reader.onerror = error =>{
-      resolve({
-       base: null
-      });
-    }
-
-    return $event;
-    
-
-  }catch (e){
-    return null;
-  }
-})
-
-
- base64ToBufferAsync(base64:any) {
-  var dataUrl = "data:application/octet-binary;base64," + base64;
-
-  fetch(dataUrl)
-    .then(res => res.arrayBuffer())
-    .then(buffer => {
-      console.log("base64 to buffer: " + new Uint8Array(buffer));
-    })
+  const buffer = await image.arrayBuffer();
+  const byteArray = new Uint8ClampedArray(buffer);
+  //const byteArray = new Int8Array(buffer);
+  console.log('bytearraynew:');
+  
+  console.log(byteArray.buffer);
+  this.newRegisDocumentos.DOCUMENTO = byteArray.buffer;
+  
+  //formik.setFieldValue(name, byteArray);
 }
+
+//-----
+async otroIntentoConverArray(image:any){
+  //const processImageBuffer = new ArrayBuffer(image); //vacio
+
+ // const blob = new Blob(image);
+  //console.log(blob);
+  const processImageBuffer =  image.arrayBuffer();
+  console.log(processImageBuffer.Promise);
+}
+
+buf2hex(bufferArray:any) { // buffer is an ArrayBuffer
+ const hexa = Array.prototype.map.call(new Uint8Array(bufferArray), x => ('00' + x.toString(16)).slice(-2)).join('');
+ this.newRegisDocumentos.DOCUMENTO = hexa;
+ console.log('hexa');
+  
+ console.log(this.newRegisDocumentos.DOCUMENTO);
+
+ return Array.prototype.map.call(
+    new Uint8Array(bufferArray), x => ('00' + x.toString(16)).slice(-2)).join('');
+    
+}
+
 
 
 

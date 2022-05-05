@@ -17,6 +17,7 @@ export class DocumentosService {
   }
 
   addDocumento(documentoData: DatosDocumentos){
+    
     return this.http.post(this.urlPostDocumentos, documentoData); 
   }
 

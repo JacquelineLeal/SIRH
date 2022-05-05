@@ -246,6 +246,18 @@ export class DatosInicialesExpedientesService {
 
   urlGetCiudades ='http://localhost:5000/datos-inputs/get/ciudades';
 
+  urlBuscarByCve = 'http://localhost:5000/edit/search-by-cve';
+
+  urlBuscarByNombre = 'http://localhost:5000/edit/search-by-name';
+
+  urlBuscarByNameAp = 'http://localhost:5000/edit/search-by-name-ap';
+
+  urlBuscarByCompleteName = 'http://localhost:5000/edit/search-by-name-complete';
+
+
+
+
+
 
   constructor(private http:HttpClient) { }
 
@@ -257,17 +269,22 @@ export class DatosInicialesExpedientesService {
 
   
  // busquedas de los inputs 
-  getListaNomSearchByNom(nombre:any){
-    return this.http.post(this.urlListaNombreSearchByNombre, nombre);
+ 
+  getListaNomSearchByCve(CVE_EMPLEADO:DatosBuscarInputs){
+    return this.http.post(this.urlBuscarByCve, CVE_EMPLEADO);
+  }
+
+  getListaNomSearchByNom(NOMBRE:DatosBuscarInputs){
+    return this.http.post(this.urlBuscarByNombre, NOMBRE);
   }
   
-  getListaNomSearchByNomAP(nombre:any, aPaterno:any ){
-    return this.http.post(this.urlListaNombreSearchByNomAP,nombre,aPaterno);
+  getListaNomSearchByNomAP(datos:DatosBuscarInputs ){
+    return this.http.post(this.urlBuscarByNameAp,datos);
   }
 
-  getListaNomSearchByNomComplet(nombre:any,aPaterno:any, aMaterno:any){
+  getListaNomSearchByNomComplet(datos: DatosBuscarInputs){
 
-    return this.http.post(this.urlListaNombreSearchByNomComplete, nombre)
+    return this.http.post(this.urlBuscarByCompleteName, datos)
   }
   //---------------------------------------------------------------------------------
 
@@ -315,6 +332,8 @@ export class DatosInicialesExpedientesService {
   getCiudades(){ 
     return this.http.get(this.urlGetCiudades);
   }
+
+
 
 }
 
@@ -434,6 +453,14 @@ export interface Datos{
 	NOM_DISCAPACIDAD: String;
 	ES_AGENTEMP_PERITO: String;
 	IdEnlace: String;
+}
+
+
+export interface DatosBuscarInputs{
+  NOMBRE:String;
+  APE_PATERNO: String;
+  APE_MATERNO: String;
+  CVE_EMPLEADO: String;
 }
 
 
