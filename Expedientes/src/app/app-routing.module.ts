@@ -50,19 +50,22 @@ const routes: Routes = [
     component:EditoNewDataComponent,
     data:{
       role:'CAPTURISTA'
-    }
+    },
+    canActivate:[LoginguardGuard]
   },
   { path: 'consulto-data',
     component: ConsultoNewDataComponent,
     data:{
       role:'CAPTURISTA'
-    }
+    },
+    canActivate:[LoginguardGuard]
   },
   { path: 'registro-info-personal-existente', 
     component: RegistroInfoExisPersonalComponent,
     data:{
       role:'CAPTURISTA'
-    }
+    },
+    canActivate:[LoginguardGuard]
   }
  // {path:'registro-datos', component: RegistroDatosComponent},
   //{path:'edito-datos', component: EditoDatosComponent},

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -21,7 +22,8 @@ export class NavbarComponent implements OnInit {
   ]
   
   constructor(
-    private cookieService:CookieService
+    private cookieService:CookieService,
+    private router: Router
   ) {
     
    }
@@ -31,8 +33,35 @@ export class NavbarComponent implements OnInit {
    
   }
 
-  cerrarSesion(){
-    this.cookieService.delete('token_access','/');
+  
+
+  async registroNuevos(){
+    this.router.navigateByUrl('registro-new-data');
+
   }
+
+  async editar(){
+    this.router.navigateByUrl('edit-new-data');
+
+  }
+
+  async consultas(){
+    this.router.navigateByUrl('consulto-data');
+
+  }
+
+  async registroExistentes(){
+    this.router.navigateByUrl('registro-info-personal-existente');
+
+  }
+
+  async cerrarSesion(){
+    await  this.cookieService.delete('token_access','/');
+     this.router.navigateByUrl('login');
+ 
+   }
+
+
+
 
 }

@@ -6,6 +6,15 @@ import {DatosEscolares,TraerInfoEscolar, DatosEscolaresServiService } from 'src/
 import{DatosIdiomas ,IdiomasService} from '../../services/idiomas.service';
 import {DatosDocumentos, DocumentosService } from 'src/app/services/documentos.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import * as pdfMake from "pdfmake/build/pdfmake";
+
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
+//import {pdfMake} 'pdfmake/build/pdfmake.js';
+//import  'pdfmake/build/vfs_fonts.js';
+ 
+
 
 @Component({
   selector: 'app-consulto-new-data',
@@ -14,7 +23,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ConsultoNewDataComponent implements OnInit {
 
- 
+  valorImagenParaDescargar = '';
+  nombreDoc = '';
+
   listaPersonas: any = [];
   nombreCompleto ='';
   numEmpleado = '';
@@ -92,6 +103,7 @@ export class ConsultoNewDataComponent implements OnInit {
     private datosIdiomasService : IdiomasService,
     private datosDocumentosService : DocumentosService,
     private sanitizer : DomSanitizer
+    
 
   ) { }
 
@@ -186,6 +198,7 @@ export class ConsultoNewDataComponent implements OnInit {
   }
 
   openDescargar(contDescargarDocs:any, documento:any){
+    this.nombreDoc = documento.desc_doc;
     if(documento.TIPO_INSERCION === null){
       console.log('soy null', documento.TIPO_INSERCION);
       this.bufferToBase64ImageSourceRegisAnteriores(documento.DOCUMENTO.data);
@@ -476,6 +489,9 @@ export class ConsultoNewDataComponent implements OnInit {
 
 
     console.log('data:image/jpg;base64, ')
+    console.log(base64String);
+    this.valorImagenParaDescargar = 'data:image/jpg;base64, ' + base64String;
+    
     
     //AQUI SE LE PASA BASE64STRING EN VEZ DE QUITA1ER SE PUEDE PONER UN IF 
     this.previzualizacionDoc = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + base64String);
@@ -508,31 +524,90 @@ export class ConsultoNewDataComponent implements OnInit {
     
 
     console.log('quitar', quita1er);
+    this.valorImagenParaDescargar = 'data:image/jpg;base64, ' + quita1er;
+   console.log('newvalor',this.valorImagenParaDescargar); 
     
     //AQUI SE LE PASA BASE64STRING EN VEZ DE QUITA1ER SE PUEDE PONER UN IF 
     this.previzualizacionDoc = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + quita1er);
     console.log('buffertobase');
     
     console.log(this.previzualizacionDoc);
+    this.valorImagenParaDescargar = 'data:image/jpg;base64, ' + quita1er;
+     console.log('newvalor',this.valorImagenParaDescargar); 
+    
     return this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + quita1er);
   }
 
 
 
   downloadImage() {
- 
-      // save image to disk
-      var link = document.createElement("a");
 
-      document.body.appendChild(link); // for Firefox
+    const linkSource = this.valorImagenParaDescargar;
+    const downloadLink = document.createElement("a");
+    downloadLink.href = linkSource;
+    downloadLink.download = this.nombreDoc+'.'+this.numEmpleado+'.jpeg';
+    downloadLink.click();
+   /* const pageImage = new Image();
+    pageImage.src = this.valorImagenParaDescargar;
+    pageImage.onload = function(){
+      const canvas = document.createElement('canvas');
+      canvas.width = pageImage.naturalWidth;
+      canvas.height = pageImage.naturalHeight;
 
-      link.setAttribute("href", this.previzualizacionDoc);
-      link.setAttribute("download", "mrHankey.jpg");
-      link.click();
+      const ctx = canvas.getContext('2d');
+      //ctx?.imageSmoothingEnabled = false;
+      ctx?.drawImage(pageImage,0,0);
+      console.log(canvas, pageImage);*/ 
+
   }
 
+  crearDescargarPDfInfoGeneral(){
+    ///const doc = new jsPDF();
+   
+    const pdfDefinition: any = {
+      content:[
+
+        
+        {columns:[
+          {image: this.valorImagenParaDescargar, width:150, height:165},
+          {text:' ', width:10},
+          [
+
+          ],
+        
+
+          {text:[
+              
+            
+              {text:'Nombre: ', bold:true},
+              {text: this.datosPersonales[0].NOMBRE+ ' '+ this.datosPersonales[0].APE_PATERNO + ' '+this.datosPersonales[0].APE_MATERNO},
+
+            
+            
+            
+          ], width:'*'},
+          {text:  'hi'}
+    
+        ]},
+        {text: this.datosPersonales[0].NOMBRE + ' '+ this.datosPersonales[0].APE_PATERNO + ' '+this.datosPersonales[0].APE_MATERNO},
+        {text: this.datosPersonales[0].APE_PATERNO}
+
+      ]
+    }
+    const pdf = pdfMake.createPdf(pdfDefinition);
+    pdf.open();
+
+    
+  }//crearpdf
+   
+  
+}//class
+
+
+  
 
 
 
 
-}
+
+

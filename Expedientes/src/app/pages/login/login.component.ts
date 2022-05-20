@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
           console.log(this.listaResLogin.accessToken);
           alert(this.listaResLogin.message);
           this.cookieService.set('token_access',this.listaResLogin.accessToken, 4, '/');
-          this.router.navigateByUrl('registrar-persona');
+          this.router.navigateByUrl('registro-new-data');
 
         }
 
