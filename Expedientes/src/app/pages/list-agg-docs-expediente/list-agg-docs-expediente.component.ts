@@ -61,8 +61,8 @@ export class ListAggDocsExpedienteComponent implements OnInit {
       err =>{
         console.log(err);
         
-      }
-    )
+    }
+  )
 
    
    

@@ -8,6 +8,8 @@ export class DatosPDomComService {
 
   urlGetListaNombresRegis = 'http://localhost:5000/registro-nombres/get';
   urlPostNombresToDP = 'http://localhost:5000/registro-nombres/post';
+  urlGetDataPersonalByCveEmp = 'http://localhost:5000/registro-nombres/get-data-personal-list/';
+
   constructor(private http:HttpClient) { }
 
   getListaNombresRegistrar(){
@@ -18,6 +20,13 @@ export class DatosPDomComService {
     return this.http.post(this.urlPostNombresToDP, datos);
   }
 
+  getDatosPersonalesPerExis(CVE_EMPLEADO: any){
+    return this.http.get(this.urlGetDataPersonalByCveEmp + CVE_EMPLEADO);
+
+  }
+
+
+
 
  
 }
@@ -25,6 +34,7 @@ export class DatosPDomComService {
 
 export interface DatosPersonalesTable{
   FECHA_REGISTRO_DATA_PERSONAL : Date;
+ // Id: Number;
   ESTATUS: String;
   NOMBRE:String;
   APE_PATERNO: String;

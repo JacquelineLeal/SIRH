@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-
+import{PdfViewerModule} from 'ng2-pdf-viewer';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,6 +29,7 @@ import { RegistroNewDataComponent } from './components/registro-new-data/registr
 import { ConsultoNewDataComponent } from './components/consulto-new-data/consulto-new-data.component';
 import { RegistroInfoExisPersonalComponent } from './components/registro-info-exis-personal/registro-info-exis-personal.component';
 
+
 //import { RegistroDatosComponent } from './componentes/registro-datos/registro-datos.component';
 //import { EditoDatosComponent } from './componentes/edito-datos/edito-datos.component';
 //import { ConsultoDatosComponent } from './componentes/consulto-datos/consulto-datos.component';
@@ -54,8 +55,7 @@ import { RegistroInfoExisPersonalComponent } from './components/registro-info-ex
     EditoNewDataComponent,
     RegistroNewDataComponent,
     ConsultoNewDataComponent,
-    RegistroInfoExisPersonalComponent,
-   
+    RegistroInfoExisPersonalComponent
    // RegistroDatosComponent,
     //EditoDatosComponent,
     //ConsultoDatosComponent,
@@ -66,7 +66,8 @@ import { RegistroInfoExisPersonalComponent } from './components/registro-info-ex
     AppRoutingModule,
     NgbModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    PdfViewerModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

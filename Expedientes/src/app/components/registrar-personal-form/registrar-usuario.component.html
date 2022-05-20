@@ -108,7 +108,7 @@
                 
                 <label class="form-label" for="MUN_NAC">Municipio de nacimiento:</label>
                 <select type="text" id="MUN_NAC" class="form-control"  placeholder="Municipio" name="MUN_NAC" [(ngModel)]="newRegistrarDatos.MUN_NAC" >
-                    <option *ngFor = "let municipio of listaMunicipios" value={{municipio.CVE_MUN}} >{{municipio.MUNIC}}</option>
+                    <option *ngFor = "let municipio of listaMunicipios" value={{municipio.CveCiudad}} >{{municipio.Ciudad}}</option>
                 </select>
             </div>
             <div class="col-3">    
@@ -208,7 +208,7 @@
             <div class="form-group col-3">
                 <label class="form-label" for="MUNICIPIO">Municipio:</label>
                 <select type="text" id="MUNICIPIO" class="form-control"  placeholder="Municipio" name="MUNICIPIO" [(ngModel)]="newRegistrarDatos.MUNICIPIO" >
-                    <option *ngFor = "let municipio of listaMunicipios" value={{municipio.CVE_MUN}} >{{municipio.MUNIC}}</option>
+                    <option *ngFor = "let municipio of listaMunicipios" value={{municipio.CveCiudad}} >{{municipio.Ciudad}}</option>
                 </select>
 
             </div>
@@ -220,7 +220,7 @@
             <div class="form-group col-3">
                 <label class="form-label" for="CIUDAD">Ciudad:</label>
                 <select type="text" id="CIUDAD" class="form-control"  placeholder="Ciudad"  name="CIUDAD" [(ngModel)]="newRegistrarDatos.CIUDAD">
-                    <option *ngFor = "let ciudad of listaCiudades" value={{ciudad.CveCiudad}} >{{ciudad.Ciudad}}</option>
+                    <option *ngFor = "let ciudad of listaCiudades" value={{ciudad.Ciudad}} >{{ciudad.Ciudad}}</option>
                 </select>
             </div>
         </div>

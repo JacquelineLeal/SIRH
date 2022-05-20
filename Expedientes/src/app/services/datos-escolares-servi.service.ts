@@ -12,6 +12,8 @@ export class DatosEscolaresServiService {
   urlPutDatosEscolares = 'http://localhost:5000/datosescolares/put';
 
   urlGetDatosEscolareByIdEnlace = 'http://localhost:5000/datosescolares/get/';
+
+  urlGetDatosEscoByCveEmp = "http://localhost:5000/datosescolares/get-by-cve/";
  
 
   constructor(private http:HttpClient) { }
@@ -36,14 +38,27 @@ export class DatosEscolaresServiService {
 
   //-----------------------------------------------------------------------------
   //--------------NEW INTERFACE-------------------------------------------------
+  //PARA REGISTRO DE LOS CVE EMPLEADO =00000
   GetDatosEscolares(IdEnlace: any){
     return this.http.get(this.urlGetDatosEscolareByIdEnlace + IdEnlace)
   }
 
-  
+  //PARA EDITAR BUSCAR POR CVE EMPLEADO REAL
+  GetDatosEscolaresByCveEm(CVE_EMPLEADO: any){
+    return this.http.get(this.urlGetDatosEscoByCveEmp + CVE_EMPLEADO)
+    //return this.http.post(this.urlGetDatosEscoByCveEmp, CVE_EMPLEADO)
+  } 
+
+
 
   
 
+  
+
+}
+
+export interface Cve{
+  CVE_EMPLEADO: String
 }
 
 export interface DatosEscolares{

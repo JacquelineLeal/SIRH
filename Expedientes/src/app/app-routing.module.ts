@@ -15,13 +15,21 @@ import { EditoNewDataComponent } from './components/edito-new-data/edito-new-dat
 import { RegistroNewDataComponent } from './components/registro-new-data/registro-new-data.component';
 import { ConsultoNewDataComponent } from './components/consulto-new-data/consulto-new-data.component';
 import { RegistroInfoExisPersonalComponent } from './components/registro-info-exis-personal/registro-info-exis-personal.component';
+import { LoginguardGuard } from './guards/loginguard.guard';
 //import { RegistroDatosComponent } from './Componentes/registro-datos/registro-datos.component';
 //import { EditoDatosComponent } from './Componentes/edito-datos/edito-datos.component';
 //import { ConsultoDatosComponent } from './Componentes/consulto-datos/consulto-datos.component';
 
 const routes: Routes = [ 
   {path:'',redirectTo:'/login',pathMatch:'full'},  
-  {path:'registrar-persona', component:RegistrarPersonaComponent},
+  { path:'registrar-persona', 
+    component:RegistrarPersonaComponent,
+    data:{
+      role:'CAPTURISTA'
+    },
+    canActivate:[LoginguardGuard]
+
+  },
   {path:'list-agg-docs-expediente', component:ListAggDocsExpedienteComponent},
   {path:'edit-info-personal', component:EditInfoPersonalComponent},
   {path:'subir-docs-expediente', component: SubirDocsExpedienteComponent},
@@ -30,10 +38,32 @@ const routes: Routes = [
   {path:'login',component:LoginComponent},
   {path:'registrar-info-escolar', component:RegitroInfoEscolarComponent},
   {path:'registrar-idiomas', component:RegisIdiomasComponent},
-  {path: 'registro-new-data', component: RegistroNewDataComponent},
-  {path: 'edit-new-data', component:EditoNewDataComponent},
-  {path: 'consulto-data',component: ConsultoNewDataComponent },
-  {path: 'registro-info-personal-existente', component: RegistroInfoExisPersonalComponent}
+
+  { path: 'registro-new-data', 
+    component: RegistroNewDataComponent,
+    data:{
+      role:'CAPTURISTA'
+    },
+    canActivate:[LoginguardGuard]
+  },
+  { path: 'edit-new-data', 
+    component:EditoNewDataComponent,
+    data:{
+      role:'CAPTURISTA'
+    }
+  },
+  { path: 'consulto-data',
+    component: ConsultoNewDataComponent,
+    data:{
+      role:'CAPTURISTA'
+    }
+  },
+  { path: 'registro-info-personal-existente', 
+    component: RegistroInfoExisPersonalComponent,
+    data:{
+      role:'CAPTURISTA'
+    }
+  }
  // {path:'registro-datos', component: RegistroDatosComponent},
   //{path:'edito-datos', component: EditoDatosComponent},
   //{path: 'consulto-datos', component: ConsultoDatosComponent}

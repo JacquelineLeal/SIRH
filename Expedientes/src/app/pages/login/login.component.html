@@ -9,15 +9,15 @@
       <!-- USERNAME INPUT -->
      
       <label >Usuario:</label>
-      <input type="text" placeholder="Ingresa tu nombre de usuario">
+      <input type="text" placeholder="Ingresa tu nombre de usuario" name="NOMBRE_USUARIO" [(ngModel)]="newDatosUsuario.NOMBRE_USUARIO">
       <!-- PASSWORD INPUT -->
      
       <label>Contraseña:</label>
-      <input type="password" placeholder="Ingresa tu Contraseña">
+      <input type="password" placeholder="Ingresa tu Contraseña" name="PASSW" [(ngModel)]="newDatosUsuario.PASSW">
       
       <!--<input type="submit"  value="Log In">
       <a></a><br>-->
-      <button class="btnLogIn" (click)="btnClickGoToRegistrarEmpleado()">Iniciar sesion</button>
+      <button class="btnLogIn" (click)="btnClickInicioSesion()">Iniciar sesion</button>
 <!---->
     </form>
   </div>

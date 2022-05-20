@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+ 
 import {DatosEscolares, DatosEscolaresServiService } from 'src/app/services/datos-escolares-servi.service';
 import {Datos, DatosInicialesExpedientesService} from '../../services/datos-iniciales-expedientes.service';
 import {DatosPersonalesTable ,DatosPDomComService } from '../../services/datos-p-dom-com.service';
@@ -11,7 +12,7 @@ import{DatosIdiomas ,IdiomasService} from '../../services/idiomas.service';
 import {DatosDocumentos, DocumentosService } from 'src/app/services/documentos.service';
 
 import { DomSanitizer } from '@angular/platform-browser';
-import { convertActionBinding } from '@angular/compiler/src/compiler_util/expression_converter';
+ 
 @Component({
   selector: 'app-registro-new-data',
   templateUrl: './registro-new-data.component.html',
@@ -22,7 +23,10 @@ export class RegistroNewDataComponent implements OnInit {
     
   }
 
+  cortarStringBase64: String = "";
+
   archivoCapturado: any= [];
+  pdfSrc: any ="";
   previzualizacionDoc: any = [];
   xd: any =[];
   tipo ='';
@@ -31,9 +35,12 @@ export class RegistroNewDataComponent implements OnInit {
 
   listaEstadoCivil: any = [];
   listaPaisNac: any = [];
-  listaEstados: any = [];
+  listaEstados: any = []; 
   listaMunicipios: any = [];
   listaCiudades: any = [];
+  listaValoresEscolaridad: any = [];
+  listaDocumentosIni: any =[];
+  listaDocsInsertadosByIdEnlace: any = [];
 
   listaDatosEscolares:any =[];
   listaDatosIdiomas: any = [];
@@ -46,6 +53,7 @@ export class RegistroNewDataComponent implements OnInit {
   arrayForInsertDatosPer: DatosPersonalesTable ={
     
     FECHA_REGISTRO_DATA_PERSONAL: this.date,
+    //Id: 0,
     ESTATUS : 'P',
     NOMBRE:'',
     APE_PATERNO:'',
@@ -111,16 +119,17 @@ export class RegistroNewDataComponent implements OnInit {
     APE_MATERNO: ''
 
   }
-
+ 
   newRegisDocumentos: DatosDocumentos={
     CVE_EMPLEADO: '00000',
-    CONSECUTIVO: 1,
-    TIPO: 1,
+    CONSECUTIVO: 0,
+    TIPO: 0,
     DOCUMENTO: [],
     FCH_REGISTRO: this.date,
   
     IdEnlace: 0,
     IdDocumentos: 0,
+    TIPO_INSERCION: 'NEW2022',
 
     NOMBRE: '',
     APE_PATERNO: '',
@@ -186,7 +195,9 @@ export class RegistroNewDataComponent implements OnInit {
     TIENE_DISCAPACIDAD:'',
     NOM_DISCAPACIDAD:'',
     ES_AGENTEMP_PERITO:'',
-    IdEnlace: ''
+    IdEnlace: '',
+    IdDomicilio: '',
+    IdComplement: ''
 
 
   }
@@ -218,6 +229,9 @@ export class RegistroNewDataComponent implements OnInit {
     this.GetDataEstados();
     this.GetDataMunicipios();
     this.GetDataCiudades();
+    this.GetValuesListaEscolaridad();
+    this.GetListDocsIniciales();
+    
     
   }
 
@@ -260,12 +274,20 @@ export class RegistroNewDataComponent implements OnInit {
   abrirModalSubirDocumentos(subirDocumentos: any,  Id: any, NOMBRE:any, APE_PATERNO:any,APE_MATERNO:any){
     this.previzualizacionDoc = '';
     this.newRegisDocumentos.DOCUMENTO = '';
+    this.newRegisDocumentos.TIPO = 0;
     this.newRegisDocumentos.IdEnlace = Id;
     this.newRegisDocumentos.NOMBRE = NOMBRE;
     this.newRegisDocumentos.APE_PATERNO = APE_PATERNO;
     this.newRegisDocumentos.APE_MATERNO = APE_MATERNO;
+    
+    this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
+    console.log(Id);
+    
+    
+
+
         
-    this.getImagen();
+   // this.getImagen();
     this.modal.open(subirDocumentos,{size: 'xl'});
 
   }
@@ -289,7 +311,7 @@ export class RegistroNewDataComponent implements OnInit {
         
       }
     )
-  }
+  }  
 
  limpiarInputsRegistroIPDC(){
     console.log('limpiar');
@@ -396,7 +418,10 @@ export class RegistroNewDataComponent implements OnInit {
        // console.log(this.previzualizacionDoc);
         
         //this.previzualizacionDoc = archivo;
-        this.previzualizacionDoc = this.xd[0];
+        //aqui le quiteeeeeeeeeeeeee el [0] a xd
+        this.previzualizacionDoc = this.xd; 
+        console.log('logdelget');
+        
         console.log(this.previzualizacionDoc);
       },
       err =>{
@@ -472,6 +497,40 @@ export class RegistroNewDataComponent implements OnInit {
     )
   }
 
+  
+
+  async GetValuesListaEscolaridad(){
+    await this.datosInicialesService.getListEscolaridadVal().subscribe(
+      res=>{
+        this.listaValoresEscolaridad = res;
+        this.datosInicialesService.listaValoresEscolaridad = this.listaValoresEscolaridad;
+        console.log(this.listaValoresEscolaridad);
+        
+
+      },
+      err =>{
+        console.log(err);
+        
+      }
+    )
+  }
+
+  async GetListDocsIniciales(){
+    await this.datosDocumentosService.getListaDocsIniciales().subscribe(
+      res=>{
+        this.listaDocumentosIni = res;
+        
+        console.log(this.listaDocumentosIni);
+        
+
+      },
+      err =>{
+        console.log(err);
+        
+      }
+    )
+  }
+
   async getDatosEscolares(IdEnlace: any){
     await this.datosEscolaresService.GetDatosEscolares(IdEnlace).subscribe(
       res =>{
@@ -526,8 +585,10 @@ export class RegistroNewDataComponent implements OnInit {
 
 
     await this.datosDocumentosService.addDocumento(this.newRegisDocumentos).subscribe(
+      
       res=>{
         alert("Datos registrados exitosamente");
+        this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
         ///this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
       },
       err=>{
@@ -539,27 +600,86 @@ export class RegistroNewDataComponent implements OnInit {
   }
 
 
+  async getDocumentosByIdEnlace(IdEnlace: any){
+    var listalenght: any;
+    await this.datosDocumentosService.getListaDocsByIdEnlace(IdEnlace).subscribe(
+      res=>{
+        this.listaDocsInsertadosByIdEnlace = res;
+        
+        listalenght = Object.keys(this.listaDocsInsertadosByIdEnlace).length;
+
+        if(listalenght === 0){
+          this.newRegisDocumentos.CONSECUTIVO = 1;
+          console.log('concen true', this.newRegisDocumentos.CONSECUTIVO);
+
+        }else{
+          this.newRegisDocumentos.CONSECUTIVO = this.listaDocsInsertadosByIdEnlace[0].CONSECUTIVO +++ 1;
+          console.log('concen else', this.newRegisDocumentos.CONSECUTIVO);
+        }
+        
+        
+        
+       // console.log(this.listaDocsInsertadosByIdEnlace);
+      }
+    )
+  }
+
+
   capturarArchivo(event: any ){
+
     const archivo = event.target.files[0];
-    
-    this.extraerBase64(archivo).then((img: any) =>{
-      //this.previzualizacionDoc = img.base;
+
+  /*  const tipo = archivo.type;
+    if(tipo === 'image/jpeg' || tipo=== 'image/png'){
+
+      reader.onload= ()=>{
+        var result = String(reader.result);
+        //result = result.replace("data:image/png;base64,","");
+       // result = result.replace("data:image/jpeg;base64,","");
+        this.previzualizacionDoc = result;
+        console.log('prevvvvv');
+      
+        console.log(this.previzualizacionDoc);
+      }
+      reader.readAsDataURL(archivo);
+      console.log('prevvvvv');
+      
+      console.log(this.previzualizacionDoc);
+      
+    }else{
+
+    }*/
+
+//-----------------------------
    
-     this.previzualizacionDoc = event.target.files[0];
-      //this.newRegisDocumentos.DOCUMENTO=img.base;
+    this.extraerBase64(archivo).then((img: any) =>{
+      this.previzualizacionDoc = img.base;
+     // this.pdfSrc = img.base;
+      //console.log(this.pdfSrc);
+      
+      console.log('previzuliazacion');
+      this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/png;base64,","");
+      this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/jpeg;base64,","");
+      //this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.slice(22);
+      
       console.log(this.previzualizacionDoc);
     
     });
-   
-   // this.archivoCapturado = event.target.files[0].blob;
-    //this.archivoCapturado.push(event.target.files[0]);
-    //this.newRegisDocumentos.DOCUMENTO = this.archivoCapturado;
-    //console.log('target');
-    
-    //console.log(this.archivoCapturado);
   }
+
   click2(){
-    console.log(this.previzualizacionDoc.DOCUMENTO.data);
+
+   /* this.cortarStringBase64 = this.previzualizacionDoc.slice(23);
+    console.log('cortada');
+    
+    console.log(this.cortarStringBase64);
+    this.newRegisDocumentos.DOCUMENTO = this.cortarStringBase64;*/
+
+    
+
+    
+
+   /* console.log(this.previzualizacionDoc.DOCUMENTO.data);
     
     
     this.extraerBase64(this.previzualizacionDoc.DOCUMENTO.data).then((img: any) =>{
@@ -567,7 +687,7 @@ export class RegistroNewDataComponent implements OnInit {
       //this.newRegisDocumentos.DOCUMENTO=img.base;
      
     });
-    console.log('prevClick2:',this.salida);
+    console.log('prevClick2:',this.salida);*/
     //this.getImagen();
     //this.base64ToArrayFile(this.previzualizacionDoc);
   }
@@ -578,10 +698,11 @@ export class RegistroNewDataComponent implements OnInit {
       const unsafeImg = window.URL.createObjectURL($event);
       const image = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
       const reader = new FileReader();
-     
+  
 
       reader.readAsDataURL($event);
       reader.onload = () =>{
+        
         resolve({
           
           base:reader.result
@@ -616,7 +737,7 @@ async clickk(){
  // this.base64ToArrayBuffer(this.previzualizacionDoc);
  // console.log('click');
 
- // await this.handleUpload(this.previzualizacionDoc);
+  //await this.handleUpload(this.previzualizacionDoc);
   
   //this.buf2hex(this.previzualizacionDoc);
   
@@ -627,8 +748,10 @@ async clickk(){
  //this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc;
   ///console.log(this.newRegisDocumentos);
 
- ///--------------------------------
+ ///--------------------------------LE QUITE EÑ [0]
  this.bufferToBase64ImageSource(this.xd[0].DOCUMENTO.data);
+ //console.log(this.newRegisDocumentos);
+ 
  
   
 }
@@ -637,22 +760,52 @@ async clickk(){
 
 
 //CONVERTIR A BASE 64 LOS ARRAY TRAIDOS DE LA BD
+//LA VAR DATOS ES PARA LAS IMAGENES QE YO INSERTÉ EN BASE64 LA VAR QUITA1ER
+//LE QUITA A DATOS EL 1ER ELEMENTO "  Y YA QEDA LA BASE 64 LISTA
+//A LAS IMAGENES QE YO NO INSERTÉ SE LE PASA LA VARIABLE BASE64STRING
 bufferToBase64ImageSource(buffer: any) {
-
+  var Datos ='';
+  var Bytes = 0;
   const base64String = btoa(new Uint8Array(buffer).reduce((data, byte)=> {
-   // console.log(data + String.fromCharCode(byte));
+   Datos = data;
+   Bytes = byte;
+   
     
     return data + String.fromCharCode(byte);
   }, ''));
+  
+
+  /*const base64String = btoa(new Uint8Array(buffer).reduce((data, byte)=> {
+   // console.log(data + String.fromCharCode(byte));
+   
+    
+    return data + String.fromCharCode(byte);
+  }, ''));*/
+
 
   console.log('data:image/jpg;base64, ');
-  this.previzualizacionDoc = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + base64String);
+  console.log(Datos);
+  var quita1er = Datos.slice(1);
+  console.log('bytes', Bytes);
+  
+
+  console.log('quitar', quita1er);
+  
+  //AQUI SE LE PASA BASE64STRING EN VEZ DE QUITA1ER SE PUEDE PONER UN IF 
+  this.previzualizacionDoc = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + quita1er);
+  console.log('buffertobase');
+  
   console.log(this.previzualizacionDoc);
   
   
 
   return this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + base64String);
+
 }
+
+
+
+
 
 //----------------------------------------
 //SI CONVIERTE PERO NO SE PUEDE INSERTAR QE EL VALOR ES INVALIDO BUFFER INVALIDO
@@ -665,8 +818,8 @@ async handleUpload(e:any){
   
 
   const buffer = await image.arrayBuffer();
-  const byteArray = new Uint8ClampedArray(buffer);
-  //const byteArray = new Int8Array(buffer);
+  //const byteArray = new Uint8ClampedArray(buffer);
+  const byteArray = new Int8Array(buffer);
   console.log('bytearraynew:');
   
   console.log(byteArray.buffer);
@@ -674,6 +827,8 @@ async handleUpload(e:any){
   
   //formik.setFieldValue(name, byteArray);
 }
+
+
 
 //-----
 async otroIntentoConverArray(image:any){
@@ -696,6 +851,8 @@ buf2hex(bufferArray:any) { // buffer is an ArrayBuffer
     new Uint8Array(bufferArray), x => ('00' + x.toString(16)).slice(-2)).join('');
     
 }
+
+
 
 
 

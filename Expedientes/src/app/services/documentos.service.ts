@@ -10,6 +10,14 @@ export class DocumentosService {
   urlGetDocumentos = '';
   urlTraerImg = 'http://localhost:5000/documentos/get'
 
+  urlTraerListaDocumentosIniciales = 'http://localhost:5000/documentos/get-lista-docs-iniciales';
+
+  urlTraerListaDocsInsertadosByIdEnlace = 'http://localhost:5000/documentos/getDocsById/';
+
+  urlEditarDocumentos = 'http://localhost:5000/documentos/put';
+
+  urlTraeListaDocsByCveEmp = 'http://localhost:5000/documentos/getDocsByCveEmp/';
+
   constructor(private http:HttpClient) { }
 
   getImagen(){
@@ -22,6 +30,25 @@ export class DocumentosService {
   }
 
 
+  getListaDocsIniciales(){
+    return this.http.get(this.urlTraerListaDocumentosIniciales);
+  }
+
+  getListaDocsByIdEnlace(IdEnlace: any){
+    return this.http.get(this.urlTraerListaDocsInsertadosByIdEnlace + IdEnlace)
+  }
+
+  getListaDocsByCveEmp(CVE_EMPLEADO: any){
+    return this.http.get(this.urlTraeListaDocsByCveEmp + CVE_EMPLEADO)
+  }
+
+  
+
+
+  editarDocumentos(documentoData: DatosDocumentos){
+    return this.http.put(this.urlEditarDocumentos, documentoData);
+  }
+
 }
 
 
@@ -33,6 +60,7 @@ export interface DatosDocumentos{
   FCH_REGISTRO: Date,
   IdEnlace: Number,
   IdDocumentos:Number,
+  TIPO_INSERCION: String,
 
   NOMBRE: String,
   APE_PATERNO: String,

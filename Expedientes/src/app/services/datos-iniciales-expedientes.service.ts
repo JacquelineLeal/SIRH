@@ -23,6 +23,7 @@ export class DatosInicialesExpedientesService {
    listaEstados: any = [];
    listaMunicipios: any = [];
    listaCiudades: any = [];
+   listaValoresEscolaridad: any = [];
 
   //OBJETO PARA ALMACENAR LOS VALORES DE LOS INPUTS DEL COMPONENTE DE REGISTRO FORM TO REGISTRO PERSONA
    ValoresInputsRegistroDataPD:any = {};
@@ -61,7 +62,7 @@ export class DatosInicialesExpedientesService {
 
     CVE_EMPLEADO:'00000',
     TABLAS:'1000000000000000000000000',
-   
+  
     FCH_UAC: this.date,
 
 
@@ -77,7 +78,7 @@ export class DatosInicialesExpedientesService {
 
     NO_EXTERIOR:'',
     NO_INTERIOR:'',
-    COLONIA:'',
+    COLONIA:'', 
     CODIGO_POSTAL:'',
     ENTIDAD :'',
     MUNICIPIO:'',
@@ -91,7 +92,9 @@ export class DatosInicialesExpedientesService {
     TIENE_DISCAPACIDAD:'',
     NOM_DISCAPACIDAD:'',
     ES_AGENTEMP_PERITO:'',
-    IdEnlace: ''
+    IdEnlace: '',
+    IdDomicilio: '',
+    IdComplement: ''
 
 
   /*  ESCOLARIDAD:'',
@@ -163,7 +166,9 @@ export class DatosInicialesExpedientesService {
     TIENE_DISCAPACIDAD:'',
     NOM_DISCAPACIDAD:'',
     ES_AGENTEMP_PERITO:'',
-    IdEnlace: ''
+    IdEnlace: '',
+    IdDomicilio: '',
+    IdComplement: ''
 
 
   }
@@ -171,7 +176,7 @@ export class DatosInicialesExpedientesService {
   updateDatos: DatosUpdate = {
 
     Id: '',
-    IdDomicilio: '',
+   
     IdEstudios:  '',
     FECHA_REGISTRO_DATA_PERSONAL: this.date,
     ESTATUS : '',
@@ -216,7 +221,9 @@ export class DatosInicialesExpedientesService {
     CODIGO_POSTAL:'',
     ENTIDAD :'',
     MUNICIPIO:'',
-    CIUDAD:''
+    CIUDAD:'',
+    IdDomicilio: '',
+    IdComplement: ''
 
 
   }
@@ -246,6 +253,8 @@ export class DatosInicialesExpedientesService {
 
   urlGetCiudades ='http://localhost:5000/datos-inputs/get/ciudades';
 
+  urlGetListaEscolaridadValInputs = 'http://localhost:5000/datos-inputs/get/lista-escolaridades';
+
   urlBuscarByCve = 'http://localhost:5000/edit/search-by-cve';
 
   urlBuscarByNombre = 'http://localhost:5000/edit/search-by-name';
@@ -254,7 +263,9 @@ export class DatosInicialesExpedientesService {
 
   urlBuscarByCompleteName = 'http://localhost:5000/edit/search-by-name-complete';
 
-
+  urlGetDatosPersonalesEdit = 'http://localhost:5000/edit/get-data-personal-edit/';
+  urlGetDatosDomEdit = 'http://localhost:5000/edit/get-data-dom-edit/';
+  urlGetDatosComplementariosEdit = 'http://localhost:5000/edit/get-data-complementarios-edit/';
 
 
 
@@ -333,6 +344,24 @@ export class DatosInicialesExpedientesService {
     return this.http.get(this.urlGetCiudades);
   }
 
+  getListEscolaridadVal(){ 
+    return this.http.get(this.urlGetListaEscolaridadValInputs);
+  }
+
+
+  //--------------------------------------------------------------
+  GetDatosPersonEditar(CVE_EMPLEADO: any){
+    return this.http.get(this.urlGetDatosPersonalesEdit + CVE_EMPLEADO)
+  }
+
+  GetDatosDomEditar(CVE_EMPLEADO: any){
+    return this.http.get(this.urlGetDatosDomEdit + CVE_EMPLEADO)
+  }
+
+  GetDatosComplementariosEditar(CVE_EMPLEADO: any){
+    return this.http.get(this.urlGetDatosComplementariosEdit + CVE_EMPLEADO)
+  }
+
 
 
 }
@@ -345,7 +374,7 @@ export interface IdsParaEditarDataPD {
 
 export interface DatosUpdate{
   Id: String;
-  IdDomicilio: String;
+  
   IdEstudios: String;
 
   FECHA_REGISTRO_DATA_PERSONAL : Date;
@@ -391,7 +420,9 @@ export interface DatosUpdate{
   CODIGO_POSTAL: String;
   ENTIDAD: String;
   MUNICIPIO: String;
-  CIUDAD: String
+  CIUDAD: String,
+  IdDomicilio: String;
+  IdComplement: String
 }
 
 
@@ -453,6 +484,8 @@ export interface Datos{
 	NOM_DISCAPACIDAD: String;
 	ES_AGENTEMP_PERITO: String;
 	IdEnlace: String;
+  IdDomicilio: String;
+  IdComplement: String
 }
 
 
