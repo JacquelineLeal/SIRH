@@ -322,6 +322,28 @@ export class RegistroNewDataComponent implements OnInit {
     
     
  }
+ limpiarInputsRegisInfoEsc(){
+   this.newRegistrarDatosEscolares.ESCOLARIDAD = '';
+   this.newRegistrarDatosEscolares.ESCUELA = '';
+   this.newRegistrarDatosEscolares.ESPECIALIDAD = '';
+   this.newRegistrarDatosEscolares.CEDULA = '';
+   this.newRegistrarDatosEscolares.TRATAMIENTO = '';
+   this.newRegistrarDatosEscolares.FCH_INICIO = '';
+   this.newRegistrarDatosEscolares.FCH_TERMINO = '';
+
+ }
+
+ limpiarInputsIdiomas(){
+   this.newRegistrarIdiomas.IDIOMA = '';
+   this.newRegistrarIdiomas.LECTURA = '';
+   this.newRegistrarIdiomas.ESCRITURA = '';
+   this.newRegistrarIdiomas.CONVERSACION = '';
+ }
+
+ limpiarInputsDocs(){
+   this.newRegisDocumentos.TIPO = 0;
+   this.newRegisDocumentos.DOCUMENTO = '';
+ }
 
   async PostNombresDatosPerDomCom(){
     await this.datosPDC.agregarNombreDP(this.arrayForInsertDatosPer).subscribe(
