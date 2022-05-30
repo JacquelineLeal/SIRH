@@ -87,8 +87,9 @@
 
     </div>
 
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-info" (click)=" clickBtnGuardarInfoModalRegisIP(); limpiarInputsRegistroIPDC(); modal.close()">Guardar Información</button>
+    <div class="modal-footer">                              <!--clickBtnGuardarInfoModalRegisIP(); limpiarInputsRegistroIPDC()-->   
+
+        <button type="submit" class="btn btn-info" (click)="validarInputsRegistroDP_DOM_COM(); modal.close()">Guardar Información</button>
         <button type="submit" class="btn btn-danger" (click)="limpiarInputsRegistroIPDC(); modal.close()">Cancelar</button>
     </div>
 
@@ -169,8 +170,8 @@
             </div>
             <div class="row">
                 <div class="col-3">
-                    <br>
-                    <button class="btn btn-primary" (click)="postInfoEscolar()">Agregar</button>
+                    <br>                                    <!--postInfoEscolar()-->
+                    <button class="btn btn-primary" (click)="validacionInfoEscolar()">Agregar</button>
                 </div>
                 
             </div>
@@ -241,7 +242,7 @@
             </div> 
         </form>
         <br>
-        <button class="btn btn-success" (click)="postDatosIdiomas()">Agregar</button>
+        <button class="btn btn-success" (click)="validacionInfoIdiomas()">Agregar</button>
         <br>
         <br>
 
@@ -297,7 +298,7 @@
                 <div class="col-3">
                     <label for="">Tipo de documento:</label>
                     <select id="" class="form-control" name="TIPO" [(ngModel)]="newRegisDocumentos.TIPO">
-                        <option selected disabled>Seleccione...</option>
+                        <option selected disabled value="0">Seleccione...</option>
                         <option *ngFor = "let documento of listaDocumentosIni" value={{documento.tipo}}> {{documento.desc_doc}}</option>
                     </select>
                 </div>
@@ -307,7 +308,7 @@
                 </div>
             </div>
         </form>
-        <button type="submit" class="btn btn-info" (click)="postDatosDocumentos()">Insertar DATOS</button><br><br>
+        <button type="submit" class="btn btn-info" (click)="validacionInsertarDocumentos()">Insertar DATOS</button><br><br>
         <!-- <button type="submit" class="btn btn-info" (click)="click2()">CONVERT ckic2 </button><br> -->
         <!--<button type="submit" class="btn btn-info" (click)="clickk()">Insertar IMAGEN get</button> -->
         <hr><br><br>

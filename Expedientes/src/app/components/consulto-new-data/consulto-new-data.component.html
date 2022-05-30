@@ -47,7 +47,7 @@
         <td>{{nombre.NOMBRE}}</td>
         <td>{{nombre.APE_PATERNO}}</td>
         <td>{{nombre.APE_MATERNO}}</td>
-        <td>{{nombre.ESTATUS}}</td>
+        <td>{{nombre.ESTATUS_NAME}}</td>
         <td>                                                                                                                                        <!----abrirModalVerInfoGeneral(verInfoGeneral)-->
             <button type="button" class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Ver Información general" (click)="abrirModalVerInfoGeneral(verInfoGeneral, nombre.CVE_EMPLEADO)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
@@ -238,7 +238,7 @@
   </div>
 
   <div class="modal-footer">
-      <button type="submit" class="btn btn-info" (click)="crearDescargarPDfInfoGeneral(); modal.close()">Descargar</button>
+      <button type="submit" class="btn btn-info" (click)="crearDescargarPDfInfoGeneral()">Descargar</button>
       <button type="submit" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
   </div>
 

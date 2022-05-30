@@ -94,7 +94,7 @@ export class DatosInicialesExpedientesService {
     ES_AGENTEMP_PERITO:'',
     IdEnlace: '',
     IdDomicilio: '',
-    IdComplement: ''
+    IdComplemen: ''
 
 
   /*  ESCOLARIDAD:'',
@@ -168,7 +168,7 @@ export class DatosInicialesExpedientesService {
     ES_AGENTEMP_PERITO:'',
     IdEnlace: '',
     IdDomicilio: '',
-    IdComplement: ''
+    IdComplemen: ''
 
 
   }
@@ -223,7 +223,7 @@ export class DatosInicialesExpedientesService {
     MUNICIPIO:'',
     CIUDAD:'',
     IdDomicilio: '',
-    IdComplement: ''
+    IdComplemen: ''
 
 
   }
@@ -242,6 +242,15 @@ export class DatosInicialesExpedientesService {
 //--------------------------------------------------------------------------------------------
 
   urlPostDatosPDomCom = 'http://localhost:5000/all-data/post';
+  urlPostUpdaDP_InsertDom_UpdaCom2 = 'http://localhost:5000/all-data/post-opcion-dos';
+  urlPostUpdaDP_UpdaDom_InsertCom3 = 'http://localhost:5000/all-data/post-opcion-tres';
+
+
+
+
+  urlPutDatosPDomCom = 'http://localhost:5000/all-data/put';
+
+
 
   urlGetEstadoCivil = 'http://localhost:5000/datos-inputs/get/estadoCivil';
 
@@ -320,9 +329,32 @@ export class DatosInicialesExpedientesService {
 
   //----------NUEVAS PETICIONES NEW DESING------------------
 
+
+  //OPCION 1
   addDatosPDomCom(datos:Datos){
     return this.http.post(this.urlPostDatosPDomCom, datos);
   }
+
+  //OPCION 2
+  
+
+  addDatosPDomComOPION2(datos:Datos){
+    return this.http.post(this.urlPostUpdaDP_InsertDom_UpdaCom2, datos);
+  }
+
+  //OPCION 3
+  addDatosPDomComOPCION3(datos:Datos){
+    return this.http.post(this.urlPostUpdaDP_UpdaDom_InsertCom3, datos);
+  }
+
+
+
+  
+  //OPCION 4
+  updateDatosPDomCom(datos:Datos){
+    return this.http.put(this.urlPutDatosPDomCom, datos);
+  }
+
 
   getEstadosCivil(){ 
     return this.http.get(this.urlGetEstadoCivil);
@@ -422,7 +454,7 @@ export interface DatosUpdate{
   MUNICIPIO: String;
   CIUDAD: String,
   IdDomicilio: String;
-  IdComplement: String
+  IdComplemen: String
 }
 
 
@@ -485,7 +517,7 @@ export interface Datos{
 	ES_AGENTEMP_PERITO: String;
 	IdEnlace: String;
   IdDomicilio: String;
-  IdComplement: String
+  IdComplemen: String
 }
 
 

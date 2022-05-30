@@ -19,20 +19,24 @@ export class EditoNewDataComponent implements OnInit {
   today : Date = new Date();
   date : any = this.today.getFullYear() + '-' + (this.today.getMonth() + 1) + '-' +  this.today.getDate();
 
+  ModalEditPersonalReferences: any;
   previzualizacionDoc: any = [];
   listaEscolaridad: any = [];
   listaPersonas: any = [];
   listaIdiomas: any = [];
   listaDocumentosIni: any =[];
-  listaDocsByCveEmp : any = [];
+  listaDocsByCveEmp : any = []; 
   listaValoresEscolaridad: any = [];
   //let datosPersonales: any [];
   datosPersonales: any = [];
   datosDomicilio: any = [];
   datosComplementarios: any = [];
 
+  DocSeleccionado = '';
+
+
   newRegistrarIdiomas: DatosIdiomas = {
-    CVE_EMPLEADO: '00000',
+    CVE_EMPLEADO: '',
     CONSECUTIVO: 0,
     IDIOMA: '',
     LECTURA: '',
@@ -54,7 +58,7 @@ export class EditoNewDataComponent implements OnInit {
     NOMBRE: '',
     APE_PATERNO:'',
     APE_MATERNO:'',
-    CVE_EMPLEADO: '00000',
+    CVE_EMPLEADO: '',
     ESCOLARIDAD:'',
     ESCUELA:'',
     ESPECIALIDAD:'',
@@ -67,7 +71,7 @@ export class EditoNewDataComponent implements OnInit {
   }
 
   newRegisDocumentos: DatosDocumentos={
-    CVE_EMPLEADO: '00000',
+    CVE_EMPLEADO: '',
     CONSECUTIVO: 0,
     TIPO: 0,
     DOCUMENTO: [],
@@ -81,7 +85,7 @@ export class EditoNewDataComponent implements OnInit {
     APE_PATERNO: '',
     APE_MATERNO: ''
   }
-
+ 
   valoresInputBusqueda: DatosBuscarInputs={
     CVE_EMPLEADO: '',
     NOMBRE: '',
@@ -106,6 +110,29 @@ export class EditoNewDataComponent implements OnInit {
 
   }
 
+
+ limpiarInputsRegisInfoEsc(){
+   this.newRegistrarDatosEscolares.ESCOLARIDAD = '';
+   this.newRegistrarDatosEscolares.ESCUELA = '';
+   this.newRegistrarDatosEscolares.ESPECIALIDAD = '';
+   this.newRegistrarDatosEscolares.CEDULA = '';
+   this.newRegistrarDatosEscolares.TRATAMIENTO = '';
+   this.newRegistrarDatosEscolares.FCH_INICIO = '';
+   this.newRegistrarDatosEscolares.FCH_TERMINO = '';
+
+ }
+
+ limpiarInputsIdiomas(){
+   this.newRegistrarIdiomas.IDIOMA = '';
+   this.newRegistrarIdiomas.LECTURA = '';
+   this.newRegistrarIdiomas.ESCRITURA = '';
+   this.newRegistrarIdiomas.CONVERSACION = '';
+ }
+
+ limpiarInputsDocs(){
+   this.newRegisDocumentos.TIPO = 0;
+   this.newRegisDocumentos.DOCUMENTO = '';
+ }
 
   //MODALES DE LA TABLA 
 
@@ -133,28 +160,28 @@ export class EditoNewDataComponent implements OnInit {
         this.datosInicialesService.newRegistrarDatos.TELEFONO = '';
         this.datosInicialesService.newRegistrarDatos.CELULAR = '';
         this.datosInicialesService.newRegistrarDatos.CALLE ='' ;
-        this.datosInicialesService.newRegistrarDatos.ENTRE_CALLE = '';
-        this.datosInicialesService.newRegistrarDatos.Y_CALLE = '';
-        this.datosInicialesService.newRegistrarDatos.NO_EXTERIOR = '';
-        this.datosInicialesService.newRegistrarDatos.NO_INTERIOR = '';
-        this.datosInicialesService.newRegistrarDatos.COLONIA = '';
-        this.datosInicialesService.newRegistrarDatos.CODIGO_POSTAL = '';
-        this.datosInicialesService.newRegistrarDatos.ENTIDAD ='' ;
-        this.datosInicialesService.newRegistrarDatos.MUNICIPIO = '';
-        this.datosInicialesService.newRegistrarDatos.CIUDAD = '';
+        this.datosInicialesService.newRegistrarDatos.ENTRE_CALLE = ' ';
+        this.datosInicialesService.newRegistrarDatos.Y_CALLE = ' ';
+        this.datosInicialesService.newRegistrarDatos.NO_EXTERIOR = ' ';
+        this.datosInicialesService.newRegistrarDatos.NO_INTERIOR = ' ';
+        this.datosInicialesService.newRegistrarDatos.COLONIA = ' ';
+        this.datosInicialesService.newRegistrarDatos.CODIGO_POSTAL = ' ';
+        this.datosInicialesService.newRegistrarDatos.ENTIDAD =' ' ;
+        this.datosInicialesService.newRegistrarDatos.MUNICIPIO = ' ';
+        this.datosInicialesService.newRegistrarDatos.CIUDAD = ' ';
 
-        this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = '';
-        this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = '';
-        this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = '';
-        this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = '';
-        this.datosInicialesService.newRegistrarDatos.ES_PADRE = '';
-        this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = '';
-        this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = '';
+        this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = ' ';
+        this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = ' ';
+        this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = ' ';
+        this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = ' ';
+        this.datosInicialesService.newRegistrarDatos.ES_PADRE = ' ';
+        this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = ' ';
+        this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = ' ';
         
   
   
 
-
+ 
 
    // this.datosInicialesService.newRegistrarDatos = this.datosInicialesService.limpiarInputsRegistro;
     await this.datosInicialesService.GetDatosPersonEditar(CVE_EMPLEADO).subscribe(
@@ -183,7 +210,7 @@ export class EditoNewDataComponent implements OnInit {
         this.datosInicialesService.newRegistrarDatos.NACIONALIDAD = this.datosPersonales[0].NACIONALIDAD;
         this.datosInicialesService.newRegistrarDatos.CVE_EMPLEADO = this.datosPersonales[0].CVE_EMPLEADO;
         this.datosInicialesService.newRegistrarDatos.TABLAS = this.datosPersonales[0].TABLAS;
-        this.datosInicialesService.newRegistrarDatos.FCH_UAC = this.datosPersonales[0].NOMBRE;
+        this.datosInicialesService.newRegistrarDatos.FCH_UAC = this.datosPersonales[0].FCH_UAC;
         this.datosInicialesService.newRegistrarDatos.OBSERVACIONES = this.datosPersonales[0].OBSERVACIONES;
         
 
@@ -194,6 +221,8 @@ export class EditoNewDataComponent implements OnInit {
             this.datosDomicilio = resDom;
             var datosDomicilioLength = Object.keys(this.datosDomicilio).length;
             if(datosDomicilioLength == 0){
+              
+
               console.log('true',datosDomicilioLength);
               this.datosInicialesService.GetDatosComplementariosEditar(CVE_EMPLEADO).subscribe(
                 resCom =>{
@@ -203,9 +232,12 @@ export class EditoNewDataComponent implements OnInit {
 
 
                   if(datosComplemenLength == 0){
+                  
+
+
                     this.modal.open(editInfoPersonal,{size:'xl'}); 
                   }else{
-                    this.datosInicialesService.newRegistrarDatos.IdComplement = this.datosComplementarios[0].IdComplement;
+                    this.datosInicialesService.newRegistrarDatos.IdComplemen = this.datosComplementarios[0].IdComplemen;
                     this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = this.datosComplementarios[0].PERTENECE_ETNIA;
                     this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = this.datosComplementarios[0].NOM_ETNIA;
                     this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = this.datosComplementarios[0].HABLA_LEN_INDIGENA;
@@ -216,7 +248,7 @@ export class EditoNewDataComponent implements OnInit {
                     this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = this.datosComplementarios[0].ES_AGENTEMP_PERITO;
                     this.datosInicialesService.newRegistrarDatos.IdEnlace = this.datosComplementarios[0].IdEnlace;
                   
-                    this.modal.open(editInfoPersonal,{size:'xl'}); 
+                   this.modal.open(editInfoPersonal,{size:'xl'}); 
 
                   }
                   
@@ -255,7 +287,7 @@ export class EditoNewDataComponent implements OnInit {
                   if(datosComplemenLength == 0){
                     this.modal.open(editInfoPersonal,{size:'xl'}); 
                   }else{
-                    this.datosInicialesService.newRegistrarDatos.IdComplement = this.datosComplementarios[0].IdComplement;
+                    this.datosInicialesService.newRegistrarDatos.IdComplemen = this.datosComplementarios[0].IdComplemen;
                     this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = this.datosComplementarios[0].PERTENECE_ETNIA;
                     this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = this.datosComplementarios[0].NOM_ETNIA;
                     this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = this.datosComplementarios[0].HABLA_LEN_INDIGENA;
@@ -264,7 +296,7 @@ export class EditoNewDataComponent implements OnInit {
                     this.datosInicialesService.newRegistrarDatos.TIENE_DISCAPACIDAD = this.datosComplementarios[0].TIENE_DISCAPACIDAD;
                     this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = this.datosComplementarios[0].NOM_DISCAPACIDAD;
                     this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = this.datosComplementarios[0].ES_AGENTEMP_PERITO;
-                    this.datosInicialesService.newRegistrarDatos.IdEnlace = this.datosComplementarios[0].IdEnlace;
+                    this.datosInicialesService.newRegistrarDatos.IdEnlace = this.datosPersonales[0].Id;
                   
                     this.modal.open(editInfoPersonal,{size:'xl'}); 
 
@@ -349,7 +381,7 @@ export class EditoNewDataComponent implements OnInit {
 
   }
 
- async abrirModalEditDocs(btnEditarDocs: any, documento: any){
+  async abrirModalEditDocs(btnEditarDocs: any, documento: any){
    // this.previzualizacionDoc ='';
    // this.newRegisDocumentos.DOCUMENTO='';
    // this.newRegisDocumentos.TIPO = 0;
@@ -423,6 +455,11 @@ export class EditoNewDataComponent implements OnInit {
     await this.datosInicialesService.getListaNomSearchByCve(this.valoresInputBusqueda).subscribe(
       res=>{
         this.listaPersonas = res;
+        if(this.listaPersonas[0].ESTATUS === 'A'){
+          console.log('soy a', this.listaPersonas[0].ESTATUS);
+          
+
+        }
         console.log(this.listaPersonas);
         
       },
@@ -503,13 +540,49 @@ export class EditoNewDataComponent implements OnInit {
     await this.datosEscolaresService.editarDatosEscolares(this.newRegistrarDatosEscolares).subscribe(
        res=>{
          alert("Se han guardado los cambios");
+         this.limpiarInputsRegisInfoEsc();
          this.getListaEscolaridades(this.newRegistrarDatosEscolares.CVE_EMPLEADO);
+         //this.modal.close(result: any,);
         // this.getInfoEscolar();
        },
        err => console.log(err)
        
      );
    }
+
+   async validacionInfoEscolar(){
+    var DE = this.newRegistrarDatosEscolares;
+    console.log('ESCO',DE.ESCOLARIDAD);
+
+    if(DE.ESCOLARIDAD != '' && DE.ESCUELA != '' && DE.ESPECIALIDAD != '' && DE.CEDULA != '' && DE.TRATAMIENTO != '' && DE.FCH_INICIO != '' && DE.FCH_TERMINO != ''){
+      //TODOS LLENOS
+      console.log('todos con datos post');
+      this.putInfoEscolar();
+
+    }else{
+      if(DE.ESCOLARIDAD != '' && DE.ESCUELA != '' && DE.ESPECIALIDAD != ''  && DE.TRATAMIENTO != '' && DE.FCH_INICIO != '' && DE.FCH_TERMINO != '' && DE.CEDULA == ''){
+        //cedula vacio
+        console.log('post con cedula vaciod post vacio');
+        this.putInfoEscolar();
+        
+        
+      }else{
+        if(DE.ESCOLARIDAD == '' || DE.ESCUELA == '' || DE.ESPECIALIDAD == '' || DE.TRATAMIENTO == '' || DE.FCH_INICIO == '' || DE.FCH_TERMINO == ''){
+          //cualqiera vacio
+          console.log('alguno vacio');
+          alert('Favor de llenar todos los campos requeridos');
+        }
+      }
+
+    }
+    
+
+    
+
+
+
+  }
+
 
 
   //--------------------------------
@@ -519,7 +592,7 @@ export class EditoNewDataComponent implements OnInit {
        
         this.datosPersonales = res;
         this.datosInicialesService.newRegistrarDatos.NOMBRE = this.datosPersonales.NOMBRE;
-        console.log(this.datosPersonales);
+        console.log('DATOSPERSO',this.datosPersonales);
         
       },
       err=>{
@@ -537,6 +610,7 @@ export class EditoNewDataComponent implements OnInit {
       res=>{
        
         this.listaEscolaridad = res;
+        //this.listaEscolaridad[0].FCH_INICIO = this.listaEscolaridad[0].FCH_INICIO.slice(0,10);
         
         console.log(this.listaEscolaridad);
         
@@ -588,11 +662,190 @@ export class EditoNewDataComponent implements OnInit {
   }
 
 
+  //-------------------------------
+  async putInfoPersonalDomComData(){
+    
+    await this.datosInicialesService.updateDatosPDomCom(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+       res=>{
+         alert("Se han guardado los cambios");
+         console.log(this.datosInicialesService.ValoresInputsRegistroDataPD);
+         this.modal.dismissAll();         
+         //this.getListaIdiomas(this.newRegistrarIdiomas.CVE_EMPLEADO);
+        // this.getInfoEscolar();
+       },
+       err => console.log(err)
+       
+     );
+  }
+
+  async validarInputsRegistroDP_DOM_COM(){
+    var DI = this.datosInicialesService.ValoresInputsRegistroDataPD;
+    console.log('NAMEEEE',DI.NOMBRE);
+    console.log('DI', DI);
+    
+
+    if((DI.NOMBRE != null)
+    && (DI.APE_PATERNO != null )
+    && (DI.APE_MATERNO != null)
+    && (DI.SEXO != null )
+    && (DI.FECHA_NAC != null) 
+      && (DI.EST_CIVIL != null) 
+      && (DI.CVE_RFC != null)
+      && (DI.CURP != null)
+      && (DI.CVE_ELECTOR != null) 
+      && (DI.LICENCIA != null)
+      && (DI.PASAPORTE != null) 
+      && (DI.CARTILLA != null )
+      && (DI.PAIS_NAC != null) 
+      && (DI.EDO_NAC != null)
+      && (DI.MUN_NAC != null)
+      && (DI.NACIONALIDAD != null)
+      
+      && (DI.EMAIL != null) 
+      && (DI.TELEFONO != null) 
+      && (DI.CELULAR != null)  
+      && (DI.CALLE != null)
+      && (DI.ENTRE_CALLE != null)
+      && (DI.Y_CALLE != null)
+      && (DI.NO_EXTERIOR != null) 
+      && (DI.NO_INTERIOR != null)
+      && (DI.COLONIA != null)
+      && (DI.CODIGO_POSTAL != null) 
+      && (DI.ENTIDAD != null) 
+      && (DI.MUNICIPIO != null)  
+      && (DI.CIUDAD != null)
+
+      && (DI.PERTENECE_ETNIA != null)  
+      && (DI.NOM_ETNIA != null) 
+      && (DI.HABLA_LEN_INDIGENA != null) 
+      && (DI.LENGUA_INDIGENA != null) 
+      && (DI.ES_PADRE != null)
+      && (DI.TIENE_DISCAPACIDAD != null)
+      && (DI.NOM_DISCAPACIDAD != null )
+      && (DI.ES_AGENTEMP_PERITO != null)
+    ){
+      //SO QUE 
+      console.log('todos los inputs llenos, peticion post');
+      await this.putInfoPersonalDomComData();
+      
+    }else{
+
+      if((DI.NOMBRE != null )
+      && (DI.APE_PATERNO != null) 
+      && (DI.APE_MATERNO != null) 
+      && (DI.SEXO != null )
+      && (DI.FECHA_NAC != null)
+      && (DI.EST_CIVIL != null)
+      && (DI.CVE_RFC != null)
+      && (DI.CURP != null) 
+      && (DI.PAIS_NAC != null )
+      && (DI.EDO_NAC != null)  
+      && (DI.NACIONALIDAD != null)
+      
+      && (DI.EMAIL != null)
+      && (DI.TELEFONO != null)
+      && (DI.CELULAR != null )
+      && (DI.CALLE != null)
+      && (DI.ENTRE_CALLE != null)
+      && (DI.Y_CALLE != null) 
+      && (DI.NO_EXTERIOR != null )
+      && (DI.NO_INTERIOR != null) 
+      && (DI.COLONIA != null )
+      && (DI.CODIGO_POSTAL != null) 
+      && ( DI.ENTIDAD != null)
+      && (DI.MUNICIPIO != null)  
+      && (DI.CIUDAD != null)
+
+      && (DI.PERTENECE_ETNIA != null)    
+      && (DI.HABLA_LEN_INDIGENA != null)  
+      && (DI.ES_PADRE != null)
+      && (DI.TIENE_DISCAPACIDAD != null)  
+      && (DI.ES_AGENTEMP_PERITO != null) 
+      
+      && 
+      ((DI.CVE_ELECTOR == null)
+      || (DI.LICENCIA == null) 
+      || (DI.PASAPORTE == null) 
+      || (DI.CARTILLA == null)
+      || (DI.MUN_NAC == null)
+      || (DI.NOM_ETNIA == null) 
+      || (DI.LENGUA_INDIGENA == null)
+      || (DI.NOM_DISCAPACIDAD == null))
+      
+      ){
+
+        //here
+        console.log('make post with los nulos');
+       await this.putInfoPersonalDomComData();
+      
+        
+
+      }else{
+        console.log('entre al elseeeeee');
+        
+        //si cualquiera esta vacio
+        //UNICOS CAMPOS QUE SE PUEDEN GUARDAR NULL SON
+        //CVE_ELECTOR, LICENCIA,PASAPORTE,CARTILLA,MUN_NAC, NOMBRE_ETNIA, NOMBRE_LENGUA_INDIGENA, NOM_DISCAPACIDAD
+        if(DI.NOMBRE == null 
+        || DI.APE_PATERNO == null 
+        || DI.APE_MATERNO == null 
+        || DI.SEXO == null  
+        || DI.FECHA_NAC == null 
+        || DI.EST_CIVIL == null 
+        || DI.CVE_RFC == null 
+        || DI.CURP == null 
+        || DI.PAIS_NAC == null 
+        || DI.EDO_NAC == null  
+        || DI.NACIONALIDAD == null
+        
+        || DI.EMAIL == null 
+        || DI.TELEFONO == null 
+        || DI.CELULAR == null  
+        || DI.CALLE == null 
+        || DI.ENTRE_CALLE == null 
+        || DI.Y_CALLE == null 
+        || DI.NO_EXTERIOR == null 
+        || DI.NO_INTERIOR == null 
+        || DI.COLONIA == null 
+        || DI.CODIGO_POSTAL == null
+        || DI.ENTIDAD == null 
+        || DI.MUNICIPIO == null  
+        || DI.CIUDAD == null
+
+        || DI.PERTENECE_ETNIA == null    
+        || DI.HABLA_LEN_INDIGENA == null  
+        || DI.ES_PADRE == null
+        || DI.TIENE_DISCAPACIDAD == null  
+        || DI.ES_AGENTEMP_PERITO == null ){
+
+          //cualquiera vacio
+        console.log('alguno vacio');
+        console.log(DI);
+        alert('Favor de llenar todos los campos requeridos');
+
+
+        }
+
+      }
+      
+      
+      
+      
+
+    }
+    
+  }
+
+
+  //------------------------------
+
+
   async putInfoIdiomas(){
     
     await this.datosIdiomasService.updateIdiomas(this.newRegistrarIdiomas).subscribe(
        res=>{
          alert("Se han guardado los cambios");
+         this.limpiarInputsIdiomas();
          this.getListaIdiomas(this.newRegistrarIdiomas.CVE_EMPLEADO);
         // this.getInfoEscolar();
        },
@@ -600,6 +853,23 @@ export class EditoNewDataComponent implements OnInit {
        
      );
   }
+
+
+  async validacionInfoIdiomas(){
+    var DI = this.newRegistrarIdiomas;
+    if(DI.IDIOMA != '' && DI.LECTURA != '' && DI.ESCRITURA != '' && DI.CONVERSACION != ''){
+      console.log('todos los inputs llenos');
+      this.putInfoIdiomas();
+      
+
+    }else{
+      console.log('alguno vacio');
+      
+      alert('Favor de llenar todos los campos requeridos');
+    }
+
+  }
+
 
   async GetListDocsIniciales(){
     await this.datosDocumentosService.getListaDocsIniciales().subscribe(
@@ -623,6 +893,7 @@ export class EditoNewDataComponent implements OnInit {
     await this.datosDocumentosService.editarDocumentos(this.newRegisDocumentos).subscribe(
        res=>{
          alert("Se han guardado los cambios");
+         this.limpiarInputsDocs();
          console.log(this.newRegisDocumentos);
          
          //this.get(this.newRegistrarDatosEscolares.CVE_EMPLEADO);
@@ -636,6 +907,30 @@ export class EditoNewDataComponent implements OnInit {
      );
    }
 
+   validacionInsertarDocumentos(){
+    if(this.newRegisDocumentos.TIPO != 0 &&  this.DocSeleccionado != ''){
+      console.log('con valores');
+      this.putDocumentos();
+      
+
+    }else{
+      if(this.newRegisDocumentos.TIPO == 0 &&  this.DocSeleccionado != ''){
+        alert('Favor de especificar el tipo de documento');
+
+      }
+
+      if(this.newRegisDocumentos.TIPO != 0 && this.DocSeleccionado == ''){
+        alert('Aún no ha seleccionado un archivo');
+
+      }
+
+      if(this.newRegisDocumentos.TIPO == 0 && this.DocSeleccionado == ''){
+        alert('Favor de llenar todos los datos requiridos');
+      }
+
+    }
+  }
+
 
   capturarArchivo(event: any ){
 
@@ -645,7 +940,7 @@ export class EditoNewDataComponent implements OnInit {
    
     this.extraerBase64(archivo).then((img: any) =>{
     this.previzualizacionDoc = img.base;
-     
+    this.DocSeleccionado = img.base;
       
       console.log('previzuliazacion');
       this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/png;base64,","");

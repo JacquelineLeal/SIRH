@@ -47,7 +47,7 @@
             <td>{{nombre.NOMBRE}}</td>
             <td>{{nombre.APE_PATERNO}}</td>
             <td>{{nombre.APE_MATERNO}}</td>
-            <td>{{nombre.ESTATUS}}</td>
+            <td>{{nombre.ESTATUS_NAME}}</td>
             <td>
                 <button type="button" class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Información personal" (click)="abrirModalEditInfoPersonal(editInfoPersonal, nombre.CVE_EMPLEADO)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-person-fill" viewBox="0 0 16 16">
@@ -90,8 +90,8 @@
 
     </div>
 
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-info" (click)="modal.close()">Guardar Información</button>
+    <div class="modal-footer">                                              <!--; modal.close()-->
+        <button type="submit" class="btn btn-info" (click)="validarInputsRegistroDP_DOM_COM()">Guardar Información</button>
         <button type="submit" class="btn btn-danger" (click)="modal.close()">Cancelar</button>
     </div>
 
@@ -255,7 +255,7 @@
                 <div class="form-group col-3">
                     <label class="form-label" for="ESCOLARIDAD">Escolaridad:</label>
                     <select id="" class="form-control" name="ESCOLARIDAD" [(ngModel)]="newRegistrarDatosEscolares.ESCOLARIDAD" >
-                        <option selected disabled>Seleccione...</option>
+                        <option selected disabled >Seleccione...</option>
                         <option *ngFor = "let esc of listaValoresEscolaridad" value={{esc.CVE_EST}}> {{esc.ESTUDIO}}</option>
                     </select>
                            
@@ -316,7 +316,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-info" (click)="putInfoEscolar(); modal.close()">Actualizar</button>
+        <button type="submit" class="btn btn-info" (click)="validacionInfoEscolar(); modal.close()">Actualizar</button>
         <button type="submit" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
     </div>
 
@@ -361,7 +361,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-info" (click)="putInfoIdiomas()">Actualizar</button>
+        <button type="submit" class="btn btn-info" (click)="validacionInfoIdiomas()">Actualizar</button>
         <button type="submit" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
     </div>
 
@@ -370,7 +370,7 @@
 
 <ng-template #btnEditarDocs let-modal>
     <div class="modal-header">
-        <h4 class="modal-title">Idiomas</h4> 
+        <h4 class="modal-title">Documentación</h4> 
     </div>
 
     <div class="modal-body">
@@ -380,9 +380,9 @@
             <div class="row">
                 <div class="col-3">
                     <label for="">Tipo de documento:</label>
-                    <select id="" class="form-control" name="TIPO" [(ngModel)]="newRegisDocumentos.TIPO" readonly>
-                        <option selected disabled>Seleccione...</option>
-                        <option *ngFor = "let documento of listaDocumentosIni" value={{documento.tipo}}> {{documento.desc_doc}}</option>
+                    <select id="" class="form-control" name="TIPO" [(ngModel)]="newRegisDocumentos.TIPO" readonly="newRegisDocumentos.TIPO">
+                        <option selected disabled  value="0">Seleccione...</option>
+                        <option *ngFor = "let documento of listaDocumentosIni" value={{documento.tipo}}  > {{documento.desc_doc}}</option>
                     </select>
                 </div>
                 <div class="col-5">
@@ -415,7 +415,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-info" (click)="putDocumentos(); modal.close()">Actualizar</button>
+        <button type="submit" class="btn btn-info" (click)="validacionInsertarDocumentos(); modal.close()">Actualizar</button>
         <button type="submit" class="btn btn-danger" (click)="modal.close()">Cancelar</button>
     </div>
 

@@ -28,6 +28,12 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
 
   listaDocsByCveEmp : any = [];
 
+
+  datosDomicilio: any = [];
+  datosComplementarios: any = [];
+  datosDomicilioLength: number;
+  datosComplemenLength: number;
+
   listaDocumentosIni: any =[];
   listaEstadoCivil: any = [];
   listaPaisNac: any = [];
@@ -55,7 +61,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     NOMBRE: '',
     APE_PATERNO:'',
     APE_MATERNO:'',
-    CVE_EMPLEADO: '00000',
+    CVE_EMPLEADO: '',
     ESCOLARIDAD:'',
     ESCUELA:'',
     ESPECIALIDAD:'',
@@ -68,7 +74,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
   }
 
   newRegistrarIdiomas: DatosIdiomas = {
-    CVE_EMPLEADO: '00000',
+    CVE_EMPLEADO: '',
     CONSECUTIVO: 0,
     IDIOMA: '',
     LECTURA: '',
@@ -83,7 +89,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
   }
 
   newRegisDocumentos: DatosDocumentos={
-    CVE_EMPLEADO: '00000',
+    CVE_EMPLEADO: '',
     CONSECUTIVO: 0,
     TIPO: 0,
     DOCUMENTO: [],
@@ -121,7 +127,257 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     
   }
 
+
+  limpiarInputsRegisInfoEsc(){
+    this.newRegistrarDatosEscolares.ESCOLARIDAD = '';
+    this.newRegistrarDatosEscolares.ESCUELA = '';
+    this.newRegistrarDatosEscolares.ESPECIALIDAD = '';
+    this.newRegistrarDatosEscolares.CEDULA = '';
+    this.newRegistrarDatosEscolares.TRATAMIENTO = '';
+    this.newRegistrarDatosEscolares.FCH_INICIO = '';
+    this.newRegistrarDatosEscolares.FCH_TERMINO = '';
+ 
+  }
+ 
+  limpiarInputsIdiomas(){
+    this.newRegistrarIdiomas.IDIOMA = '';
+    this.newRegistrarIdiomas.LECTURA = '';
+    this.newRegistrarIdiomas.ESCRITURA = '';
+    this.newRegistrarIdiomas.CONVERSACION = '';
+  }
+ 
+  limpiarInputsDocs(){
+    this.newRegisDocumentos.TIPO = 0;
+    this.newRegisDocumentos.DOCUMENTO = '';
+  }
+
+
   async abrirModalInfoPersonal(regisInfoPersonal: any, CVE_EMPLEADO: any){
+  
+        this.datosInicialesService.newRegistrarDatos.NOMBRE = '';
+        this.datosInicialesService.newRegistrarDatos.APE_PATERNO = '';
+        this.datosInicialesService.newRegistrarDatos.APE_MATERNO = '';
+        this.datosInicialesService.newRegistrarDatos.SEXO = '';
+      // this.datosInicialesService.newRegistrarDatos.FECHA_NAC = ;
+        this.datosInicialesService.newRegistrarDatos.EST_CIVIL = '';
+        this.datosInicialesService.newRegistrarDatos.CVE_RFC = ''
+        this.datosInicialesService.newRegistrarDatos.CURP = '';
+        this.datosInicialesService.newRegistrarDatos.CVE_ELECTOR = '';
+        this.datosInicialesService.newRegistrarDatos.LICENCIA = '';
+        this.datosInicialesService.newRegistrarDatos.PASAPORTE = '';
+        this.datosInicialesService.newRegistrarDatos.CARTILLA = '';
+        this.datosInicialesService.newRegistrarDatos.PAIS_NAC = 0;
+        this.datosInicialesService.newRegistrarDatos.EDO_NAC = 0;
+        this.datosInicialesService.newRegistrarDatos.MUN_NAC = 0;
+        this.datosInicialesService.newRegistrarDatos.NACIONALIDAD = 0;
+
+        this.datosInicialesService.newRegistrarDatos.EMAIL = '';
+        this.datosInicialesService.newRegistrarDatos.TELEFONO = '';
+        this.datosInicialesService.newRegistrarDatos.CELULAR = '';
+        this.datosInicialesService.newRegistrarDatos.CALLE ='' ;
+        this.datosInicialesService.newRegistrarDatos.ENTRE_CALLE = ' ';
+        this.datosInicialesService.newRegistrarDatos.Y_CALLE = ' ';
+        this.datosInicialesService.newRegistrarDatos.NO_EXTERIOR = ' ';
+        this.datosInicialesService.newRegistrarDatos.NO_INTERIOR = ' ';
+        this.datosInicialesService.newRegistrarDatos.COLONIA = ' ';
+        this.datosInicialesService.newRegistrarDatos.CODIGO_POSTAL = ' ';
+        this.datosInicialesService.newRegistrarDatos.ENTIDAD =' ' ;
+        this.datosInicialesService.newRegistrarDatos.MUNICIPIO = ' ';
+        this.datosInicialesService.newRegistrarDatos.CIUDAD = ' ';
+
+        this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = ' ';
+        this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = ' ';
+        this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = ' ';
+        this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = ' ';
+        this.datosInicialesService.newRegistrarDatos.ES_PADRE = ' ';
+        this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = ' ';
+        this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = ' ';
+
+
+
+      await this.datosPDC.getDatosPersonalesPerExis(CVE_EMPLEADO).subscribe(
+        res=>{
+          this.ListaDatosPersonales = res;
+          this.datosInicialesService.newRegistrarDatos.Id = this.ListaDatosPersonales[0].Id;
+          this.datosInicialesService.newRegistrarDatos.FECHA_REGISTRO_DATA_PERSONAL= this.ListaDatosPersonales[0].FECHA_REGISTRO_DATA_PERSONAL;
+
+          this.datosInicialesService.newRegistrarDatos.ESTATUS= this.ListaDatosPersonales[0].ESTATUS;
+          this.datosInicialesService.newRegistrarDatos.NOMBRE= this.ListaDatosPersonales[0].NOMBRE;
+          this.datosInicialesService.newRegistrarDatos.APE_PATERNO= this.ListaDatosPersonales[0].APE_PATERNO;
+          this.datosInicialesService.newRegistrarDatos.APE_MATERNO= this.ListaDatosPersonales[0].APE_MATERNO;
+
+          this.datosInicialesService.newRegistrarDatos.SEXO= this.ListaDatosPersonales[0].SEXO;
+          this.datosInicialesService.newRegistrarDatos.FECHA_NAC= this.ListaDatosPersonales[0].FECHA_NAC;
+          this.datosInicialesService.newRegistrarDatos.EST_CIVIL= this.ListaDatosPersonales[0].EST_CIVIL;
+
+          this.datosInicialesService.newRegistrarDatos.CVE_RFC= this.ListaDatosPersonales[0].CVE_RFC;
+          this.datosInicialesService.newRegistrarDatos.CURP= this.ListaDatosPersonales[0].CURP;
+          this.datosInicialesService.newRegistrarDatos.CVE_ELECTOR= this.ListaDatosPersonales[0].CVE_ELECTOR;
+          this.datosInicialesService.newRegistrarDatos.LICENCIA= this.ListaDatosPersonales[0].LICENCIA;
+
+          this.datosInicialesService.newRegistrarDatos.PASAPORTE= this.ListaDatosPersonales[0].PASAPORTE;
+          this.datosInicialesService.newRegistrarDatos.CARTILLA= this.ListaDatosPersonales[0].CARTILLA;
+
+          this.datosInicialesService.newRegistrarDatos.PAIS_NAC= this.ListaDatosPersonales[0].PAIS_NAC;
+          this.datosInicialesService.newRegistrarDatos.EDO_NAC= this.ListaDatosPersonales[0].EDO_NAC;
+          this.datosInicialesService.newRegistrarDatos.MUN_NAC= this.ListaDatosPersonales[0].MUN_NAC;
+          this.datosInicialesService.newRegistrarDatos.NACIONALIDAD= this.ListaDatosPersonales[0].NACIONALIDAD;
+
+          this.datosInicialesService.newRegistrarDatos.CVE_EMPLEADO= this.ListaDatosPersonales[0].CVE_EMPLEADO;
+          this.datosInicialesService.newRegistrarDatos.TABLAS= this.ListaDatosPersonales[0].TABLAS;
+          this.datosInicialesService.newRegistrarDatos.FCH_UAC= this.ListaDatosPersonales[0].FCH_UAC;
+
+          this.datosInicialesService.newRegistrarDatos.OBSERVACIONES= this.ListaDatosPersonales[0].OBSERVACIONES;
+          this.datosInicialesService.newRegistrarDatos.INFO_COMPLETA= this.ListaDatosPersonales[0].INFO_COMPLETA;
+
+
+          console.log(this.ListaDatosPersonales);
+
+          this.datosInicialesService.GetDatosDomEditar(CVE_EMPLEADO).subscribe(
+            resDom=>{
+              this.datosDomicilio = resDom;
+              this.datosDomicilioLength = Object.keys(this.datosDomicilio).length;
+
+              if(this.datosDomicilioLength == 0){
+                console.log('true',this.datosDomicilioLength);
+                this.datosInicialesService.GetDatosComplementariosEditar(CVE_EMPLEADO).subscribe(
+                  resCom=>{
+                    this.datosComplementarios = resCom;
+                    this.datosComplemenLength = Object.keys(this.datosComplementarios).length;
+
+                    if(this.datosComplemenLength == 0){
+                      this.modal.open(regisInfoPersonal,{size:'xl'});
+
+
+                    }else{
+                      this.datosInicialesService.newRegistrarDatos.IdComplemen = this.datosComplementarios[0].IdComplemen;
+                      this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = this.datosComplementarios[0].PERTENECE_ETNIA;
+                      this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = this.datosComplementarios[0].NOM_ETNIA;
+                      this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = this.datosComplementarios[0].HABLA_LEN_INDIGENA;
+                      this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = this.datosComplementarios[0].LENGUA_INDIGENA;
+                      this.datosInicialesService.newRegistrarDatos.ES_PADRE = this.datosComplementarios[0].ES_PADRE;
+                      this.datosInicialesService.newRegistrarDatos.TIENE_DISCAPACIDAD = this.datosComplementarios[0].TIENE_DISCAPACIDAD;
+                      this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = this.datosComplementarios[0].NOM_DISCAPACIDAD;
+                      this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = this.datosComplementarios[0].ES_AGENTEMP_PERITO;
+                      this.datosInicialesService.newRegistrarDatos.IdEnlace = this.datosComplementarios[0].IdEnlace;
+                  
+                      this.modal.open(regisInfoPersonal,{size:'xl'});
+
+
+                    }
+
+                  }
+                )
+
+              }else{
+                console.log('FALSE',this.datosDomicilio);
+
+                this.datosInicialesService.newRegistrarDatos.IdDomicilio = this.datosDomicilio[0].IdDomicilio;
+                this.datosInicialesService.newRegistrarDatos.EMAIL = this.datosDomicilio[0].EMAIL;
+                this.datosInicialesService.newRegistrarDatos.TELEFONO = this.datosDomicilio[0].TELEFONO;
+                this.datosInicialesService.newRegistrarDatos.CELULAR = this.datosDomicilio[0].CELULAR;
+                this.datosInicialesService.newRegistrarDatos.CALLE = this.datosDomicilio[0].CALLE;
+                this.datosInicialesService.newRegistrarDatos.ENTRE_CALLE = this.datosDomicilio[0].ENTRE_CALLE;
+                this.datosInicialesService.newRegistrarDatos.Y_CALLE = this.datosDomicilio[0].Y_CALLE;
+                this.datosInicialesService.newRegistrarDatos.NO_EXTERIOR = this.datosDomicilio[0].NO_EXTERIOR;
+                this.datosInicialesService.newRegistrarDatos.NO_INTERIOR = this.datosDomicilio[0].NO_INTERIOR;
+                this.datosInicialesService.newRegistrarDatos.COLONIA = this.datosDomicilio[0].COLONIA;
+                this.datosInicialesService.newRegistrarDatos.CODIGO_POSTAL = this.datosDomicilio[0].CODIGO_POSTAL;
+                this.datosInicialesService.newRegistrarDatos.ENTIDAD = this.datosDomicilio[0].ENTIDAD;
+                this.datosInicialesService.newRegistrarDatos.MUNICIPIO = this.datosDomicilio[0].MUNICIPIO;
+                this.datosInicialesService.newRegistrarDatos.CIUDAD = this.datosDomicilio[0].CIUDAD;
+    
+
+                this.datosInicialesService.GetDatosComplementariosEditar(CVE_EMPLEADO).subscribe(
+                  resCom=>{
+                    this.datosComplementarios = resCom;
+                    this.datosComplemenLength = Object.keys(this.datosComplementarios).length;
+
+                    if(this.datosComplemenLength == 0){
+                      this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                    }else{
+                      this.datosInicialesService.newRegistrarDatos.IdComplemen = this.datosComplementarios[0].IdComplemen;
+                      this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = this.datosComplementarios[0].PERTENECE_ETNIA;
+                      this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = this.datosComplementarios[0].NOM_ETNIA;
+                      this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = this.datosComplementarios[0].HABLA_LEN_INDIGENA;
+                      this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = this.datosComplementarios[0].LENGUA_INDIGENA;
+                      this.datosInicialesService.newRegistrarDatos.ES_PADRE = this.datosComplementarios[0].ES_PADRE;
+                      this.datosInicialesService.newRegistrarDatos.TIENE_DISCAPACIDAD = this.datosComplementarios[0].TIENE_DISCAPACIDAD;
+                      this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = this.datosComplementarios[0].NOM_DISCAPACIDAD;
+                      this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = this.datosComplementarios[0].ES_AGENTEMP_PERITO;
+                      this.datosInicialesService.newRegistrarDatos.IdEnlace = this.ListaDatosPersonales[0].Id;
+                      this.modal.open(regisInfoPersonal,{size:'xl'});
+                    }
+                  }
+                )
+              }
+            },
+            err=>{
+              console.log(err);
+            }
+          )
+          //this.modal.open(regisInfoPersonal,{size:'xl
+        },
+        err=>{
+          alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+          console.log(err);
+          
+        }
+      )
+      
+  }
+
+
+
+
+
+
+
+
+ /* async abrirModalInfoPersonal(regisInfoPersonal: any, CVE_EMPLEADO: any){
+ 
+      this.datosInicialesService.newRegistrarDatos.NOMBRE = '';
+      this.datosInicialesService.newRegistrarDatos.APE_PATERNO = '';
+      this.datosInicialesService.newRegistrarDatos.APE_MATERNO = '';
+      this.datosInicialesService.newRegistrarDatos.SEXO = '';
+    // this.datosInicialesService.newRegistrarDatos.FECHA_NAC = ;
+      this.datosInicialesService.newRegistrarDatos.EST_CIVIL = '';
+      this.datosInicialesService.newRegistrarDatos.CVE_RFC = ''
+      this.datosInicialesService.newRegistrarDatos.CURP = '';
+      this.datosInicialesService.newRegistrarDatos.CVE_ELECTOR = '';
+      this.datosInicialesService.newRegistrarDatos.LICENCIA = '';
+      this.datosInicialesService.newRegistrarDatos.PASAPORTE = '';
+      this.datosInicialesService.newRegistrarDatos.CARTILLA = '';
+      this.datosInicialesService.newRegistrarDatos.PAIS_NAC = 0;
+      this.datosInicialesService.newRegistrarDatos.EDO_NAC = 0;
+      this.datosInicialesService.newRegistrarDatos.MUN_NAC = 0;
+      this.datosInicialesService.newRegistrarDatos.NACIONALIDAD = 0;
+
+      this.datosInicialesService.newRegistrarDatos.EMAIL = '';
+      this.datosInicialesService.newRegistrarDatos.TELEFONO = '';
+      this.datosInicialesService.newRegistrarDatos.CELULAR = '';
+      this.datosInicialesService.newRegistrarDatos.CALLE ='' ;
+      this.datosInicialesService.newRegistrarDatos.ENTRE_CALLE = ' ';
+      this.datosInicialesService.newRegistrarDatos.Y_CALLE = ' ';
+      this.datosInicialesService.newRegistrarDatos.NO_EXTERIOR = ' ';
+      this.datosInicialesService.newRegistrarDatos.NO_INTERIOR = ' ';
+      this.datosInicialesService.newRegistrarDatos.COLONIA = ' ';
+      this.datosInicialesService.newRegistrarDatos.CODIGO_POSTAL = ' ';
+      this.datosInicialesService.newRegistrarDatos.ENTIDAD =' ' ;
+      this.datosInicialesService.newRegistrarDatos.MUNICIPIO = ' ';
+      this.datosInicialesService.newRegistrarDatos.CIUDAD = ' ';
+
+      this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = ' ';
+      this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = ' ';
+      this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = ' ';
+      this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = ' ';
+      this.datosInicialesService.newRegistrarDatos.ES_PADRE = ' ';
+      this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = ' ';
+      this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = ' ';
+
+
+
     await this.datosPDC.getDatosPersonalesPerExis(CVE_EMPLEADO).subscribe(
       res=>{
         this.ListaDatosPersonales = res;
@@ -168,7 +424,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
       }
     )
     
-  }
+  }*/
 
   abrirModalInfoEscolar(regisInfoEscolar: any, CVE_EMPLEADO: any, NOMBRE:any, APE_PATERNO:any, APE_MATERNO:any){
     this.getListaEscolaridades(CVE_EMPLEADO);
@@ -415,6 +671,114 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     )
   }
 
+  ///-------------------------------------------------------------------------
+  clickBtnGuardarInfo(){
+    if(this.datosDomicilioLength == 0){
+      //OPCION 1
+      if(this.datosComplemenLength == 0){
+        console.log('sin dom, sin comp');
+        this.postDatosPDomCom();
+        
+      }else{
+        //OPCION 2
+        if(this.datosComplemenLength >0){
+
+          console.log('sin dom, con comp');
+          this.postDatosPDomComOpcion2();
+        }
+      }
+
+    }else{
+      //OPCION 3
+      if(this.datosComplemenLength == 0){
+        console.log('con dom, sin comp');
+        this.postDatosPDomComOpcion3();
+
+      }else{
+        //OPCION 4
+        if(this.datosComplemenLength >0){
+          console.log('con dom, con comp');
+          this.putInfoPersonalDomComData();
+
+        }
+
+      }
+
+    }
+
+  }
+
+  async validarInputsRegistroDP_DOM_COM(){
+    var DI = this.datosInicialesService.ValoresInputsRegistroDataPD;
+    console.log('NAMEEEE',DI.NOMBRE);
+    if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != ''  && DI.FECHA_NAC != '' 
+      && DI.EST_CIVIL != '' && DI.CVE_RFC != '' && DI.CURP != '' && DI.CVE_ELECTOR != '' && DI.LICENCIA != ''
+      && DI.PASAPORTE != '' && DI.CARTILLA != '' && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0 && DI.MUN_NAC != 0 && DI.NACIONALIDAD != 0
+      
+      && DI.EMAIL !='' && DI.TELEFONO != '' && DI.CELULAR != ''  && DI.CALLE != '' && DI.ENTRE_CALLE != '' && DI.Y_CALLE != '' 
+      && DI.NO_EXTERIOR != '' && DI.NO_INTERIOR != '' && DI.COLONIA !='' && DI.CODIGO_POSTAL != '' && DI.ENTIDAD != '' && DI.MUNICIPIO != ''  && DI.CIUDAD != ''
+
+      && DI.PERTENECE_ETNIA != ''  && DI.NOM_ETNIA != ''  && DI.HABLA_LEN_INDIGENA != '' && DI.LENGUA_INDIGENA != '' && DI.ES_PADRE != ''
+      && DI.TIENE_DISCAPACIDAD != '' && DI.NOM_DISCAPACIDAD != '' && DI.ES_AGENTEMP_PERITO != ''
+    ){
+      //SO QUE 
+      console.log('todos los inputs llenos, peticion post');
+      //await this.POSTclickBtnGuardarInfoModalRegisIP();
+      
+    }else{
+
+      if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != ''  && DI.FECHA_NAC != '' 
+      && DI.EST_CIVIL != '' && DI.CVE_RFC != '' && DI.CURP != ''  && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0  && DI.NACIONALIDAD != 0
+      
+      && DI.EMAIL !='' && DI.TELEFONO != '' && DI.CELULAR != ''  && DI.CALLE != '' && DI.ENTRE_CALLE != '' && DI.Y_CALLE != '' 
+      && DI.NO_EXTERIOR != '' && DI.NO_INTERIOR != '' && DI.COLONIA !='' && DI.CODIGO_POSTAL != '' && DI.ENTIDAD != '' && DI.MUNICIPIO != ''  && DI.CIUDAD != ''
+
+      && DI.PERTENECE_ETNIA != ''    && DI.HABLA_LEN_INDIGENA != ''  && DI.ES_PADRE != ''
+      && DI.TIENE_DISCAPACIDAD != ''  && DI.ES_AGENTEMP_PERITO != '' && 
+
+      (DI.CVE_ELECTOR == '' || DI.LICENCIA == '' || DI.PASAPORTE == '' || DI.CARTILLA != '' || DI.MUN_NAC == 0 
+      || DI.NOM_ETNIA == '' || DI.LENGUA_INDIGENA == '' || DI.NOM_DISCAPACIDAD == '')){
+
+        //here
+        console.log('make post with los nulos');
+       //await this.POSTclickBtnGuardarInfoModalRegisIP();
+        
+
+      }else{
+        //si cualquiera esta vacio
+        //UNICOS CAMPOS QUE SE PUEDEN GUARDAR NULL SON
+        //CVE_ELECTOR, LICENCIA,PASAPORTE,CARTILLA,MUN_NAC, NOMBRE_ETNIA, NOMBRE_LENGUA_INDIGENA, NOM_DISCAPACIDAD
+        if(DI.NOMBRE == '' || DI.APE_PATERNO == '' || DI.APE_MATERNO == '' || DI.SEXO == ''  || DI.FECHA_NAC == '' 
+        || DI.EST_CIVIL == '' || DI.CVE_RFC == '' || DI.CURP == '' || DI.PAIS_NAC == 0 || DI.EDO_NAC == 0  || DI.NACIONALIDAD == 0
+        
+        || DI.EMAIL =='' || DI.TELEFONO == '' || DI.CELULAR == ''  || DI.CALLE == '' || DI.ENTRE_CALLE == '' || DI.Y_CALLE == '' 
+        || DI.NO_EXTERIOR == '' || DI.NO_INTERIOR == '' || DI.COLONIA =='' || DI.CODIGO_POSTAL == '' || DI.ENTIDAD == '' || DI.MUNICIPIO == ''  || DI.CIUDAD == ''
+
+        || DI.PERTENECE_ETNIA == ''    || DI.HABLA_LEN_INDIGENA == ''  || DI.ES_PADRE == ''
+        || DI.TIENE_DISCAPACIDAD == ''  || DI.ES_AGENTEMP_PERITO == ''){
+          //cualquiera vacio
+        console.log('alguno vacio');
+        console.log(DI);
+        alert('Favor de llenar todos los campos requeridos');
+
+
+        }
+
+      }
+      
+      
+      
+      
+
+    }
+    
+  }
+
+
+
+
+
+// OPCION 1
   async postDatosPDomCom(){
     await this.datosInicialesService.addDatosPDomCom(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
       res=>{
@@ -432,10 +796,68 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     )
   }
 
+//OPCION 2
+  async postDatosPDomComOpcion2(){
+    await this.datosInicialesService.addDatosPDomComOPION2(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        alert("Datos registrados exitosamente");
+        console.log(res);
+        
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        alert("Ha ocurrido un error al registrar, intentelo nuevamente");
+        console.log(err);
+        
+      }
+      
+    )
+  }
+ 
+//OPCION 3
+  async postDatosPDomComOpcion3(){
+    await this.datosInicialesService.addDatosPDomComOPCION3(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        alert("Datos registrados exitosamente");
+        console.log(res);
+        
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        alert("Ha ocurrido un error al registrar, intentelo nuevamente");
+        console.log(err);
+        
+      }
+      
+    )
+  }
+
+//OPCION 4
+  async putInfoPersonalDomComData(){
+    
+    await this.datosInicialesService.updateDatosPDomCom(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+       res=>{
+         alert("Se han guardado los cambios");
+         console.log(this.datosInicialesService.ValoresInputsRegistroDataPD);
+         
+         //this.getListaIdiomas(this.newRegistrarIdiomas.CVE_EMPLEADO);
+        // this.getInfoEscolar();
+       },
+       err => console.log(err)
+       
+     );
+  }
+
+
+
+
+  //---------------------------------------------------------------------------
+
   async  postInfoEscolar(){
     await this.datosEscolaresService.addInfoEscolar(this.newRegistrarDatosEscolares).subscribe(
       res=>{
         alert("Datos registrados exitosamente");
+        this.limpiarInputsRegisInfoEsc();
         this.getListaEscolaridades(this.newRegistrarDatosEscolares.CVE_EMPLEADO);
        // this.getDatosEscolares(this.newRegistrarDatosEscolares.IdEnlace);
         //this.getInfoEscolar();
@@ -446,10 +868,45 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     );
   }
 
+
+  async validacionInfoEscolar(){
+    var DE = this.newRegistrarDatosEscolares;
+    console.log('ESCO',DE.ESCOLARIDAD);
+
+    if(DE.ESCOLARIDAD != '' && DE.ESCUELA != '' && DE.ESPECIALIDAD != '' && DE.CEDULA != '' && DE.TRATAMIENTO != '' && DE.FCH_INICIO != '' && DE.FCH_TERMINO != ''){
+      //TODOS LLENOS
+      console.log('todos con datos post');
+      this.postInfoEscolar();
+
+    }else{
+      if(DE.ESCOLARIDAD != '' && DE.ESCUELA != '' && DE.ESPECIALIDAD != ''  && DE.TRATAMIENTO != '' && DE.FCH_INICIO != '' && DE.FCH_TERMINO != '' && DE.CEDULA == ''){
+        //cedula vacio
+        console.log('post con cedula vaciod post vacio');
+        this.postInfoEscolar();
+        
+        
+      }else{
+        if(DE.ESCOLARIDAD == '' || DE.ESCUELA == '' || DE.ESPECIALIDAD == '' || DE.TRATAMIENTO == '' || DE.FCH_INICIO == '' || DE.FCH_TERMINO == ''){
+          //cualqiera vacio
+          console.log('alguno vacio');
+          alert('Favor de llenar todos los campos requeridos');
+        }
+      }
+
+    }
+    
+
+    
+
+
+
+  }
+
   async postDatosIdiomas(){
     await this.datosIdiomasService.addIdiomas(this.newRegistrarIdiomas).subscribe(
       res=>{
         alert("Datos registrados exitosamente");
+        this.limpiarInputsIdiomas();
         this.getListaIdiomas(this.newRegistrarIdiomas.CVE_EMPLEADO);
         //this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
       },
@@ -459,6 +916,21 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
         
       }
     )
+  }
+
+  async validacionInfoIdiomas(){
+    var DI = this.newRegistrarIdiomas;
+    if(DI.IDIOMA != '' && DI.LECTURA != '' && DI.ESCRITURA != '' && DI.CONVERSACION != ''){
+      console.log('todos los inputs llenos');
+      this.postDatosIdiomas();
+      
+
+    }else{
+      console.log('alguno vacio');
+      
+      alert('Favor de llenar todos los campos requeridos');
+    }
+
   }
 
   
@@ -522,19 +994,32 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     )
   }
 
-  capturarArchivo(event: any ){
+ async  capturarArchivo(event: any ){
     
     const archivo = event.target.files[0];
    
     this.extraerBase64(archivo).then((img: any) =>{
       this.previzualizacionDoc = img.base;
       console.log('previzuliazacion');
-      this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/png;base64,","");
-      this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/jpeg;base64,","");
-      //this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.slice(22);
-      console.log(this.newRegisDocumentos);
+      if(event.target.files[0].type == 'image/png'){
+        console.log('SOY PNG');
+        this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/png;base64,","");
+
+      }else{
+        console.log('SOY JPEG');
+        this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/jpeg;base64,","");
+        
+      }
       
-      console.log(this.previzualizacionDoc);
+     
+      
+      //
+      //
+      //this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.slice(22);
+
+      //console.log(this.newRegisDocumentos);
+      
+      //console.log(this.previzualizacionDoc);
     
     });
   }
@@ -584,6 +1069,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
       
       res=>{
         alert("Datos registrados exitosamente");
+        this.limpiarInputsDocs();
         this.getListaDocumentosCve(this.newRegisDocumentos.CVE_EMPLEADO);
         //this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
         ///this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
@@ -594,6 +1080,30 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
         
       }
     )
+  }
+
+  validacionInsertarDocumentos(){
+    if(this.newRegisDocumentos.TIPO != 0 &&  this.newRegisDocumentos.DOCUMENTO != ''){
+      console.log('con valores');
+      this.postDatosDocumentos();
+      
+
+    }else{
+      if(this.newRegisDocumentos.TIPO == 0 && this.newRegisDocumentos.DOCUMENTO != ''){
+        alert('Favor de especificar el tipo de documento');
+
+      }
+
+      if(this.newRegisDocumentos.TIPO != 0 && this.newRegisDocumentos.DOCUMENTO == ''){
+        alert('Aún no ha seleccionado un archivo');
+
+      }
+
+      if(this.newRegisDocumentos.TIPO == 0 && this.newRegisDocumentos.DOCUMENTO == ''){
+        alert('Favor de llenar todos los datos requiridos');
+      }
+
+    }
   }
 
 

@@ -32,7 +32,7 @@ export class ConsultoNewDataComponent implements OnInit {
   listaPersonas: any = [];
   nombreCompleto ='';
   numEmpleado = '';
-
+ 
   listaIdiomas: any = [];
   listaEscolaridad: any =[];
   listaDocsByCveEmp : any = [];
@@ -65,7 +65,7 @@ export class ConsultoNewDataComponent implements OnInit {
   }
 
   newRegistrarIdiomas: DatosIdiomas = {
-    CVE_EMPLEADO: '00000',
+    CVE_EMPLEADO: '',
     CONSECUTIVO: 0,
     IDIOMA: '',
     LECTURA: '',
@@ -87,7 +87,7 @@ export class ConsultoNewDataComponent implements OnInit {
     NOMBRE: '',
     APE_PATERNO:'',
     APE_MATERNO:'',
-    CVE_EMPLEADO: '00000',
+    CVE_EMPLEADO: '',
     ESCOLARIDAD:'',
     ESCUELA:'',
     ESPECIALIDAD:'',
@@ -126,7 +126,7 @@ export class ConsultoNewDataComponent implements OnInit {
         this.datosPersonales = res;
         this.bufferToBase64ImageSourceRegisAnteriores(this.datosPersonales[0].FRONTAL.data);
         
-        console.log(this.datosPersonales);
+        console.log('DATOSSSSSSPERFOS',this.datosPersonales);
         this.datosPersonalesLenght = Object.keys(this.datosPersonales).length;
 
         this.datosInicialesService.GetDatosDomEditar(CVE_EMPLEADO).subscribe(
@@ -141,6 +141,44 @@ export class ConsultoNewDataComponent implements OnInit {
                 this.datosComplementarios = resCom;
                 console.log(this.datosComplementarios);
                 this.datosComplementariosLenght = Object.keys(this.datosComplementarios).length;
+                if(this.datosComplementariosLenght != 0){
+
+                  if(this.datosComplementarios[0].PERTENECE_ETNIA === '0'){
+                    console.log('soy 0', this.datosComplementarios[0].PERTENECE_ETNIA);
+                    this.datosComplementarios[0].PERTENECE_ETNIA = 'NO';
+                  }else{
+                    console.log('soy 1', this.datosComplementarios[0].PERTENECE_ETNIA);
+                    this.datosComplementarios[0].PERTENECE_ETNIA = 'SI';
+                  }
+
+                  if(this.datosComplementarios[0].HABLA_LEN_INDIGENA === '0'){
+                    console.log('soy 0', this.datosComplementarios[0].HABLA_LEN_INDIGENA);
+                    this.datosComplementarios[0].HABLA_LEN_INDIGENA = 'NO';
+                  }else{
+                    console.log('soy 1', this.datosComplementarios[0].HABLA_LEN_INDIGENA);
+                    this.datosComplementarios[0].HABLA_LEN_INDIGENA = 'SI';
+                  }
+
+                  if(this.datosComplementarios[0].ES_PADRE === '0'){
+                    console.log('soy 0', this.datosComplementarios[0].ES_PADRE);
+                    this.datosComplementarios[0].ES_PADRE = 'NO';
+                  }else{
+                    console.log('soy 1', this.datosComplementarios[0].ES_PADRE);
+                    this.datosComplementarios[0].ES_PADRE = 'SI';
+                  }
+
+                  if(this.datosComplementarios[0].TIENE_DISCAPACIDAD === '0'){
+                    console.log('soy 0', this.datosComplementarios[0].TIENE_DISCAPACIDAD);
+                    this.datosComplementarios[0].TIENE_DISCAPACIDAD = 'NO';
+                  }else{
+                    console.log('soy 1', this.datosComplementarios[0].TIENE_DISCAPACIDAD);
+                    this.datosComplementarios[0].TIENE_DISCAPACIDAD = 'SI';
+                  }
+
+
+
+                }
+               
 
                 this.datosEscolaresService.GetDatosEscolaresByCveEm(CVE_EMPLEADO).subscribe(
                   resEsc=>{
@@ -222,15 +260,25 @@ export class ConsultoNewDataComponent implements OnInit {
 
   openDescargar(contDescargarDocs:any, documento:any){
     this.nombreDoc = documento.desc_doc;
+
     if(documento.TIPO_INSERCION === null){
       console.log('soy null', documento.TIPO_INSERCION);
       this.bufferToBase64ImageSourceRegisAnteriores(documento.DOCUMENTO.data);
+     
       
       
 
     }else{
-      console.log('no soy null', documento.TIPO_INSERCION);
-      this.bufferToBase64ImageSourceNewRegis(documento.DOCUMENTO.data);
+      if(documento.TIPO_INSERCION == 'NEW2022'){
+        console.log('no soy null', documento.TIPO_INSERCION);
+        this.bufferToBase64ImageSourceNewRegis(documento.DOCUMENTO.data);
+        
+      }else{
+        this.bufferToBase64ImageSourceRegisAnteriores(documento.DOCUMENTO.data);
+
+
+      }
+      
       
 
     }
@@ -1565,6 +1613,216 @@ export class ConsultoNewDataComponent implements OnInit {
 
         
       }
+
+      if(this.datosPersonalesLenght !=0 &&  this.datosDomicilioLenght !=0 && this.datosComplementariosLenght !=0 && this.listaEscolaridadLenght ===0 && this.listaIdiomasLenght===0){
+        console.log('solo dom y dp y DC');
+        const pdfDefinition: any = {
+     
+          content:[
+            {columns:[
+              
+              {text: 'INFORMACION GENERAL DE PERSONAL',fontSize: 20, color: '#A09003' , bold: true,width:'*'},
+             // {text:' '},
+              {image:this.logoFGJE_PDF, width:79, height:75},
+              //, alignment: 'center'
+    
+            ]},
+            
+            //DATOS PERSONALES
+            {columns:[
+              {image: this.valorImagenParaDescargar, width:150, height:165, background:'red'},
+              {text:' ', width:25},
+              [
+                {text:'IDENTIFICACIONES', color: '#8F0000' , bold: true},
+                {text:' '},
+                {text: [
+                  {text:'NO. EMPLEADO: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].CVE_EMPLEADO},
+                ]},
+                {text: [
+                  {text:'NOMBRE: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].NOMBRE+ ' '+ this.datosPersonales[0].APE_PATERNO + ' '+this.datosPersonales[0].APE_MATERNO},
+                ]},
+                {text: [
+                  {text:'EDO. CIVIL: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].EDO_CIV},
+                ]},
+                {text: [
+                  {text:'SEXO: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].SEXO},
+                ]},
+                {text: [
+                  {text:'RFC: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].CVE_RFC},
+                ]},
+                {text: [
+                  {text:'CURP: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].CURP},
+                ]},
+                {text: [
+                  {text:'CLAVE ELECTOR: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].CVE_ELECTOR},
+                ]},
+                {text: [
+                  {text:'LICENCIA: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].LICENCIA},
+                ]},
+                {text: [
+                  {text:'PASAPORTE: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].PASAPORTE},
+                ]},
+                {text: [
+                  {text:'CARTILLA MILITAR: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].CARTILLA},
+                ]}
+    
+              ],
+            ]},
+    
+            //DATOS PERSONALES
+            {columns:[
+              [
+                {text:' '},
+                {text:' '},
+                {text:'INFORMACION DE NACIMIENTO', color: '#8F0000' , bold: true},
+                {text:' '},
+                {text: [
+                  {text:'FECHA DE NACIMIENTO: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].FECHA_NAC},
+                ]},
+                {text: [
+                  {text:'PAIS DE NACIMIENTO: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].PAIS},
+                ]},
+                {text: [
+                  {text:'ESTADO NACIMIENTO: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].ESTADO},
+                ]},
+                {text: [
+                  {text:'MUNICIPIO NACIMIENTO: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].Ciudad},
+                ]},
+                {text: [
+                  {text:'NACIONALIDAD: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosPersonales[0].NACIONALIDAD_NAME},
+                ]}
+              ],
+    
+              //DATOS DOMICILIO
+              [
+                {text:' '},
+                {text:' '},
+                {text:'INFORMACION DE CONTACTO', color: '#8F0000' , bold: true},
+                {text:' '},
+                {text: [
+                  {text:'EMAIL: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].EMAIL},
+                ]},
+                {text: [
+                  {text:'TELEFONO: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].TELEFONO},
+                ]},
+                {text: [
+                  {text:'CELULAR: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].CELULAR},
+                ]}
+              ]
+            ]},
+    
+            //DATOS DOMICILIO
+            {columns:[
+              [
+                {text:' '},
+                {text:' '},
+                {text:'INFORMACION DE DOMICILIO', color: '#8F0000' , bold: true},
+                {text:' '},
+                {text: [
+                  {text:'CALLE: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].CALLE},
+                ]},
+                {text: [
+                  {text:'ENTRE CALLE: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].ENTRE_CALLE},
+                ]},
+                {text: [
+                  {text:'Y CALLE: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].Y_CALLE},
+                ]},
+                {text: [
+                  {text:'NO. EXT: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].NO_EXTERIOR + '    '},
+                  {text:'NO. INT: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].NO_INTERIOR},
+                ]},
+                {text: [
+                  {text:'COL: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].COLONIA + '  '},
+                  {text:'CP: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].CODIGO_POSTAL}
+    
+                ]},
+                {text: [
+                  {text:'ENTIDAD: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].ESTADO},
+                ]},
+                {text: [
+                  {text:'MUNICIPIO: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].MUNI_NAME},
+                ]},
+                {text: [
+                  {text:'CIUDAD: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosDomicilio[0].CIUDAD},
+                ]}
+              ],
+    
+              //DATOS COMPLEMENTARIOS
+              [
+                {text:' '},
+                {text:' '},
+                {text:'INFORMACION COMPLEMENTARIA', color: '#8F0000' , bold: true},
+                {text:' '},
+                {text: [
+                  {text:'PERTENECE A ETNIA: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosComplementarios[0].PERTENECE_ETNIA},
+                ]},
+                {text: [
+                  {text:'HABLA LENGUA INDIGENA: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosComplementarios[0].HABLA_LEN_INDIGENA},
+                ]},
+                {text: [
+                  {text:'ES PADRE/MADRE: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosComplementarios[0].ES_PADRE},
+                ]},
+                {text: [
+                  {text:'CUENTA CON ALGUNA DISCAPACIDAD: ', bold:true, color: '#6C6C6C'},
+                  {text: this.datosComplementarios[0].TIENE_DISCAPACIDAD},
+                ]}
+    
+              ]
+            ]},
+            //ESTUDIOS
+            {text:' '},
+            {text:'ESTUDIOS', color: '#8F0000' , bold: true},
+            {text:' '},
+            {text:'No se encontraron registros'},
+    
+    
+    
+            //IDIOMAS
+            {text:' '},
+            {text:'IDIOMAS', color: '#8F0000' , bold: true},
+            {text:' '},
+            {text:'No se encontraron registros'},
+            
+            
+            
+    
+          ]
+        }
+        const pdf = pdfMake.createPdf(pdfDefinition);
+        pdf.open();
+      }
+      
     }
 
 

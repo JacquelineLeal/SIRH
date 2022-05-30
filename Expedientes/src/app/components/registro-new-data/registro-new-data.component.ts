@@ -12,6 +12,7 @@ import{DatosIdiomas ,IdiomasService} from '../../services/idiomas.service';
 import {DatosDocumentos, DocumentosService } from 'src/app/services/documentos.service';
 
 import { DomSanitizer } from '@angular/platform-browser';
+import { LoginComponent } from 'src/app/pages/login/login.component';
  
 @Component({
   selector: 'app-registro-new-data',
@@ -197,7 +198,7 @@ export class RegistroNewDataComponent implements OnInit {
     ES_AGENTEMP_PERITO:'',
     IdEnlace: '',
     IdDomicilio: '',
-    IdComplement: ''
+    IdComplemen: ''
 
 
   }
@@ -214,7 +215,7 @@ export class RegistroNewDataComponent implements OnInit {
     private datosDocumentosService : DocumentosService,
     private sanitizer : DomSanitizer
   ) { }
-
+ 
   ngOnInit(): void {  
     this.GetNombresRegistro();
     console.log(this.arrayForInsertDatosPer);
@@ -357,7 +358,7 @@ export class RegistroNewDataComponent implements OnInit {
         
         
       },
-      err =>{
+      err =>{ 
         console.log(err);
         alert("Se ha generado un error, favor de intentarlo de nuevo");
         
@@ -388,12 +389,15 @@ export class RegistroNewDataComponent implements OnInit {
 
   }
 
-  async clickBtnGuardarInfoModalRegisIP(){
+
+  ///clickBtnGuardarInfoModalRegisIP
+  async POSTclickBtnGuardarInfoModalRegisIP(){
    
     await this.datosInicialesService.addDatosPDomCom(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
       res=>{
         alert("Datos registrados exitosamente");
         console.log(res);
+        this.limpiarInputsRegistroIPDC();
         
         //this.router.navigateByUrl('registro-new-data');
       },
@@ -406,6 +410,73 @@ export class RegistroNewDataComponent implements OnInit {
     )
     //this.datosInicialesService.newRegistrarDatos = this.datosInicialesService.limpiarInputsRegistro;
 
+  }
+
+
+  async validarInputsRegistroDP_DOM_COM(){
+    var DI = this.datosInicialesService.ValoresInputsRegistroDataPD;
+    console.log('NAMEEEE',DI.NOMBRE);
+    if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != ''  && DI.FECHA_NAC != '' 
+      && DI.EST_CIVIL != '' && DI.CVE_RFC != '' && DI.CURP != '' && DI.CVE_ELECTOR != '' && DI.LICENCIA != ''
+      && DI.PASAPORTE != '' && DI.CARTILLA != '' && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0 && DI.MUN_NAC != 0 && DI.NACIONALIDAD != 0
+      
+      && DI.EMAIL !='' && DI.TELEFONO != '' && DI.CELULAR != ''  && DI.CALLE != '' && DI.ENTRE_CALLE != '' && DI.Y_CALLE != '' 
+      && DI.NO_EXTERIOR != '' && DI.NO_INTERIOR != '' && DI.COLONIA !='' && DI.CODIGO_POSTAL != '' && DI.ENTIDAD != '' && DI.MUNICIPIO != ''  && DI.CIUDAD != ''
+
+      && DI.PERTENECE_ETNIA != ''  && DI.NOM_ETNIA != ''  && DI.HABLA_LEN_INDIGENA != '' && DI.LENGUA_INDIGENA != '' && DI.ES_PADRE != ''
+      && DI.TIENE_DISCAPACIDAD != '' && DI.NOM_DISCAPACIDAD != '' && DI.ES_AGENTEMP_PERITO != ''
+    ){
+      //SO QUE 
+      console.log('todos los inputs llenos, peticion post');
+      await this.POSTclickBtnGuardarInfoModalRegisIP();
+      
+    }else{
+
+      if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != ''  && DI.FECHA_NAC != '' 
+      && DI.EST_CIVIL != '' && DI.CVE_RFC != '' && DI.CURP != ''  && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0  && DI.NACIONALIDAD != 0
+      
+      && DI.EMAIL !='' && DI.TELEFONO != '' && DI.CELULAR != ''  && DI.CALLE != '' && DI.ENTRE_CALLE != '' && DI.Y_CALLE != '' 
+      && DI.NO_EXTERIOR != '' && DI.NO_INTERIOR != '' && DI.COLONIA !='' && DI.CODIGO_POSTAL != '' && DI.ENTIDAD != '' && DI.MUNICIPIO != ''  && DI.CIUDAD != ''
+
+      && DI.PERTENECE_ETNIA != ''    && DI.HABLA_LEN_INDIGENA != ''  && DI.ES_PADRE != ''
+      && DI.TIENE_DISCAPACIDAD != ''  && DI.ES_AGENTEMP_PERITO != '' && 
+
+      (DI.CVE_ELECTOR == '' || DI.LICENCIA == '' || DI.PASAPORTE == '' || DI.CARTILLA != '' || DI.MUN_NAC == 0 
+      || DI.NOM_ETNIA == '' || DI.LENGUA_INDIGENA == '' || DI.NOM_DISCAPACIDAD == '')){
+
+        //here
+        console.log('make post with los nulos');
+       await this.POSTclickBtnGuardarInfoModalRegisIP();
+        
+
+      }else{
+        //si cualquiera esta vacio
+        //UNICOS CAMPOS QUE SE PUEDEN GUARDAR NULL SON
+        //CVE_ELECTOR, LICENCIA,PASAPORTE,CARTILLA,MUN_NAC, NOMBRE_ETNIA, NOMBRE_LENGUA_INDIGENA, NOM_DISCAPACIDAD
+        if(DI.NOMBRE == '' || DI.APE_PATERNO == '' || DI.APE_MATERNO == '' || DI.SEXO == ''  || DI.FECHA_NAC == '' 
+        || DI.EST_CIVIL == '' || DI.CVE_RFC == '' || DI.CURP == '' || DI.PAIS_NAC == 0 || DI.EDO_NAC == 0  || DI.NACIONALIDAD == 0
+        
+        || DI.EMAIL =='' || DI.TELEFONO == '' || DI.CELULAR == ''  || DI.CALLE == '' || DI.ENTRE_CALLE == '' || DI.Y_CALLE == '' 
+        || DI.NO_EXTERIOR == '' || DI.NO_INTERIOR == '' || DI.COLONIA =='' || DI.CODIGO_POSTAL == '' || DI.ENTIDAD == '' || DI.MUNICIPIO == ''  || DI.CIUDAD == ''
+
+        || DI.PERTENECE_ETNIA == ''    || DI.HABLA_LEN_INDIGENA == ''  || DI.ES_PADRE == ''
+        || DI.TIENE_DISCAPACIDAD == ''  || DI.ES_AGENTEMP_PERITO == ''){
+          //cualquiera vacio
+        console.log('alguno vacio');
+        console.log(DI);
+        alert('Favor de llenar todos los campos requeridos');
+
+
+        }
+
+      }
+      
+      
+      
+      
+
+    }
+    
   }
 
 
@@ -562,10 +633,12 @@ export class RegistroNewDataComponent implements OnInit {
     )
   }
 
- async  postInfoEscolar(){
+  async  postInfoEscolar(){
     await this.datosEscolaresService.addInfoEscolar(this.newRegistrarDatosEscolares).subscribe(
       res=>{
         alert("Datos registrados exitosamente");
+        this.limpiarInputsRegisInfoEsc();
+
         this.getDatosEscolares(this.newRegistrarDatosEscolares.IdEnlace);
         //this.getInfoEscolar();
 
@@ -574,6 +647,43 @@ export class RegistroNewDataComponent implements OnInit {
       
     );
   }
+
+  async validacionInfoEscolar(){
+    var DE = this.newRegistrarDatosEscolares;
+    console.log('ESCO',DE.ESCOLARIDAD);
+
+    if(DE.ESCOLARIDAD != '' && DE.ESCUELA != '' && DE.ESPECIALIDAD != '' && DE.CEDULA != '' && DE.TRATAMIENTO != '' && DE.FCH_INICIO != '' && DE.FCH_TERMINO != ''){
+      //TODOS LLENOS
+      console.log('todos con datos post');
+      this.postInfoEscolar();
+
+    }else{
+      if(DE.ESCOLARIDAD != '' && DE.ESCUELA != '' && DE.ESPECIALIDAD != ''  && DE.TRATAMIENTO != '' && DE.FCH_INICIO != '' && DE.FCH_TERMINO != '' && DE.CEDULA == ''){
+        //cedula vacio
+        console.log('post con cedula vaciod post vacio');
+        this.postInfoEscolar();
+        
+        
+      }else{
+        if(DE.ESCOLARIDAD == '' || DE.ESCUELA == '' || DE.ESPECIALIDAD == '' || DE.TRATAMIENTO == '' || DE.FCH_INICIO == '' || DE.FCH_TERMINO == ''){
+          //cualqiera vacio
+          console.log('alguno vacio');
+          alert('Favor de llenar todos los campos requeridos');
+        }
+      }
+
+    }
+    
+
+    
+
+
+
+  }
+
+
+
+
 
 
   async getDatosIdiomas(IdEnlace: any){
@@ -589,6 +699,7 @@ export class RegistroNewDataComponent implements OnInit {
     await this.datosIdiomasService.addIdiomas(this.newRegistrarIdiomas).subscribe(
       res=>{
         alert("Datos registrados exitosamente");
+        this.limpiarInputsIdiomas();
         this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
       },
       err=>{
@@ -598,6 +709,23 @@ export class RegistroNewDataComponent implements OnInit {
       }
     )
   }
+
+  async validacionInfoIdiomas(){
+    var DI = this.newRegistrarIdiomas;
+    if(DI.IDIOMA != '' && DI.LECTURA != '' && DI.ESCRITURA != '' && DI.CONVERSACION != ''){
+      console.log('todos los inputs llenos');
+      this.postDatosIdiomas();
+      
+
+    }else{
+      console.log('alguno vacio');
+      
+      alert('Favor de llenar todos los campos requeridos');
+    }
+
+  }
+
+
 
 
   async postDatosDocumentos(){
@@ -610,6 +738,7 @@ export class RegistroNewDataComponent implements OnInit {
       
       res=>{
         alert("Datos registrados exitosamente");
+        this.limpiarInputsDocs();
         this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
         ///this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
       },
@@ -619,6 +748,30 @@ export class RegistroNewDataComponent implements OnInit {
         
       }
     )
+  }
+
+  validacionInsertarDocumentos(){
+    if(this.newRegisDocumentos.TIPO != 0 &&  this.newRegisDocumentos.DOCUMENTO != ''){
+      console.log('con valores');
+      this.postDatosDocumentos();
+      
+
+    }else{
+      if(this.newRegisDocumentos.TIPO == 0 && this.newRegisDocumentos.DOCUMENTO != ''){
+        alert('Favor de especificar el tipo de documento');
+
+      }
+
+      if(this.newRegisDocumentos.TIPO != 0 && this.newRegisDocumentos.DOCUMENTO == ''){
+        alert('Aún no ha seleccionado un archivo');
+
+      }
+
+      if(this.newRegisDocumentos.TIPO == 0 && this.newRegisDocumentos.DOCUMENTO == ''){
+        alert('Favor de llenar todos los datos requiridos');
+      }
+
+    }
   }
 
 
@@ -680,8 +833,18 @@ export class RegistroNewDataComponent implements OnInit {
       //console.log(this.pdfSrc);
       
       console.log('previzuliazacion');
-      this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/png;base64,","");
-      this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/jpeg;base64,","");
+
+      if(event.target.files[0].type == 'image/png'){
+        console.log('SOY PNG');
+        this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/png;base64,","");
+
+      }else{
+        console.log('SOY JPEG');
+        this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/jpeg;base64,","");
+        
+      }
+     // this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/png;base64,","");
+      //this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/jpeg;base64,","");
       //this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.slice(22);
       
       console.log(this.previzualizacionDoc);
