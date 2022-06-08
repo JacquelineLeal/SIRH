@@ -6,7 +6,8 @@ import {DatosEscolares,TraerInfoEscolar, DatosEscolaresServiService } from 'src/
 import{DatosIdiomas ,IdiomasService} from '../../services/idiomas.service';
 import {DatosDocumentos, DocumentosService } from 'src/app/services/documentos.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ThisReceiver } from '@angular/compiler';
+import Swal from 'sweetalert2';
+
 
  
 @Component({
@@ -33,6 +34,7 @@ export class EditoNewDataComponent implements OnInit {
   datosComplementarios: any = [];
 
   DocSeleccionado = '';
+  tipoDoc = '';
 
 
   newRegistrarIdiomas: DatosIdiomas = {
@@ -139,12 +141,15 @@ export class EditoNewDataComponent implements OnInit {
   async abrirModalEditInfoPersonal(editInfoPersonal: any, CVE_EMPLEADO:any){
     //traerdatos por cve de empleado e igualarlos a newdatosIniciales del servicio datos iniciales
     //await this.getDatospersonalesEditar(CVE_EMPLEADO);
+    
+      
         this.datosInicialesService.newRegistrarDatos.NOMBRE = '';
         this.datosInicialesService.newRegistrarDatos.APE_PATERNO = '';
         this.datosInicialesService.newRegistrarDatos.APE_MATERNO = '';
         this.datosInicialesService.newRegistrarDatos.SEXO = '';
        // this.datosInicialesService.newRegistrarDatos.FECHA_NAC = ;
         this.datosInicialesService.newRegistrarDatos.EST_CIVIL = '';
+        this.datosInicialesService.newRegistrarDatos.SANGRE = '';
         this.datosInicialesService.newRegistrarDatos.CVE_RFC = ''
         this.datosInicialesService.newRegistrarDatos.CURP = '';
         this.datosInicialesService.newRegistrarDatos.CVE_ELECTOR = '';
@@ -170,13 +175,13 @@ export class EditoNewDataComponent implements OnInit {
         this.datosInicialesService.newRegistrarDatos.MUNICIPIO = ' ';
         this.datosInicialesService.newRegistrarDatos.CIUDAD = ' ';
 
-        this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = ' ';
-        this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = ' ';
-        this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = ' ';
-        this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = ' ';
-        this.datosInicialesService.newRegistrarDatos.ES_PADRE = ' ';
-        this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = ' ';
-        this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = ' ';
+        this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = '';
+        this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = '';
+        this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = '';
+        this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = '';
+        this.datosInicialesService.newRegistrarDatos.ES_PADRE = '';
+        this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = '';
+        this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = '';  
         
   
   
@@ -392,18 +397,21 @@ export class EditoNewDataComponent implements OnInit {
    this.newRegisDocumentos.IdEnlace = documento.IdEnlace;
    this.newRegisDocumentos.IdDocumentos = documento.IdDocumentos;
    this.newRegisDocumentos.CONSECUTIVO = documento.CONSECUTIVO;
+   this.tipoDoc = '';
 
    //this.newRe gisDocumentos = documento;
   //el documento.DOCUMENTO pasarlo a base 64 para qe se pueda vizualizar
     console.log(this.newRegisDocumentos);
     if(documento.TIPO_INSERCION === null){
       console.log('soy null', documento.TIPO_INSERCION);
+      this.tipoDoc = documento.TIPO_INSERCION;
       this.bufferToBase64ImageSourceRegisAnteriores(documento.DOCUMENTO.data);
       
       
 
     }else{
       console.log('no soy null', documento.TIPO_INSERCION);
+      this.tipoDoc = documento.TIPO_INSERCION;
       this.bufferToBase64ImageSourceNewRegis(documento.DOCUMENTO.data);
       
 
@@ -416,10 +424,17 @@ export class EditoNewDataComponent implements OnInit {
 
   buscarData(){
     console.log(this.valoresInputBusqueda);
+
     
     if(this.valoresInputBusqueda.CVE_EMPLEADO == '' && this.valoresInputBusqueda.NOMBRE == '' && this.valoresInputBusqueda.APE_PATERNO == '' && this.valoresInputBusqueda.APE_MATERNO == '' ){
       console.log('TODOS VACIOS');
-      alert('No hay datos para buscar');
+      Swal.fire(
+        '',
+        'Aún no ha ingresado datos para buscar',
+        'info'
+      );
+      this.listaPersonas = [];
+      //alert('No hay datos para buscar');
     }else{
       if(this.valoresInputBusqueda.CVE_EMPLEADO != '' && this.valoresInputBusqueda.NOMBRE == '' && this.valoresInputBusqueda.APE_PATERNO == '' && this.valoresInputBusqueda.APE_MATERNO == ''){
         console.log('cveEmpleado with valor');
@@ -442,12 +457,36 @@ export class EditoNewDataComponent implements OnInit {
         this.getListaByNomCompleto();
       }
 
-     
-      
-    }
-      
-    
+      if(this.valoresInputBusqueda.CVE_EMPLEADO != '' && (this.valoresInputBusqueda.NOMBRE != '' || this.valoresInputBusqueda.APE_PATERNO != '' || this.valoresInputBusqueda.APE_MATERNO != '')){
+        Swal.fire({
+          title:'INFORMACIÓN NO VÁLIDA',
+          html:'La consultas que puede realizar son las siguientes:<br><br>'+
+                '<ol align="left"><li> Por <b>Número de empleado</b></li>'+
+                '<li>Por <b>Nombre</b></li>'+
+                '<li>Por <b>Nombre</b> + <b>Apellido Paterno</b></li>'+
+                '<li>Por <b>Nombre</b> + <b>Apellido Paterno</b> + <b>Apellido Materno</b></li></ol><br>',
+                
+          icon:'info'
+        });
+        this.listaPersonas = [];
+       // alert('busqueda incorrecta');
+      }
 
+      if((this.valoresInputBusqueda.CVE_EMPLEADO == '' && this.valoresInputBusqueda.NOMBRE == '' ) && (this.valoresInputBusqueda.APE_PATERNO != '' || this.valoresInputBusqueda.APE_MATERNO != '')){
+        //alert('2da busqueda incorrecta');
+        Swal.fire({
+          title:'INFORMACIÓN NO VÁLIDA',
+          html:'La consultas que puede realizar son las siguientes:<br>'+
+                '<ol align="left"><li> Por <b>número de empleado</b></li>'+
+                '<li>Por <b>Nombre</b></li>'+
+                '<li>Por <b>Nombre</b> + <b>Apellido Paterno</b></li>'+
+                '<li>Por <b>Nombre</b> + <b>Apellido Paterno</b> + <b>Apellido Materno</b></li></ol><br>',
+                
+          icon:'info'
+        });
+        this.listaPersonas = [];
+      }
+    }
   }
 
 
@@ -455,12 +494,14 @@ export class EditoNewDataComponent implements OnInit {
     await this.datosInicialesService.getListaNomSearchByCve(this.valoresInputBusqueda).subscribe(
       res=>{
         this.listaPersonas = res;
-        if(this.listaPersonas[0].ESTATUS === 'A'){
-          console.log('soy a', this.listaPersonas[0].ESTATUS);
+        if(Object.keys(this.listaPersonas).length == 0){
+          Swal.fire(
+            '',
+            'No se encontraron coincidencias',
+            'info'
+          );
           
-
         }
-        console.log(this.listaPersonas);
         
       },
       err=>{
@@ -476,6 +517,14 @@ export class EditoNewDataComponent implements OnInit {
     await this.datosInicialesService.getListaNomSearchByNom(this.valoresInputBusqueda).subscribe(
       res=>{
         this.listaPersonas = res;
+        if(Object.keys(this.listaPersonas).length == 0){
+          Swal.fire(
+            '',
+            'No se encontraron coincidencias',
+            'info'
+          );
+          
+        }
         console.log(this.listaPersonas);
         
       },
@@ -491,6 +540,14 @@ export class EditoNewDataComponent implements OnInit {
     await this.datosInicialesService.getListaNomSearchByNomAP(this.valoresInputBusqueda).subscribe(
       res=>{
         this.listaPersonas = res;
+        if(Object.keys(this.listaPersonas).length == 0){
+          Swal.fire(
+            '',
+            'No se encontraron coincidencias',
+            'info'
+          );
+          
+        }
         console.log(this.listaPersonas);
         
       },
@@ -506,6 +563,14 @@ export class EditoNewDataComponent implements OnInit {
     await this.datosInicialesService.getListaNomSearchByNomComplet(this.valoresInputBusqueda).subscribe(
       res=>{
         this.listaPersonas = res;
+        if(Object.keys(this.listaPersonas).length == 0){
+          Swal.fire(
+            '',
+            'No se encontraron coincidencias',
+            'info'
+          );
+          
+        }
         console.log(this.listaPersonas);
         
       },
@@ -539,8 +604,14 @@ export class EditoNewDataComponent implements OnInit {
     
     await this.datosEscolaresService.editarDatosEscolares(this.newRegistrarDatosEscolares).subscribe(
        res=>{
-         alert("Se han guardado los cambios");
+        Swal.fire(
+          'EL REGISTRO FUE EXITOSO!',
+          'Se han guardado los cambios',
+          'success'
+        )
+         //alert("Se han guardado los cambios");
          this.limpiarInputsRegisInfoEsc();
+         this.modal.dismissAll();
          this.getListaEscolaridades(this.newRegistrarDatosEscolares.CVE_EMPLEADO);
          //this.modal.close(result: any,);
         // this.getInfoEscolar();
@@ -570,7 +641,12 @@ export class EditoNewDataComponent implements OnInit {
         if(DE.ESCOLARIDAD == '' || DE.ESCUELA == '' || DE.ESPECIALIDAD == '' || DE.TRATAMIENTO == '' || DE.FCH_INICIO == '' || DE.FCH_TERMINO == ''){
           //cualqiera vacio
           console.log('alguno vacio');
-          alert('Favor de llenar todos los campos requeridos');
+          Swal.fire(
+            '',
+            'Favor de llenar todos los campos requeridos',
+            'info'
+          )
+          //alert('Favor de llenar todos los campos requeridos');
         }
       }
 
@@ -667,13 +743,25 @@ export class EditoNewDataComponent implements OnInit {
     
     await this.datosInicialesService.updateDatosPDomCom(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
        res=>{
-         alert("Se han guardado los cambios");
+          Swal.fire(
+            'El REGISTRO FUE EXITOSO!',
+            'Se han guardado los cambios',
+            'success'
+          )
+         //alert("Se han guardado los cambios");
          console.log(this.datosInicialesService.ValoresInputsRegistroDataPD);
          this.modal.dismissAll();         
          //this.getListaIdiomas(this.newRegistrarIdiomas.CVE_EMPLEADO);
         // this.getInfoEscolar();
        },
-       err => console.log(err)
+       err => {
+          Swal.fire(
+            'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+            'Si persisten los problemas comuníquese con el administrador',
+            'error'
+          );
+        console.log(err)
+       } 
        
      );
   }
@@ -821,7 +909,12 @@ export class EditoNewDataComponent implements OnInit {
           //cualquiera vacio
         console.log('alguno vacio');
         console.log(DI);
-        alert('Favor de llenar todos los campos requeridos');
+          Swal.fire(
+            '',
+            'Favor de llenar todos los campos requeridos',
+            'info'
+          )
+        //alert('Favor de llenar todos los campos requeridos');
 
 
         }
@@ -844,12 +937,26 @@ export class EditoNewDataComponent implements OnInit {
     
     await this.datosIdiomasService.updateIdiomas(this.newRegistrarIdiomas).subscribe(
        res=>{
-         alert("Se han guardado los cambios");
+          Swal.fire(
+            'El REGISTRO FUE EXITOSO!',
+            'Se han guardado los cambios',
+            'success'
+          )
+         //alert("Se han guardado los cambios");
+         this.modal.dismissAll();
          this.limpiarInputsIdiomas();
          this.getListaIdiomas(this.newRegistrarIdiomas.CVE_EMPLEADO);
+        
         // this.getInfoEscolar();
        },
-       err => console.log(err)
+       err => {
+          Swal.fire(
+            'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+            'Si persisten los problemas comuníquese con el administrador',
+            'error'
+          );
+          console.log(err)
+       }
        
      );
   }
@@ -857,15 +964,50 @@ export class EditoNewDataComponent implements OnInit {
 
   async validacionInfoIdiomas(){
     var DI = this.newRegistrarIdiomas;
+    
     if(DI.IDIOMA != '' && DI.LECTURA != '' && DI.ESCRITURA != '' && DI.CONVERSACION != ''){
       console.log('todos los inputs llenos');
-      this.putInfoIdiomas();
-      
 
+      if((DI.LECTURA >= 1 && DI.LECTURA <= 100)&&(DI.ESCRITURA >= 1 && DI.ESCRITURA <= 100)&&(DI.CONVERSACION >= 1 && DI.CONVERSACION <= 100)){
+        this.putInfoIdiomas();
+      }else{
+        if(DI.LECTURA < 1 || DI.LECTURA > 100){
+          Swal.fire(
+            '',
+            'El valor "LECTURA" es inválido',
+            'info'
+          )
+  
+        }
+
+        if(DI.ESCRITURA < 1 || DI.ESCRITURA > 100){
+          Swal.fire(
+            '',
+            'El valor "ESCRITURA" es inválido',
+            'info'
+          )
+  
+        }
+
+        if(DI.CONVERSACION < 1 || DI.CONVERSACION > 100){
+          Swal.fire(
+            '',
+            'El valor "CONVERSACION" es inválido',
+            'info'
+          )
+  
+        }
+
+      }
+      
     }else{
       console.log('alguno vacio');
-      
-      alert('Favor de llenar todos los campos requeridos');
+      Swal.fire(
+        '',
+        'Favor de llenar todos los campos requeridos',
+        'info'
+      )
+      //alert('Favor de llenar todos los campos requeridos');
     }
 
   }
@@ -892,8 +1034,15 @@ export class EditoNewDataComponent implements OnInit {
     
     await this.datosDocumentosService.editarDocumentos(this.newRegisDocumentos).subscribe(
        res=>{
-         alert("Se han guardado los cambios");
+          Swal.fire(
+            'EL REGISTRO FUE EXITOSO!',
+            'Los documentos fueron actualizados',
+            'success'
+          )
+         //alert("Se han guardado los cambios");
+         this.modal.dismissAll();
          this.limpiarInputsDocs();
+         this.DocSeleccionado = '';
          console.log(this.newRegisDocumentos);
          
          //this.get(this.newRegistrarDatosEscolares.CVE_EMPLEADO);
@@ -901,7 +1050,12 @@ export class EditoNewDataComponent implements OnInit {
        },
        err => {
          console.log(err);
-         alert("Ha ocurrido un error, intente nuevamente");
+          Swal.fire(
+              'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+              'Si persisten los problemas comuníquese con el administrador',
+              'error'
+            )
+         //alert("Ha ocurrido un error, intente nuevamente");
        }
        
      );
@@ -915,17 +1069,32 @@ export class EditoNewDataComponent implements OnInit {
 
     }else{
       if(this.newRegisDocumentos.TIPO == 0 &&  this.DocSeleccionado != ''){
-        alert('Favor de especificar el tipo de documento');
+        Swal.fire(
+          '',
+          'Favor de especificar el tipo de documento',
+          'info'
+        )
+        //alert('Favor de especificar el tipo de documento');
 
       }
 
       if(this.newRegisDocumentos.TIPO != 0 && this.DocSeleccionado == ''){
-        alert('Aún no ha seleccionado un archivo');
+        Swal.fire(
+          '',
+          'Aún no ha seleccionado un archivo',
+          'info'
+        )
+       //alert('Aún no ha seleccionado un archivo');
 
       }
 
       if(this.newRegisDocumentos.TIPO == 0 && this.DocSeleccionado == ''){
-        alert('Favor de llenar todos los datos requiridos');
+        Swal.fire(
+          '',
+          'Favor de llenar todos los datos requiridos',
+          'info'
+        )
+        //alert('Favor de llenar todos los datos requiridos');
       }
 
     }
@@ -943,8 +1112,8 @@ export class EditoNewDataComponent implements OnInit {
     this.DocSeleccionado = img.base;
       
       console.log('previzuliazacion');
-      this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/png;base64,","");
-      this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/jpeg;base64,","");
+      this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:application/pdf;base64,","");
+      //this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/jpeg;base64,","");
       console.log(this.previzualizacionDoc);
     
     });
@@ -1025,7 +1194,7 @@ bufferToBase64ImageSourceNewRegis(buffer: any) {
     return data + String.fromCharCode(byte);
   }, ''));
   
-  console.log('data:image/jpg;base64, ');
+  console.log('data:application/pdf;base64, ');
   console.log(Datos);
   var quita1er = Datos.slice(1);
   console.log('bytes', Bytes);
@@ -1034,11 +1203,11 @@ bufferToBase64ImageSourceNewRegis(buffer: any) {
   console.log('quitar', quita1er);
   
   //AQUI SE LE PASA BASE64STRING EN VEZ DE QUITA1ER SE PUEDE PONER UN IF 
-  this.previzualizacionDoc = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + quita1er);
+  this.previzualizacionDoc = 'data:application/pdf;base64, ' + quita1er; //this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + quita1er);
   console.log('buffertobase');
   
   console.log(this.previzualizacionDoc);
-  return this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + quita1er);
+  return this.sanitizer.bypassSecurityTrustUrl('data:application/pdf;base64, ' + quita1er);
 }
 
 

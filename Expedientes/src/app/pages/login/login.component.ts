@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import Swal from 'sweetalert2';
 
 import {DatosLogin,LoginServiceService} from '../../services/login-service.service'
 
@@ -46,16 +47,31 @@ export class LoginComponent implements OnInit {
     await this.datosLoginService.postInicioSesion(this.newDatosUsuario).subscribe(
       res=>{
         this.listaResLogin = res;
+        console.log(this.listaResLogin);
+        
 
         if(this.listaResLogin.accessToken === 'SinToken'){
           console.log(this.listaResLogin.accessToken);
-          alert(this.listaResLogin.message);
+          Swal.fire(
+            'ERROR',
+            `${this.listaResLogin.message}`,
+            'error'
+          )
+          //alert(this.listaResLogin.message);
           
 
         }else{
+          //otro if para ver qe tipo de usuario es si es capturista esto y si es archivo direccionar a 
+          //otra page vista del hildo, si no es ninguno de los 2 alert qe no tiene acceso a ese sistema
           console.log(this.listaResLogin.accessToken);
-          alert(this.listaResLogin.message);
-          this.cookieService.set('token_access',this.listaResLogin.accessToken, 4, '/');
+          Swal.fire(
+            '',
+            `${this.listaResLogin.message}`
+            
+          )
+          //alert(this.listaResLogin.message);
+          this.cookieService.set('token_access',this.listaResLogin.accessToken, 0, '/');
+          this.cookieService.set('rol_user',this.listaResLogin.rol , 0, '/');
           this.router.navigateByUrl('registro-new-data');
 
         }

@@ -29,9 +29,11 @@
     "jspdf": "^2.5.1",
     "ng2-pdf-viewer": "^9.0.0",
     "ngx-cookie-service": "^13.2.0",
+    "pdf-viewer": "^0.8.1",
     "pdfmake": "^0.2.5",
     "rxjs": "~7.5.0",
     "stream": "^0.0.2",
+    "sweetalert2": "^11.4.17",
     "tslib": "^2.3.0",
     "yargs": "^17.4.0",
     "zone.js": "~0.11.4"

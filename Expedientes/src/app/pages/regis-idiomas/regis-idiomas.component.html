@@ -5,7 +5,7 @@
 <br><br>
 <label><b>Nombre: </b>un nombre</label>
 <br><br>
-<form class="form-inline" role="form">
+<!--<form class="form-inline" role="form">
     <div class="row">
         <div class="col-4">
             <label class="form-label" for="">Idioma</label>
@@ -28,9 +28,9 @@
         
             
     </div>
-</form>
+</form>-->
 <br>
-<button class="btn btn-success">Agregar</button>
+<!--<button class="btn btn-success">Agregar</button>-->
 <br>
 <br>
 
@@ -39,26 +39,26 @@
     <thead class="thead">
       <tr>
         
-        <th>Idioma</th>
-        <th>Lectura</th>
-        <th>Escritura</th>
-        <th>Conversación</th>
+        <th>CVE_EMPLEADO</th>
+        <th>PUESTO</th>
+        <th>FECHA INICIO ADSCRIPCION</th>
         
       </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>English</td>
-            <td>50% </td>
-            <td>30%</td>
-            <td>40%</td>
-
+        <tr *ngFor = "let adsActual of ListaTop1PorEmpleado">
+            <td>{{adsActual.CVE_EMPLEADO}}</td>
+            <td>{{adsActual.PUESTO_FUNCIONAL}} </td>
+            <td>{{adsActual.fch_iniAdsc}}</td>
         </tr>
+        <tr></tr>
     </tbody>
   </table>
   <br><br><br>
 
-  <button  class="btn btn-success">Listo</button>
-  <button  class="btn btn-danger">Cerrar
-      
-  </button>
+  <button  class="btn btn-success" (click)="traerNumerosEmpleados()">TRAER CVES DE EMPLEADOS</button>
+  <button  class="btn btn-danger" (click)="traerTopByCveAndLlenarTable1000()">LLENAR TABLA1000</button>
+  <button  class="btn btn-danger" (click)="traerTopByCveAndLlenarTable1000a2()">LLENAR TABLA2000</button>
+  <button  class="btn btn-danger" (click)="traerTopByCveAndLlenarTable1000a3()">LLENAR TABLA3000</button>
+  <button  class="btn btn-danger" (click)="traerTopByCveAndLlenarTable1000a4()">LLENAR TABLA4000</button>
+  <button  class="btn btn-danger" (click)="traerTopByCveAndLlenarTable1000a4915()">LLENAR TABLA4915</button>

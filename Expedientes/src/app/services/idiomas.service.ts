@@ -16,6 +16,11 @@ export class IdiomasService {
   urlGetIdiomasByCveEmp = 'http://localhost:5000/idiomas/get-idiomas-cve/';
   urlPutIdiomas = 'http://localhost:5000/idiomas/put';
 
+
+  //____________DATA FABIAN_________________
+  urlGetNumerosEmpleados = 'http://localhost:5000/fabian/getNumEmp';
+  urlGetTop1ByCveEmpleados = 'http://localhost:5000/fabian/getTopByCve/';
+
   constructor(private http:HttpClient) { }
 
 
@@ -38,6 +43,18 @@ export class IdiomasService {
     return this.http.put(this.urlPutIdiomas, idiomasData);
   }
 
+
+
+  //__________________________________________________________________________________
+  //        API PARA LOS DATOS DEL FABIAN 
+
+
+  getTop1ByCveFabian(CVE_EMPLEADO: any){
+    return this.http.get(this.urlGetTop1ByCveEmpleados + CVE_EMPLEADO);
+  }
+  getNumEmpleadosFabian(){
+    return this.http.get(this.urlGetNumerosEmpleados);
+  }
 
 
 }

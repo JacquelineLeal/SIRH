@@ -1,4 +1,5 @@
-<br><br><h3>Editar información general</h3><br><br>
+<app-navbar></app-navbar><br><br><br>
+<h4>Editar / Actualizar información de personal existente</h4><br><br>
 
 <form class="form-inline" role="form">
     <div class="row">
@@ -27,7 +28,7 @@
 
     </div>
     <br><br>
-</form>
+</form> 
 
 
 <table class="table">
@@ -49,11 +50,11 @@
             <td>{{nombre.APE_MATERNO}}</td>
             <td>{{nombre.ESTATUS_NAME}}</td>
             <td>
-                <button type="button" class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Información personal" (click)="abrirModalEditInfoPersonal(editInfoPersonal, nombre.CVE_EMPLEADO)">
+                <!--<button type="button" class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Información personal" (click)="abrirModalEditInfoPersonal(editInfoPersonal, nombre.CVE_EMPLEADO)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-person-fill" viewBox="0 0 16 16">
                         <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm-1 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-3 4c2.623 0 4.146.826 5 1.755V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-1.245C3.854 11.825 5.377 11 8 11z"/>
                       </svg>
-                  </button>
+                  </button>-->
                   <button type="button" class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Información Escolar" (click)="abrirModalEditInfoEscolar(editInfoEscolar, nombre.CVE_EMPLEADO,nombre.NOMBRE,nombre.APE_PATERNO,nombre.APE_MATERNO)">
                     <svg xmlns= "http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journals" viewBox="0 0 16 16">
                         <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2z"/>
@@ -316,7 +317,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-info" (click)="validacionInfoEscolar(); modal.close()">Actualizar</button>
+        <button type="submit" class="btn btn-info" (click)="validacionInfoEscolar()">Actualizar</button>
         <button type="submit" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
     </div>
 
@@ -339,16 +340,16 @@
                 </div>
                 <div class="form-group col-2">
                     <label class="form-label" for="">Lectura(%):</label> 
-                    <input type="text" id="" class="form-control"  placeholder="Lectura"  name="LECTURA" [(ngModel)]="newRegistrarIdiomas.LECTURA"/> 
+                    <input type="number" id="" class="form-control"  placeholder="Lectura"  name="LECTURA" [(ngModel)]="newRegistrarIdiomas.LECTURA"/> 
                 </div>
                 <div class="form-group col-2">
                     <label class="form-label" for="">Escritura(%):</label>
-                    <input type="text" id="" class="form-control"  placeholder="Escritura" name="ESCRITURA" [(ngModel)]="newRegistrarIdiomas.ESCRITURA" /> 
+                    <input type="number" id="" class="form-control"  placeholder="Escritura" name="ESCRITURA" [(ngModel)]="newRegistrarIdiomas.ESCRITURA" /> 
         
                 </div>
                 <div class="form-group col-2">
                     <label class="form-label" for="">Conversación(%):</label>
-                    <input type="text" id="" class="form-control"  placeholder="Conversación" name="CONVERSACION" [(ngModel)]="newRegistrarIdiomas.CONVERSACION" /> 
+                    <input type="number" id="" class="form-control"  placeholder="Conversación" name="CONVERSACION" [(ngModel)]="newRegistrarIdiomas.CONVERSACION" /> 
         
                 </div>
                 
@@ -387,16 +388,25 @@
                 </div>
                 <div class="col-5">
                     <label>Elegir archivo:</label>
-                    <input class="form-control" (change)="capturarArchivo($event)" type="file" name="DOCUMENTO" ><br>
+                    <input class="form-control" (change)="capturarArchivo($event)" type="file" name="DOCUMENTO" accept=".pdf" ><br>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-3"></div>
+                <div class="col-1"></div>
 
-                <div class="col-6">
-                    <h3>Previzualizacion</h3>
-                    <img [src]="previzualizacionDoc" width="100%" height="450px"  >  
+                <div class="col-8"  *ngIf="tipoDoc == 'NEW2022' ; else imagenesRegisOlds">
+                    <div class="previzualizacion">
+                        <h3>Previzualizacion</h3>
+                        <pdf-viewer [src]="previzualizacionDoc" 
+                        [render-text]="true"
+                        [original-size]="false" 
+                        style="width: 100%; height: 100%"></pdf-viewer>
+
+                    </div>
+                    
+
+                   <!-- <img [src]="previzualizacionDoc" width="100%" height="450px"  >  -->
                     <!-- <a href="{{previzualizacionDoc}}"
                         class="btn"
                         target="_blank"
@@ -405,8 +415,12 @@
 
                         
                 </div>
+                <div class="col-1"></div>
+                <ng-template #imagenesRegisOlds>
+                    <img [src]="previzualizacionDoc" width="100%" height="450px"> 
+                </ng-template>
 
-                <div class="col-3"></div>
+                <div class="col-2"></div>
 
             </div>
         </form>
@@ -415,7 +429,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-info" (click)="validacionInsertarDocumentos(); modal.close()">Actualizar</button>
+        <button type="submit" class="btn btn-info" (click)="validacionInsertarDocumentos()">Actualizar</button>
         <button type="submit" class="btn btn-danger" (click)="modal.close()">Cancelar</button>
     </div>
 

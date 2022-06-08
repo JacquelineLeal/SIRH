@@ -1,5 +1,6 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 
 
@@ -14,6 +15,9 @@ import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 })
 export class DatosInicialesExpedientesService {
   //VARIABLES PARA ALMACENAR LOS ID´S DE LA TABLA DATOS PERSONALES Y ID DE DOMICILIO PARA BUSCAR LOS DATOS Y PODER EDITAR
+
+   holi = environment.HOLI;
+   
    Id: String = '';
    IdDomicilio: String = '';
    IdEstudios : String = '';
@@ -47,6 +51,7 @@ export class DatosInicialesExpedientesService {
     SEXO:'',
     FECHA_NAC: this.date,
     EST_CIVIL:'',
+    SANGRE: '',
     CVE_RFC:'',
     CURP:'',
     CVE_ELECTOR:'',
@@ -94,7 +99,11 @@ export class DatosInicialesExpedientesService {
     ES_AGENTEMP_PERITO:'',
     IdEnlace: '',
     IdDomicilio: '',
-    IdComplemen: ''
+    IdComplemen: '',
+    IdMediaFiliacion: ''
+
+    
+
 
 
   /*  ESCOLARIDAD:'',
@@ -121,6 +130,7 @@ export class DatosInicialesExpedientesService {
     SEXO:'',
     FECHA_NAC: this.date,
     EST_CIVIL:'',
+    SANGRE: '',
     CVE_RFC:'',
     CURP:'',
     CVE_ELECTOR:'',
@@ -168,7 +178,8 @@ export class DatosInicialesExpedientesService {
     ES_AGENTEMP_PERITO:'',
     IdEnlace: '',
     IdDomicilio: '',
-    IdComplemen: ''
+    IdComplemen: '',
+    IdMediaFiliacion:''
 
 
   }
@@ -240,10 +251,26 @@ export class DatosInicialesExpedientesService {
   urlTraerDatosPDByIDParaEditar = 'http://localhost:5000/datospersonales/get-by-ids';
   
 //--------------------------------------------------------------------------------------------
+  urlPostDatosPDomComTRAMITE = 'http://localhost:5000/all-data/post-tramite';
 
   urlPostDatosPDomCom = 'http://localhost:5000/all-data/post';
-  urlPostUpdaDP_InsertDom_UpdaCom2 = 'http://localhost:5000/all-data/post-opcion-dos';
-  urlPostUpdaDP_UpdaDom_InsertCom3 = 'http://localhost:5000/all-data/post-opcion-tres';
+//  urlPostUpdaDP_InsertDom_UpdaCom2 = 'http://localhost:5000/all-data/post-opcion-dos';
+//  urlPostUpdaDP_UpdaDom_InsertCom3 = 'http://localhost:5000/all-data/post-opcion-tres';
+
+
+
+//____________NUEVAS OPCIONES__________________________________________________________
+
+
+url_OP1_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op1';
+url_OP2_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op2';
+url_OP3_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op3';
+url_OP4_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op4';
+url_OP5_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op5';
+url_OP6_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op6';
+url_OP7_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op7';
+url_OP8_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op8';
+
 
 
 
@@ -275,6 +302,8 @@ export class DatosInicialesExpedientesService {
   urlGetDatosPersonalesEdit = 'http://localhost:5000/edit/get-data-personal-edit/';
   urlGetDatosDomEdit = 'http://localhost:5000/edit/get-data-dom-edit/';
   urlGetDatosComplementariosEdit = 'http://localhost:5000/edit/get-data-complementarios-edit/';
+  urlGetDatosMediaFiliacionEdit = 'http://localhost:5000/edit/get-data-mediafiliacion-edit/';
+
 
 
 
@@ -329,13 +358,63 @@ export class DatosInicialesExpedientesService {
 
   //----------NUEVAS PETICIONES NEW DESING------------------
 
+  addDatosPDomComTRAMITE(datos:Datos){
+    return this.http.post(this.urlPostDatosPDomComTRAMITE, datos);
+  }
+
+
+  //............OPCIONEEEESSS..........................
 
   //OPCION 1
-  addDatosPDomCom(datos:Datos){
-    return this.http.post(this.urlPostDatosPDomCom, datos);
+  Op1_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP1_PostDatosPDomComMerdiaFil, datos);
   }
 
   //OPCION 2
+  Op2_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP2_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 3
+  Op3_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP3_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 4
+  Op4_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP4_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 5
+  Op5_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP5_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 6
+  Op6_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP6_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 7
+  Op7_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP7_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 8
+  Op8_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP8_PostDatosPDomComMerdiaFil, datos);
+  }
+
+
+
+
+
+ //OPCION 1
+ /* addDatosPDomCom(datos:Datos){
+    return this.http.post(this.urlPostDatosPDomCom, datos);
+  }*/
+
+ /*  //OPCION 2
   
 
   addDatosPDomComOPION2(datos:Datos){
@@ -345,7 +424,7 @@ export class DatosInicialesExpedientesService {
   //OPCION 3
   addDatosPDomComOPCION3(datos:Datos){
     return this.http.post(this.urlPostUpdaDP_UpdaDom_InsertCom3, datos);
-  }
+  }*/
 
 
 
@@ -392,6 +471,11 @@ export class DatosInicialesExpedientesService {
 
   GetDatosComplementariosEditar(CVE_EMPLEADO: any){
     return this.http.get(this.urlGetDatosComplementariosEdit + CVE_EMPLEADO)
+  }
+
+
+  GetDatosMediaFiliacionEditar(CVE_EMPLEADO: any){
+    return this.http.get(this.urlGetDatosMediaFiliacionEdit + CVE_EMPLEADO)
   }
 
 
@@ -471,6 +555,7 @@ export interface Datos{
   SEXO: String;
   FECHA_NAC: Date; 
   EST_CIVIL: String;
+  SANGRE: String;
   
   CVE_RFC: String;
   CURP: String;
@@ -517,7 +602,8 @@ export interface Datos{
 	ES_AGENTEMP_PERITO: String;
 	IdEnlace: String;
   IdDomicilio: String;
-  IdComplemen: String
+  IdComplemen: String;
+  IdMediaFiliacion: String
 }
 
 

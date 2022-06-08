@@ -30,14 +30,58 @@ const routes: Routes = [
     canActivate:[LoginguardGuard]
 
   },
-  {path:'list-agg-docs-expediente', component:ListAggDocsExpedienteComponent},
-  {path:'edit-info-personal', component:EditInfoPersonalComponent},
-  {path:'subir-docs-expediente', component: SubirDocsExpedienteComponent},
-  {path:'modal-subir-docs', component:ModalSubirDocsComponent},
-  {path:'ver-expediente',component:VerExpedienteComponent},
-  {path:'login',component:LoginComponent},
-  {path:'registrar-info-escolar', component:RegitroInfoEscolarComponent},
-  {path:'registrar-idiomas', component:RegisIdiomasComponent},
+  { path:'list-agg-docs-expediente', 
+    component:ListAggDocsExpedienteComponent,
+    data:{
+      role:'ARCHIVO'
+    },
+    canActivate:[LoginguardGuard]
+  },
+  { path:'edit-info-personal', 
+    component:EditInfoPersonalComponent,
+    data:{
+      role:'ARCHIVO'
+    },
+    canActivate:[LoginguardGuard]
+  },
+  { path:'subir-docs-expediente', 
+    component: SubirDocsExpedienteComponent,
+    data:{
+      role:'ARCHIVO'
+    },
+    canActivate:[LoginguardGuard]
+  },
+  { path:'modal-subir-docs', 
+    component:ModalSubirDocsComponent,
+    data:{
+      role:'ARCHIVO'
+    },
+    canActivate:[LoginguardGuard]
+  },
+  { path:'ver-expediente',
+    component:VerExpedienteComponent,
+    data:{
+      role:'ARCHIVO'
+    },
+    canActivate:[LoginguardGuard]
+  },
+  { path:'login',
+    component:LoginComponent
+  },
+  { path:'registrar-info-escolar', 
+    component:RegitroInfoEscolarComponent,
+    data:{
+      role:'ARCHIVO'
+    },
+    canActivate:[LoginguardGuard]
+  },
+  { path:'registrar-idiomas', 
+    component:RegisIdiomasComponent,
+    data:{
+      role:'ARCHIVO'
+    },
+    canActivate:[LoginguardGuard]
+  },
 
   { path: 'registro-new-data', 
     component: RegistroNewDataComponent,
@@ -63,7 +107,7 @@ const routes: Routes = [
   { path: 'registro-info-personal-existente', 
     component: RegistroInfoExisPersonalComponent,
     data:{
-      role:'CAPTURISTA'
+      role:'CAPTURISTA' 
     },
     canActivate:[LoginguardGuard]
   }

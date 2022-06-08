@@ -41,11 +41,21 @@
             
             <div class="col-3" >
                 <label class="form-label" for="EST_CIVIL">Estado Civil:</label>
-                    <select id="EST_CIVIL"  aria-placeholder="Seleccc" class="form-control" name="EST_CIVIL" [(ngModel)]="newRegistrarDatos.EST_CIVIL">
+                    <select id="EST_CIVIL"  aria-placeholder="Seleccionar" class="form-control" name="EST_CIVIL" [(ngModel)]="newRegistrarDatos.EST_CIVIL">
                         <option selected disabled>Seleccione...</option>  
                         <option  *ngFor = "let estadoCivil of listaEstadoCivil" value={{estadoCivil.CVE_CIV}}>{{estadoCivil.EDO_CIV}}</option>
                     </select>  
             </div>
+
+            <div class="col-2">
+                <label class="form-label" for="SANGRE">Tipo de sangre:</label>
+                <select type="text" id="SANGRE" class="form-control"  placeholder="Tipo de sangre" name="SANGRE" [(ngModel)]="newRegistrarDatos.SANGRE">
+                    <option selected disabled>Seleccione...</option>  
+                    <option  *ngFor = "let sangre of listaTiposSangre" value={{sangre}}>{{sangre}}</option>
+                </select> 
+            </div>
+
+
 
         </div>
         <br>
@@ -133,15 +143,16 @@
         <div class="row">
             <div class="col-4">
                 <label class="form-label" for="EMAIL">Email:</label>
-                <input type="email" id="EMAIL" class="form-control" placeholder="Email" name="EMAIL" [(ngModel)]="newRegistrarDatos.EMAIL" />          
+                <input type="email" id="EMAIL" class="form-control" placeholder="Email" name="EMAIL" [(ngModel)]="newRegistrarDatos.EMAIL"  pattern=" [a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}"/>          
             </div>
             <div class="form-group col-2">
                 <label class="form-label" for="TELEFONO">Teléfono:</label> 
-                <input type="text" id="TELEFONO" class="form-control"  placeholder="Telefono"  name="TELEFONO" [(ngModel)]="newRegistrarDatos.TELEFONO"/> 
+                <input type="number" id="TELEFONO" class="form-control"  placeholder="Telefono"  name="TELEFONO" [(ngModel)]="newRegistrarDatos.TELEFONO" /> 
+
             </div>
             <div class="form-group col-2">
                 <label class="form-label" for="CELULAR">Celular:</label>
-                <input type="text" id="CELULAR" class="form-control"  placeholder="Celular" name="CELULAR" [(ngModel)]="newRegistrarDatos.CELULAR" /> 
+                <input type="number" id="CELULAR" class="form-control"  placeholder="Celular" name="CELULAR" [(ngModel)]="newRegistrarDatos.CELULAR" /> 
 
             </div>
             
@@ -176,7 +187,7 @@
         <div class="row">
             <div class="form-group col-1">
                 <label class="form-label" for="NO_EXTERIOR">No.Exterior:</label>
-                <input type="text" id="NO_EXTERIOR" class="form-control"  placeholder="Ext" name="NO_EXTERIOR" [(ngModel)]="newRegistrarDatos.NO_EXTERIOR"/>
+                <input type="number" id="NO_EXTERIOR" class="form-control"  placeholder="Ext" name="NO_EXTERIOR" [(ngModel)]="newRegistrarDatos.NO_EXTERIOR"/>
 
             </div>
             <div class="form-group col-1">
@@ -192,7 +203,7 @@
 
             <div class="form-group col-2">
                 <label class="form-label" for="CODIGO_POSTAL">Código Postal:</label>
-                <input type="text" id="CODIGO_POSTAL" class="form-control"  placeholder="Codigo Postal" name="CODIGO_POSTAL" [(ngModel)]="newRegistrarDatos.CODIGO_POSTAL" />
+                <input type="number" id="CODIGO_POSTAL" class="form-control"  placeholder="Codigo Postal" name="CODIGO_POSTAL" [(ngModel)]="newRegistrarDatos.CODIGO_POSTAL" />
 
 
             </div>
@@ -244,11 +255,15 @@
                     <input class="form-check-input" type="radio" name="PERTENECE_ETNIA" id="radioPerteneceEtdniaTrue" (change)="radioChangePerteneceEtnia($event)" [(ngModel)]="newRegistrarDatos.PERTENECE_ETNIA" value="1" >
                     <label class="form-check-label" for="">Si</label>
                   </div>
+                  
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="PERTENECE_ETNIA" id="radioPerteneceEtdniaFalse" (change)="radioChangePerteneceEtnia($event)" [(ngModel)]="newRegistrarDatos.PERTENECE_ETNIA" value="0">
                     <label class="form-check-label" for="inlineRadio2">No</label>
                   </div><br>
-                  <input type="text" id="" class="form-control"  placeholder="Especifique " name="NOM_ETNIA" [(ngModel)]="newRegistrarDatos.NOM_ETNIA"/>  
+                  <div  *ngIf="newRegistrarDatos.PERTENECE_ETNIA == 1">
+                    <input type="text" id="" class="form-control"  placeholder="Especifique " name="NOM_ETNIA" [(ngModel)]="newRegistrarDatos.NOM_ETNIA"/> 
+                  </div>
+                   
             </div>  
     
         </div>
@@ -264,7 +279,10 @@
                     <input class="form-check-input" type="radio" name="HABLA_LEN_INDIGENA" id="radioHablaLenIndigenaF" (change)="radioChangeHablaInd($event)" [(ngModel)]="newRegistrarDatos.HABLA_LEN_INDIGENA" value="0">
                     <label class="form-check-label" for="inlineRadio2">No</label>
                 </div><br>
-                <input type="text" id="" class="form-control"  placeholder="Especifique" name="LENGUA_INDIGENA" [(ngModel)]="newRegistrarDatos.LENGUA_INDIGENA" />  
+                <div  *ngIf="newRegistrarDatos.HABLA_LEN_INDIGENA == 1">
+                    <input type="text" id="" class="form-control"  placeholder="Especifique" name="LENGUA_INDIGENA" [(ngModel)]="newRegistrarDatos.LENGUA_INDIGENA" />  
+                </div>
+                
                 <br><br>
            
             </div>
@@ -306,7 +324,12 @@
                     <input class="form-check-input" type="radio" name="TIENE_DISCAPACIDAD" id="radioDiscapacidadF" [(ngModel)]="newRegistrarDatos.TIENE_DISCAPACIDAD" value="0">
                     <label class="form-check-label" for="inlineRadio2">No</label>
                 </div><br>
-                <input type="text" id="" class="form-control"  placeholder="Especifique" name="NOM_DISCAPACIDAD"  [(ngModel)]="newRegistrarDatos.NOM_DISCAPACIDAD"/>  
+                <div  *ngIf="newRegistrarDatos.TIENE_DISCAPACIDAD == 1">
+                    <input type="text" id="" class="form-control"  placeholder="Especifique" name="NOM_DISCAPACIDAD"  [(ngModel)]="newRegistrarDatos.NOM_DISCAPACIDAD"/> 
+                </div>
+
+                
+                 
                 <br><br>
            
             </div>

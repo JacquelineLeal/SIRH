@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
 
 
 
@@ -11,6 +12,7 @@ import{DatosIdiomas ,IdiomasService} from '../../services/idiomas.service';
 import {DatosDocumentos, DocumentosService } from 'src/app/services/documentos.service';
 
 import { DomSanitizer } from '@angular/platform-browser';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-registro-info-exis-personal',
@@ -24,6 +26,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
   ListaDatosPersonales: any =[];
   listaEscolaridad:any = [];
   listaIdiomas: any = [];
+  listaMediaFil: any =[];
   previzualizacionDoc: any = [];
 
   listaDocsByCveEmp : any = [];
@@ -31,6 +34,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
 
   datosDomicilio: any = [];
   datosComplementarios: any = [];
+  listaMediaFilLength: number;
   datosDomicilioLength: number;
   datosComplemenLength: number;
 
@@ -160,6 +164,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
         this.datosInicialesService.newRegistrarDatos.SEXO = '';
       // this.datosInicialesService.newRegistrarDatos.FECHA_NAC = ;
         this.datosInicialesService.newRegistrarDatos.EST_CIVIL = '';
+        this.datosInicialesService.newRegistrarDatos.SANGRE = '';
         this.datosInicialesService.newRegistrarDatos.CVE_RFC = ''
         this.datosInicialesService.newRegistrarDatos.CURP = '';
         this.datosInicialesService.newRegistrarDatos.CVE_ELECTOR = '';
@@ -246,7 +251,24 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
                     this.datosComplemenLength = Object.keys(this.datosComplementarios).length;
 
                     if(this.datosComplemenLength == 0){
-                      this.modal.open(regisInfoPersonal,{size:'xl'});
+                      
+                      //TRAER EL SANGRE
+                      this.datosInicialesService.GetDatosMediaFiliacionEditar(CVE_EMPLEADO).subscribe(
+                        resMediaFil=>{
+                          this.listaMediaFil = resMediaFil;
+                          console.log('MEDIAFIL',this.listaMediaFil);
+                          this.listaMediaFilLength = Object.keys(this.listaMediaFil).length;
+                          if(this.listaMediaFilLength == 0){
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }else{
+                            this.datosInicialesService.newRegistrarDatos.SANGRE = this.listaMediaFil[0].SANGRE;
+                            this.datosInicialesService.newRegistrarDatos.IdMediaFiliacion = this.listaMediaFil[0].IdMediaFiliacion;
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }
+                        }
+                      )
 
 
                     }else{
@@ -261,7 +283,25 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
                       this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = this.datosComplementarios[0].ES_AGENTEMP_PERITO;
                       this.datosInicialesService.newRegistrarDatos.IdEnlace = this.datosComplementarios[0].IdEnlace;
                   
-                      this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                      //TRAER EL SANGRE
+                      this.datosInicialesService.GetDatosMediaFiliacionEditar(CVE_EMPLEADO).subscribe(
+                        resMediaFil=>{
+                          this.listaMediaFil = resMediaFil;
+                          console.log('MEDIAFIL',this.listaMediaFil);
+                          this.listaMediaFilLength = Object.keys(this.listaMediaFil).length;
+                          if(this.listaMediaFilLength == 0){
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }else{
+                            this.datosInicialesService.newRegistrarDatos.SANGRE = this.listaMediaFil[0].SANGRE;
+                            this.datosInicialesService.newRegistrarDatos.IdMediaFiliacion = this.listaMediaFil[0].IdMediaFiliacion;
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }
+                        }
+                      )
+                      //this.modal.open(regisInfoPersonal,{size:'xl'});
 
 
                     }
@@ -289,12 +329,29 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     
 
                 this.datosInicialesService.GetDatosComplementariosEditar(CVE_EMPLEADO).subscribe(
-                  resCom=>{
+                  resCom=>{ 
                     this.datosComplementarios = resCom;
                     this.datosComplemenLength = Object.keys(this.datosComplementarios).length;
 
                     if(this.datosComplemenLength == 0){
-                      this.modal.open(regisInfoPersonal,{size:'xl'});
+                     // this.modal.open(regisInfoPersonal,{size:'xl'});
+                      //TRAER EL SANGRE
+                      this.datosInicialesService.GetDatosMediaFiliacionEditar(CVE_EMPLEADO).subscribe(
+                        resMediaFil=>{
+                          this.listaMediaFil = resMediaFil;
+                          console.log('MEDIAFIL',this.listaMediaFil);
+                          this.listaMediaFilLength = Object.keys(this.listaMediaFil).length;
+                          if(this.listaMediaFilLength == 0){
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }else{
+                            this.datosInicialesService.newRegistrarDatos.SANGRE = this.listaMediaFil[0].SANGRE;
+                            this.datosInicialesService.newRegistrarDatos.IdMediaFiliacion = this.listaMediaFil[0].IdMediaFiliacion;
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }
+                        }
+                      )
 
                     }else{
                       this.datosInicialesService.newRegistrarDatos.IdComplemen = this.datosComplementarios[0].IdComplemen;
@@ -307,7 +364,27 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
                       this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = this.datosComplementarios[0].NOM_DISCAPACIDAD;
                       this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = this.datosComplementarios[0].ES_AGENTEMP_PERITO;
                       this.datosInicialesService.newRegistrarDatos.IdEnlace = this.ListaDatosPersonales[0].Id;
-                      this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                      //TRAER EL SANGRE
+                      this.datosInicialesService.GetDatosMediaFiliacionEditar(CVE_EMPLEADO).subscribe(
+                        resMediaFil=>{
+                          this.listaMediaFil = resMediaFil;
+                          this.listaMediaFilLength = Object.keys(this.listaMediaFil).length;
+                          console.log('MEDIAFIL',this.listaMediaFil);
+                          
+                          if(this.listaMediaFilLength == 0){
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }else{
+                            this.datosInicialesService.newRegistrarDatos.SANGRE = this.listaMediaFil[0].SANGRE;
+                            this.datosInicialesService.newRegistrarDatos.IdMediaFiliacion = this.listaMediaFil[0].IdMediaFiliacion;
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }
+                        }
+                      )
+
+                      //this.modal.open(regisInfoPersonal,{size:'xl'});
                     }
                   }
                 )
@@ -320,7 +397,12 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
           //this.modal.open(regisInfoPersonal,{size:'xl
         },
         err=>{
-          alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+          Swal.fire(
+            'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+            'Si persisten los problemas comuníquese con el administrador',
+            'error'
+          )
+          //alert("Ha ocurrido un error, favor de intentarlo nuevamente")
           console.log(err);
           
         }
@@ -485,10 +567,17 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
 
   buscarData(){ 
     console.log(this.valoresInputBusqueda);
+
     
     if(this.valoresInputBusqueda.CVE_EMPLEADO == '' && this.valoresInputBusqueda.NOMBRE == '' && this.valoresInputBusqueda.APE_PATERNO == '' && this.valoresInputBusqueda.APE_MATERNO == '' ){
       console.log('TODOS VACIOS');
-      alert('No hay datos para buscar');
+      Swal.fire(
+        '',
+        'Aún no ha ingresado datos para buscar',
+        'info'
+      );
+      this.listaPersonas = [];
+      //alert('No hay datos para buscar');
     }else{
       if(this.valoresInputBusqueda.CVE_EMPLEADO != '' && this.valoresInputBusqueda.NOMBRE == '' && this.valoresInputBusqueda.APE_PATERNO == '' && this.valoresInputBusqueda.APE_MATERNO == ''){
         console.log('cveEmpleado with valor');
@@ -509,7 +598,37 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
       if(this.valoresInputBusqueda.CVE_EMPLEADO == '' && this.valoresInputBusqueda.NOMBRE != '' && this.valoresInputBusqueda.APE_PATERNO != '' && this.valoresInputBusqueda.APE_MATERNO != ''){
         console.log('nombre, AP Y AM  with valor');
         this.getListaByNomCompleto();
-      } 
+      }
+
+      if(this.valoresInputBusqueda.CVE_EMPLEADO != '' && (this.valoresInputBusqueda.NOMBRE != '' || this.valoresInputBusqueda.APE_PATERNO != '' || this.valoresInputBusqueda.APE_MATERNO != '')){
+        Swal.fire({
+          title:'INFORMACIÓN NO VÁLIDA',
+          html:'La consultas que puede realizar son las siguientes:<br><br>'+
+                '<ol align="left"><li> Por <b>Número de empleado</b></li>'+
+                '<li>Por <b>Nombre</b></li>'+
+                '<li>Por <b>Nombre</b> + <b>Apellido Paterno</b></li>'+
+                '<li>Por <b>Nombre</b> + <b>Apellido Paterno</b> + <b>Apellido Materno</b></li></ol><br>',
+                
+          icon:'info'
+        });
+        this.listaPersonas = [];
+       // alert('busqueda incorrecta');
+      }
+
+      if((this.valoresInputBusqueda.CVE_EMPLEADO == '' && this.valoresInputBusqueda.NOMBRE == '' ) && (this.valoresInputBusqueda.APE_PATERNO != '' || this.valoresInputBusqueda.APE_MATERNO != '')){
+        //alert('2da busqueda incorrecta');
+        Swal.fire({
+          title:'INFORMACIÓN NO VÁLIDA',
+          html:'La consultas que puede realizar son las siguientes:<br>'+
+                '<ol align="left"><li> Por <b>número de empleado</b></li>'+
+                '<li>Por <b>Nombre</b></li>'+
+                '<li>Por <b>Nombre</b> + <b>Apellido Paterno</b></li>'+
+                '<li>Por <b>Nombre</b> + <b>Apellido Paterno</b> + <b>Apellido Materno</b></li></ol><br>',
+                
+          icon:'info'
+        });
+        this.listaPersonas = [];
+      }
     }
   }
 
@@ -518,6 +637,14 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     await this.datosInicialesService.getListaNomSearchByCve(this.valoresInputBusqueda).subscribe(
       res=>{
         this.listaPersonas = res;
+        if(Object.keys(this.listaPersonas).length == 0){
+          Swal.fire(
+            '',
+            'No se encontraron coincidencias',
+            'info'
+          );
+          
+        }
         console.log(this.listaPersonas);
         
       },
@@ -533,6 +660,14 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     await this.datosInicialesService.getListaNomSearchByNom(this.valoresInputBusqueda).subscribe(
       res=>{
         this.listaPersonas = res;
+        if(Object.keys(this.listaPersonas).length == 0){
+          Swal.fire(
+            '',
+            'No se encontraron coincidencias',
+            'info'
+          );
+          
+        }
         console.log(this.listaPersonas);
         
       },
@@ -549,6 +684,14 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     await this.datosInicialesService.getListaNomSearchByNomAP(this.valoresInputBusqueda).subscribe(
       res=>{
         this.listaPersonas = res;
+        if(Object.keys(this.listaPersonas).length == 0){
+          Swal.fire(
+            '',
+            'No se encontraron coincidencias',
+            'info'
+          );
+          
+        }
         console.log(this.listaPersonas);
         
       },
@@ -564,6 +707,14 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     await this.datosInicialesService.getListaNomSearchByNomComplet(this.valoresInputBusqueda).subscribe(
       res=>{
         this.listaPersonas = res;
+        if(Object.keys(this.listaPersonas).length == 0){
+          Swal.fire(
+            '',
+            'No se encontraron coincidencias',
+            'info'
+          );
+          
+        }
         console.log(this.listaPersonas);
         
       },
@@ -667,38 +818,77 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
       err =>{
         console.log(err);
         
-      }
+      } 
     )
   }
 
   ///-------------------------------------------------------------------------
-  clickBtnGuardarInfo(){
+ async clickBtnGuardarInfo(){
     if(this.datosDomicilioLength == 0){
-      //OPCION 1
+     
       if(this.datosComplemenLength == 0){
-        console.log('sin dom, sin comp');
-        this.postDatosPDomCom();
+
+        if(this.listaMediaFilLength == 0){
+          //OPCION 1
+          await this.Op1_PostDataDPDomComMediaFil();
+
+        }else{
+          if(this.listaMediaFilLength > 0){
+            //OPCION 2
+            await this.Op2_PostDataDPDomComMediaFil();
+
+          }
+        }
+
         
       }else{
-        //OPCION 2
-        if(this.datosComplemenLength >0){
+        if(this.datosComplemenLength > 0){
+          if(this.listaMediaFilLength == 0){
+            //OPCION 3
+            await this.Op3_PostDataDPDomComMediaFil();
 
-          console.log('sin dom, con comp');
-          this.postDatosPDomComOpcion2();
+          }else{
+            if(this.listaMediaFilLength > 0){
+              //OPCION 4
+              await this.Op4_PostDataDPDomComMediaFil();
+  
+            }
+          }
+
         }
       }
 
     }else{
-      //OPCION 3
+      
       if(this.datosComplemenLength == 0){
-        console.log('con dom, sin comp');
-        this.postDatosPDomComOpcion3();
+        if(this.listaMediaFilLength == 0){
+          //OPCION 5
+          await this.Op5_PostDataDPDomComMediaFil();
+
+        }else{
+          if(this.listaMediaFilLength > 0){
+            //OPCION 6
+            await this.Op6_PostDataDPDomComMediaFil();
+
+          }
+        }
+       
 
       }else{
-        //OPCION 4
+       
         if(this.datosComplemenLength >0){
-          console.log('con dom, con comp');
-          this.putInfoPersonalDomComData();
+          if(this.listaMediaFilLength == 0){
+            //OPCION 7
+            await this.Op7_PostDataDPDomComMediaFil();
+
+          }else{
+            if(this.listaMediaFilLength > 0){
+              //OPCION 8
+              await this.Op8_PostDataDPDomComMediaFil();
+  
+            }
+          }
+         
 
         }
 
@@ -708,11 +898,118 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
 
   }
 
+  async ValidarEmailTelCel(){
+    var DI = this.datosInicialesService.ValoresInputsRegistroDataPD;
+    var expRegEmail =  /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+    var esValido = expRegEmail.test(DI.EMAIL);
+    var celLenght = DI.CELULAR.toString().length;
+    var telLenght = DI.TELEFONO.toString().length;
+    this.datosInicialesService.ValoresInputsRegistroDataPD.TELEFONO = this.datosInicialesService.ValoresInputsRegistroDataPD.TELEFONO.toString();
+    this.datosInicialesService.ValoresInputsRegistroDataPD.CELULAR = this.datosInicialesService.ValoresInputsRegistroDataPD.CELULAR.toString();
+    console.log('ES NUMBER?', this.datosInicialesService.ValoresInputsRegistroDataPD.TELEFONO);
+    
+    if(esValido == true){
+      console.log('es valido email');
+
+      if(telLenght == 10){
+        if(celLenght == 10){
+          console.log('todo valido');
+         await this.clickBtnGuardarInfo();
+          
+        }else{
+          console.log('cel no valido');
+          Swal.fire(
+            'Dato ingresado en "Celular" no es válido',
+            'El campo "Celular" debe de ser de 10 caracteres',
+            'error'
+          )
+          
+
+        }
+        
+
+      }else{
+        if(celLenght == 10){
+          console.log('tell no valido');
+          Swal.fire(
+            'Dato ingresado en "Teléfono" no es válido',
+            'El campo "Teléfono" debe de ser de 10 caracteres',
+            'error'
+          )
+          
+        }else{
+          console.log('tel ni cel no valido');
+          Swal.fire(
+            'Datos ingresados en "Celular" y "Teléfono" no son válidos',
+            'Los campos deben de ser de 10 caracteres',
+            'error'
+          )
+          
+
+        }
+
+      }
+      console.log('LENGHT TEL', telLenght);
+      console.log('LENGHT CEL', celLenght);
+
+      
+
+      
+    }else{
+     
+      if(telLenght == 10){
+        if(celLenght == 10){
+          console.log('correo no valido');
+          Swal.fire(
+            'Dato ingresado en "Email" no es válido',
+            'Ejemplo: nombre@dominio.com',
+            'error'
+          )
+          
+        }else{
+          console.log('correo y cel no valido');
+          Swal.fire(
+            'Datos ingresado en "Email" y "Celular"  no son válidos',
+            'El campo "Celular" debe de ser de 10 caracteres, ejemplo de email: nombre@dominio.com ',
+            'error'
+          )
+          
+
+        }
+        
+
+      }else{
+        if(celLenght == 10){
+          console.log('correo no valido tell no valido');
+          Swal.fire(
+            'Datos ingresado en "Email" y "Teléfono"  no son válidos',
+            'El campo "Teléfono" debe de ser de 10 caracteres, ejemplo de email: nombre@dominio.com ',
+            'error'
+          )
+          
+        }else{
+          console.log('ni email ni tel ni cel no valido');
+          Swal.fire(
+            'Datos ingresado en "Email" , "Teléfono" y "Celular" no son válidos',
+            'los campos "Celular" y "Teléfono" deben de ser de 10 caracteres, ejemplo de email: nombre@dominio.com ',
+            'error'
+          )
+          
+
+        }
+
+      }
+
+      
+    }
+
+  }
+
   async validarInputsRegistroDP_DOM_COM(){
     var DI = this.datosInicialesService.ValoresInputsRegistroDataPD;
     console.log('NAMEEEE',DI.NOMBRE);
     if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != ''  && DI.FECHA_NAC != '' 
-      && DI.EST_CIVIL != '' && DI.CVE_RFC != '' && DI.CURP != '' && DI.CVE_ELECTOR != '' && DI.LICENCIA != ''
+      && DI.EST_CIVIL != '' && DI.SANGRE!='' &&  DI.CVE_RFC != '' && DI.CURP != '' && DI.CVE_ELECTOR != '' && DI.LICENCIA != ''
       && DI.PASAPORTE != '' && DI.CARTILLA != '' && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0 && DI.MUN_NAC != 0 && DI.NACIONALIDAD != 0
       
       && DI.EMAIL !='' && DI.TELEFONO != '' && DI.CELULAR != ''  && DI.CALLE != '' && DI.ENTRE_CALLE != '' && DI.Y_CALLE != '' 
@@ -723,12 +1020,13 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     ){
       //SO QUE 
       console.log('todos los inputs llenos, peticion post');
+      this.ValidarEmailTelCel();
       //await this.POSTclickBtnGuardarInfoModalRegisIP();
       
     }else{
 
       if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != ''  && DI.FECHA_NAC != '' 
-      && DI.EST_CIVIL != '' && DI.CVE_RFC != '' && DI.CURP != ''  && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0  && DI.NACIONALIDAD != 0
+      && DI.EST_CIVIL != '' && DI.SANGRE!='' && DI.CVE_RFC != '' && DI.CURP != ''  && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0  && DI.NACIONALIDAD != 0
       
       && DI.EMAIL !='' && DI.TELEFONO != '' && DI.CELULAR != ''  && DI.CALLE != '' && DI.ENTRE_CALLE != '' && DI.Y_CALLE != '' 
       && DI.NO_EXTERIOR != '' && DI.NO_INTERIOR != '' && DI.COLONIA !='' && DI.CODIGO_POSTAL != '' && DI.ENTIDAD != '' && DI.MUNICIPIO != ''  && DI.CIUDAD != ''
@@ -741,6 +1039,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
 
         //here
         console.log('make post with los nulos');
+        this.ValidarEmailTelCel();
        //await this.POSTclickBtnGuardarInfoModalRegisIP();
         
 
@@ -749,7 +1048,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
         //UNICOS CAMPOS QUE SE PUEDEN GUARDAR NULL SON
         //CVE_ELECTOR, LICENCIA,PASAPORTE,CARTILLA,MUN_NAC, NOMBRE_ETNIA, NOMBRE_LENGUA_INDIGENA, NOM_DISCAPACIDAD
         if(DI.NOMBRE == '' || DI.APE_PATERNO == '' || DI.APE_MATERNO == '' || DI.SEXO == ''  || DI.FECHA_NAC == '' 
-        || DI.EST_CIVIL == '' || DI.CVE_RFC == '' || DI.CURP == '' || DI.PAIS_NAC == 0 || DI.EDO_NAC == 0  || DI.NACIONALIDAD == 0
+        || DI.EST_CIVIL == '' || DI.SANGRE == '' || DI.CVE_RFC == '' || DI.CURP == '' || DI.PAIS_NAC == 0 || DI.EDO_NAC == 0  || DI.NACIONALIDAD == 0
         
         || DI.EMAIL =='' || DI.TELEFONO == '' || DI.CELULAR == ''  || DI.CALLE == '' || DI.ENTRE_CALLE == '' || DI.Y_CALLE == '' 
         || DI.NO_EXTERIOR == '' || DI.NO_INTERIOR == '' || DI.COLONIA =='' || DI.CODIGO_POSTAL == '' || DI.ENTIDAD == '' || DI.MUNICIPIO == ''  || DI.CIUDAD == ''
@@ -759,7 +1058,12 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
           //cualquiera vacio
         console.log('alguno vacio');
         console.log(DI);
-        alert('Favor de llenar todos los campos requeridos');
+        Swal.fire(
+          '',
+          'Favor de llenar todos los campos requeridos',
+          'info'
+        )
+        
 
 
         }
@@ -775,10 +1079,201 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
   }
 
 
+//OPCION 1
+async Op1_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op1_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      console.log(res); 
+      this.modal.dismissAll();
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
+ 
+//OPCION 2
+async Op2_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op2_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
 
+//OPCION 3
+async Op3_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op3_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
 
+//OPCION 4
+async Op4_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op4_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
 
-// OPCION 1
+//OPCION 5
+async Op5_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op5_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
+
+//OPCION 6
+async Op6_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op6_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
+
+//OPCION 7
+async Op7_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op7_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
+
+//OPCION 8
+async Op8_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op8_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(this.datosInicialesService.ValoresInputsRegistroDataPD);
+      
+      console.log(err);
+    }
+  )
+}
+
+/*   // OPCION 1
   async postDatosPDomCom(){
     await this.datosInicialesService.addDatosPDomCom(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
       res=>{
@@ -846,7 +1341,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
        err => console.log(err)
        
      );
-  }
+  }*/
 
 
 
@@ -856,7 +1351,12 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
   async  postInfoEscolar(){
     await this.datosEscolaresService.addInfoEscolar(this.newRegistrarDatosEscolares).subscribe(
       res=>{
-        alert("Datos registrados exitosamente");
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        )
+        //alert("Datos registrados exitosamente");
         this.limpiarInputsRegisInfoEsc();
         this.getListaEscolaridades(this.newRegistrarDatosEscolares.CVE_EMPLEADO);
        // this.getDatosEscolares(this.newRegistrarDatosEscolares.IdEnlace);
@@ -889,7 +1389,12 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
         if(DE.ESCOLARIDAD == '' || DE.ESCUELA == '' || DE.ESPECIALIDAD == '' || DE.TRATAMIENTO == '' || DE.FCH_INICIO == '' || DE.FCH_TERMINO == ''){
           //cualqiera vacio
           console.log('alguno vacio');
-          alert('Favor de llenar todos los campos requeridos');
+          Swal.fire(
+            '',
+            'Favor de llenar todos los campos requeridos',
+            'info'
+          )
+         // alert('Favor de llenar todos los campos requeridos');
         }
       }
 
@@ -905,13 +1410,23 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
   async postDatosIdiomas(){
     await this.datosIdiomasService.addIdiomas(this.newRegistrarIdiomas).subscribe(
       res=>{
-        alert("Datos registrados exitosamente");
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        )
+        //alert("Datos registrados exitosamente");
         this.limpiarInputsIdiomas();
         this.getListaIdiomas(this.newRegistrarIdiomas.CVE_EMPLEADO);
         //this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
       },
       err=>{
-        alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        //alert("Ha ocurrido un error, favor de intentarlo nuevamente")
         console.log(err);
         
       }
@@ -920,15 +1435,56 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
 
   async validacionInfoIdiomas(){
     var DI = this.newRegistrarIdiomas;
+    
     if(DI.IDIOMA != '' && DI.LECTURA != '' && DI.ESCRITURA != '' && DI.CONVERSACION != ''){
-      console.log('todos los inputs llenos');
-      this.postDatosIdiomas();
+        console.log('todos los inputs llenos');
+        console.log(DI);
       
 
+      if((DI.LECTURA >= 1 && DI.LECTURA <= 100)&&(DI.ESCRITURA >= 1 && DI.ESCRITURA <= 100)&&(DI.CONVERSACION >= 1 && DI.CONVERSACION <= 100)){
+        console.log('SI ENTRO');
+        
+        this.postDatosIdiomas();
+      }else{
+        if(DI.LECTURA < 1 || DI.LECTURA > 100){
+          Swal.fire(
+            '',
+            'El valor "LECTURA" es inválido',
+            'info'
+          )
+  
+        }
+
+        if(DI.ESCRITURA < 1 || DI.ESCRITURA > 100){
+          Swal.fire(
+            '',
+            'El valor "ESCRITURA" es inválido',
+            'info'
+          )
+  
+        }
+
+        if(DI.CONVERSACION < 1 || DI.CONVERSACION > 100){
+          Swal.fire(
+            '',
+            'El valor "CONVERSACION" es inválido',
+            'info'
+          )
+  
+        }
+        console.log('HI');
+        
+
+      }
+      
     }else{
       console.log('alguno vacio');
-      
-      alert('Favor de llenar todos los campos requeridos');
+      Swal.fire(
+        '',
+        'Favor de llenar todos los campos requeridos',
+        'info'
+      )
+      //alert('Favor de llenar todos los campos requeridos');
     }
 
   }
@@ -1001,7 +1557,8 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     this.extraerBase64(archivo).then((img: any) =>{
       this.previzualizacionDoc = img.base;
       console.log('previzuliazacion');
-      if(event.target.files[0].type == 'image/png'){
+      this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:application/pdf;base64,","");
+     /* if(event.target.files[0].type == 'image/png'){
         console.log('SOY PNG');
         this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/png;base64,","");
 
@@ -1009,7 +1566,7 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
         console.log('SOY JPEG');
         this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/jpeg;base64,","");
         
-      }
+      }*/
       
      
       
@@ -1068,14 +1625,24 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
     await this.datosDocumentosService.addDocumento(this.newRegisDocumentos).subscribe(
       
       res=>{
-        alert("Datos registrados exitosamente");
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        )
+        //alert("Datos registrados exitosamente");
         this.limpiarInputsDocs();
         this.getListaDocumentosCve(this.newRegisDocumentos.CVE_EMPLEADO);
         //this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
         ///this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
       },
       err=>{
-        alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        //alert("Ha ocurrido un error, favor de intentarlo nuevamente")
         console.log(err);
         
       }
@@ -1090,18 +1657,33 @@ export class RegistroInfoExisPersonalComponent implements OnInit {
 
     }else{
       if(this.newRegisDocumentos.TIPO == 0 && this.newRegisDocumentos.DOCUMENTO != ''){
-        alert('Favor de especificar el tipo de documento');
+        Swal.fire(
+          '',
+          'Favor de especificar el tipo de documento',
+          'info'
+        )
+        //alert('Favor de especificar el tipo de documento');
 
       }
 
       if(this.newRegisDocumentos.TIPO != 0 && this.newRegisDocumentos.DOCUMENTO == ''){
-        alert('Aún no ha seleccionado un archivo');
+        Swal.fire(
+          '',
+          'Aún no ha seleccionado un archivo',
+          'info'
+        )
+        //alert('Aún no ha seleccionado un archivo');
 
       }
 
       if(this.newRegisDocumentos.TIPO == 0 && this.newRegisDocumentos.DOCUMENTO == ''){
-        alert('Favor de llenar todos los datos requiridos');
-      }
+        Swal.fire(
+          '',
+          'Favor de llenar todos los campos requeridos',
+          'info'
+        )
+        //alert('Favor de llenar todos los datos requiridos');
+      } 
 
     }
   }

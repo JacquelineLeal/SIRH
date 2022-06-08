@@ -16,6 +16,7 @@ export class RegistrarUsuarioComponent implements OnInit {
   listaEstados: any = this.datosInicialesService.listaEstados;
   listaMunicipios: any = this.datosInicialesService.listaMunicipios;
   listaCiudades: any = this.datosInicialesService.listaCiudades;
+  listaTiposSangre = ['A+','A-','B+','B-','O+','O-','AB+','AB-'];
 
   arreglo:any = {};
   value: any ='';
@@ -78,6 +79,7 @@ export class RegistrarUsuarioComponent implements OnInit {
     this.valorInputRegistro = this.newRegistrarDatos;
     this.valorOutputRegistro.emit(this.valorInputRegistro);
     this.datosInicialesService.ValoresInputsRegistroDataPD = this.valorInputRegistro; 
+    //this.datosInicialesService.ValoresInputsRegistroDataPD.TELEFONO = this.newRegistrarDatos.TELEFONO.toString();
   }
 
   radioChangePerteneceEtnia(event:any){

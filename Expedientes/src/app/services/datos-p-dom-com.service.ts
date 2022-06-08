@@ -3,11 +3,12 @@ import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
-})
+}) 
 export class DatosPDomComService {
 
   urlGetListaNombresRegis = 'http://localhost:5000/registro-nombres/get';
   urlPostNombresToDP = 'http://localhost:5000/registro-nombres/post';
+  
   urlGetDataPersonalByCveEmp = 'http://localhost:5000/registro-nombres/get-data-personal-list/';
 
   constructor(private http:HttpClient) { }

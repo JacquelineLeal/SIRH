@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
 
  
 import {DatosEscolares, DatosEscolaresServiService } from 'src/app/services/datos-escolares-servi.service';
@@ -34,6 +35,7 @@ export class RegistroNewDataComponent implements OnInit {
   fileUrl: any;
   salida: any =[];
 
+  
   listaEstadoCivil: any = [];
   listaPaisNac: any = [];
   listaEstados: any = []; 
@@ -151,6 +153,7 @@ export class RegistroNewDataComponent implements OnInit {
     SEXO:'',
     FECHA_NAC: this.date,
     EST_CIVIL:'',
+    SANGRE:'',
     CVE_RFC:'',
     CURP:'',
     CVE_ELECTOR:'',
@@ -198,7 +201,8 @@ export class RegistroNewDataComponent implements OnInit {
     ES_AGENTEMP_PERITO:'',
     IdEnlace: '',
     IdDomicilio: '',
-    IdComplemen: ''
+    IdComplemen: '',
+    IdMediaFiliacion:''
 
 
   }
@@ -297,7 +301,7 @@ export class RegistroNewDataComponent implements OnInit {
     this.modal.open(confirmacionRegistros,{size:'md'});
 
   }
-  
+   
   async GetNombresRegistro(){
     await this.datosPDC.getListaNombresRegistrar().subscribe(
       res=>{
@@ -344,13 +348,39 @@ export class RegistroNewDataComponent implements OnInit {
  limpiarInputsDocs(){
    this.newRegisDocumentos.TIPO = 0;
    this.newRegisDocumentos.DOCUMENTO = '';
+ }  
+ 
+ async validacionInputsNombres(){
+   if(this.arrayForInsertDatosPer.NOMBRE =='' || this.arrayForInsertDatosPer.APE_PATERNO == '' || this.arrayForInsertDatosPer.APE_MATERNO == '' ){
+     console.log('alguno vacio');
+     Swal.fire(
+      '',
+      'Favor de llenar todos los valores',
+      'info'
+     )
+
+     //alert("Favor de llenar todos los valores");
+     
+   }else{
+     console.log('todo okay');
+     await this.PostNombresDatosPer();
+     
+   }
  }
 
-  async PostNombresDatosPerDomCom(){
+  async PostNombresDatosPer(){
     await this.datosPDC.agregarNombreDP(this.arrayForInsertDatosPer).subscribe(
       res=>{
 
         console.log(res);
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Continué capturando información eligiendo las opciones presentadas',
+          'success'
+        )
+
+
+       // alert("El registro fue exitoso, continué capturando información eligiendo las opciones presentadas.");
         this.GetNombresRegistro();
         this.arrayForInsertDatosPer.NOMBRE = '';
         this.arrayForInsertDatosPer.APE_PATERNO= '';
@@ -360,7 +390,13 @@ export class RegistroNewDataComponent implements OnInit {
       },
       err =>{ 
         console.log(err);
-        alert("Se ha generado un error, favor de intentarlo de nuevo");
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+
+        //alert("Se ha generado un error, favor de intentarlo de nuevo");
         
       }
       
@@ -368,7 +404,8 @@ export class RegistroNewDataComponent implements OnInit {
   }
 
   async clickBtnRegistroInfoP(regisInfoPersonal: any, Id:any, NOMBRE:any, APE_PATERNO:any,APE_MATERNO:any, FECHA_REGISTRO_DATA_PERSONAL:any, INFO_COMPLETA:any, FCH_UAC:any){
-    //await this.limpiarInputsRegistroIPDC(); 
+    
+   
     this.datosInicialesService.newRegistrarDatos.Id = Id;
     this.datosInicialesService.newRegistrarDatos.NOMBRE = NOMBRE;
     this.datosInicialesService.newRegistrarDatos.APE_PATERNO = APE_PATERNO;
@@ -376,6 +413,47 @@ export class RegistroNewDataComponent implements OnInit {
     this.datosInicialesService.newRegistrarDatos.FECHA_REGISTRO_DATA_PERSONAL = FECHA_REGISTRO_DATA_PERSONAL;
     this.datosInicialesService.newRegistrarDatos.INFO_COMPLETA = INFO_COMPLETA;
     this.datosInicialesService.newRegistrarDatos.FCH_UAC = FCH_UAC;
+    
+    
+    this.datosInicialesService.newRegistrarDatos.SEXO = '';
+    //this.datosInicialesService.newRegistrarDatos.FECHA_NAC = '';
+    this.datosInicialesService.newRegistrarDatos.EST_CIVIL = '';
+    this.datosInicialesService.newRegistrarDatos.SANGRE = '';
+    this.datosInicialesService.newRegistrarDatos.CVE_RFC = '';
+    this.datosInicialesService.newRegistrarDatos.CURP = '';
+    this.datosInicialesService.newRegistrarDatos.CVE_ELECTOR = '';
+    this.datosInicialesService.newRegistrarDatos.LICENCIA = '';
+    this.datosInicialesService.newRegistrarDatos.PASAPORTE = '';
+    this.datosInicialesService.newRegistrarDatos.CARTILLA = '';
+    this.datosInicialesService.newRegistrarDatos.PAIS_NAC = 0;
+    this.datosInicialesService.newRegistrarDatos.EDO_NAC = 0;
+    this.datosInicialesService.newRegistrarDatos.MUN_NAC = 0;
+    this.datosInicialesService.newRegistrarDatos.NACIONALIDAD = 0;
+
+    this.datosInicialesService.newRegistrarDatos.EMAIL = '';
+    this.datosInicialesService.newRegistrarDatos.TELEFONO = '';
+    this.datosInicialesService.newRegistrarDatos.CELULAR = '';
+
+    this.datosInicialesService.newRegistrarDatos.CALLE = '';
+    this.datosInicialesService.newRegistrarDatos.ENTRE_CALLE = '';
+    this.datosInicialesService.newRegistrarDatos.NO_EXTERIOR = '';
+    this.datosInicialesService.newRegistrarDatos.NO_INTERIOR = '';
+    this.datosInicialesService.newRegistrarDatos.COLONIA = '';
+    this.datosInicialesService.newRegistrarDatos.CODIGO_POSTAL = '';
+    this.datosInicialesService.newRegistrarDatos.ENTIDAD = '';
+    this.datosInicialesService.newRegistrarDatos.MUNICIPIO = '';
+    this.datosInicialesService.newRegistrarDatos.CIUDAD = '';
+
+    this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = '';
+    this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = '';
+    this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = '';
+    this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = '';
+    this.datosInicialesService.newRegistrarDatos.ES_PADRE = '';
+    this.datosInicialesService.newRegistrarDatos.TIENE_DISCAPACIDAD = '';
+    this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = '';
+    this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = '';
+    
+
     this.modal.open(regisInfoPersonal,{size:'xl'});
     
 
@@ -392,17 +470,28 @@ export class RegistroNewDataComponent implements OnInit {
 
   ///clickBtnGuardarInfoModalRegisIP
   async POSTclickBtnGuardarInfoModalRegisIP(){
-   
-    await this.datosInicialesService.addDatosPDomCom(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+   //addDatosPDomCom
+    await this.datosInicialesService.addDatosPDomComTRAMITE(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
       res=>{
-        alert("Datos registrados exitosamente");
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        )
+
+       // alert("Datos registrados exitosamente");
         console.log(res);
         this.limpiarInputsRegistroIPDC();
         
         //this.router.navigateByUrl('registro-new-data');
       },
       err=>{
-        alert("Ha ocurrido un error al registrar, intentelo nuevamente");
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        //alert("Ha ocurrido un error al registrar, intentelo nuevamente");
         console.log(err);
         
       }
@@ -412,12 +501,120 @@ export class RegistroNewDataComponent implements OnInit {
 
   }
 
+  async ValidarEmailTelCel(){
+    var DI = this.datosInicialesService.ValoresInputsRegistroDataPD;
+    var expRegEmail =  /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+    var esValido = expRegEmail.test(DI.EMAIL);
+    var celLenght = DI.CELULAR.toString().length;
+    var telLenght = DI.TELEFONO.toString().length;
+    this.datosInicialesService.ValoresInputsRegistroDataPD.TELEFONO = this.datosInicialesService.ValoresInputsRegistroDataPD.TELEFONO.toString();
+    this.datosInicialesService.ValoresInputsRegistroDataPD.CELULAR = this.datosInicialesService.ValoresInputsRegistroDataPD.CELULAR.toString();
+    console.log('ES NUMBER?', this.datosInicialesService.ValoresInputsRegistroDataPD.TELEFONO);
+    
+    if(esValido == true){
+      console.log('es valido email');
+
+      if(telLenght == 10){
+        if(celLenght == 10){
+          console.log('todo valido');
+         await this.POSTclickBtnGuardarInfoModalRegisIP();
+          //this.clickBtnGuardarInfo();
+          
+        }else{
+          console.log('cel no valido');
+          Swal.fire(
+            'Dato ingresado en "Celular" no es válido',
+            'El campo "Celular" debe de ser de 10 caracteres',
+            'error'
+          )
+          
+
+        }
+        
+
+      }else{
+        if(celLenght == 10){
+          console.log('tell no valido');
+          Swal.fire(
+            'Dato ingresado en "Teléfono" no es válido',
+            'El campo "Teléfono" debe de ser de 10 caracteres',
+            'error'
+          )
+          
+        }else{
+          console.log('tel ni cel no valido');
+          Swal.fire(
+            'Datos ingresados en "Celular" y "Teléfono" no son válidos',
+            'Los campos deben de ser de 10 caracteres',
+            'error'
+          )
+          
+
+        }
+
+      }
+      console.log('LENGHT TEL', telLenght);
+      console.log('LENGHT CEL', celLenght);
+
+      
+
+      
+    }else{
+     
+      if(telLenght == 10){
+        if(celLenght == 10){
+          console.log('correo no valido');
+          Swal.fire(
+            'Dato ingresado en "Email" no es válido',
+            'Ejemplo: nombre@dominio.com',
+            'error'
+          )
+          
+        }else{
+          console.log('correo y cel no valido');
+          Swal.fire(
+            'Datos ingresado en "Email" y "Celular"  no son válidos',
+            'El campo "Celular" debe de ser de 10 caracteres, ejemplo de email: nombre@dominio.com ',
+            'error'
+          )
+          
+
+        }
+        
+
+      }else{
+        if(celLenght == 10){
+          console.log('correo no valido tell no valido');
+          Swal.fire(
+            'Datos ingresado en "Email" y "Teléfono"  no son válidos',
+            'El campo "Teléfono" debe de ser de 10 caracteres, ejemplo de email: nombre@dominio.com ',
+            'error'
+          )
+          
+        }else{
+          console.log('ni email ni tel ni cel no valido');
+          Swal.fire(
+            'Datos ingresado en "Email" , "Teléfono" y "Celular" no son válidos',
+            'los campos "Celular" y "Teléfono" deben de ser de 10 caracteres, ejemplo de email: nombre@dominio.com ',
+            'error'
+          )
+          
+
+        }
+
+      }
+
+      
+    }
+
+  }
+
 
   async validarInputsRegistroDP_DOM_COM(){
     var DI = this.datosInicialesService.ValoresInputsRegistroDataPD;
     console.log('NAMEEEE',DI.NOMBRE);
     if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != ''  && DI.FECHA_NAC != '' 
-      && DI.EST_CIVIL != '' && DI.CVE_RFC != '' && DI.CURP != '' && DI.CVE_ELECTOR != '' && DI.LICENCIA != ''
+      && DI.EST_CIVIL != '' && DI.SANGRE!='' && DI.CVE_RFC != '' && DI.CURP != '' && DI.CVE_ELECTOR != '' && DI.LICENCIA != ''
       && DI.PASAPORTE != '' && DI.CARTILLA != '' && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0 && DI.MUN_NAC != 0 && DI.NACIONALIDAD != 0
       
       && DI.EMAIL !='' && DI.TELEFONO != '' && DI.CELULAR != ''  && DI.CALLE != '' && DI.ENTRE_CALLE != '' && DI.Y_CALLE != '' 
@@ -428,12 +625,13 @@ export class RegistroNewDataComponent implements OnInit {
     ){
       //SO QUE 
       console.log('todos los inputs llenos, peticion post');
-      await this.POSTclickBtnGuardarInfoModalRegisIP();
+      await this.ValidarEmailTelCel();
+      this.modal.dismissAll(); 
       
     }else{
 
       if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != ''  && DI.FECHA_NAC != '' 
-      && DI.EST_CIVIL != '' && DI.CVE_RFC != '' && DI.CURP != ''  && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0  && DI.NACIONALIDAD != 0
+      && DI.EST_CIVIL != '' && DI.SANGRE!=''  && DI.CVE_RFC != '' && DI.CURP != ''  && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0  && DI.NACIONALIDAD != 0
       
       && DI.EMAIL !='' && DI.TELEFONO != '' && DI.CELULAR != ''  && DI.CALLE != '' && DI.ENTRE_CALLE != '' && DI.Y_CALLE != '' 
       && DI.NO_EXTERIOR != '' && DI.NO_INTERIOR != '' && DI.COLONIA !='' && DI.CODIGO_POSTAL != '' && DI.ENTIDAD != '' && DI.MUNICIPIO != ''  && DI.CIUDAD != ''
@@ -446,15 +644,16 @@ export class RegistroNewDataComponent implements OnInit {
 
         //here
         console.log('make post with los nulos');
-       await this.POSTclickBtnGuardarInfoModalRegisIP();
-        
+       await this.ValidarEmailTelCel();
+       this.modal.dismissAll(); 
+      
 
       }else{
         //si cualquiera esta vacio
         //UNICOS CAMPOS QUE SE PUEDEN GUARDAR NULL SON
         //CVE_ELECTOR, LICENCIA,PASAPORTE,CARTILLA,MUN_NAC, NOMBRE_ETNIA, NOMBRE_LENGUA_INDIGENA, NOM_DISCAPACIDAD
         if(DI.NOMBRE == '' || DI.APE_PATERNO == '' || DI.APE_MATERNO == '' || DI.SEXO == ''  || DI.FECHA_NAC == '' 
-        || DI.EST_CIVIL == '' || DI.CVE_RFC == '' || DI.CURP == '' || DI.PAIS_NAC == 0 || DI.EDO_NAC == 0  || DI.NACIONALIDAD == 0
+        || DI.EST_CIVIL == ''  || DI.SANGRE == '' || DI.CVE_RFC == '' || DI.CVE_RFC == '' || DI.CURP == '' || DI.PAIS_NAC == 0 || DI.EDO_NAC == 0  || DI.NACIONALIDAD == 0
         
         || DI.EMAIL =='' || DI.TELEFONO == '' || DI.CELULAR == ''  || DI.CALLE == '' || DI.ENTRE_CALLE == '' || DI.Y_CALLE == '' 
         || DI.NO_EXTERIOR == '' || DI.NO_INTERIOR == '' || DI.COLONIA =='' || DI.CODIGO_POSTAL == '' || DI.ENTIDAD == '' || DI.MUNICIPIO == ''  || DI.CIUDAD == ''
@@ -464,7 +663,12 @@ export class RegistroNewDataComponent implements OnInit {
           //cualquiera vacio
         console.log('alguno vacio');
         console.log(DI);
-        alert('Favor de llenar todos los campos requeridos');
+        Swal.fire(
+          '',
+          'Favor de llenar todos los campos requeridos',
+          'info'
+        )
+        //alert('Favor de llenar todos los campos requeridos');
 
 
         }
@@ -636,14 +840,27 @@ export class RegistroNewDataComponent implements OnInit {
   async  postInfoEscolar(){
     await this.datosEscolaresService.addInfoEscolar(this.newRegistrarDatosEscolares).subscribe(
       res=>{
-        alert("Datos registrados exitosamente");
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        )
+       // alert("Datos registrados exitosamente");
         this.limpiarInputsRegisInfoEsc();
 
         this.getDatosEscolares(this.newRegistrarDatosEscolares.IdEnlace);
         //this.getInfoEscolar();
 
       },
-      err => console.log(err)
+      err => {
+        console.log(err);
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+
+      }
       
     );
   }
@@ -668,7 +885,12 @@ export class RegistroNewDataComponent implements OnInit {
         if(DE.ESCOLARIDAD == '' || DE.ESCUELA == '' || DE.ESPECIALIDAD == '' || DE.TRATAMIENTO == '' || DE.FCH_INICIO == '' || DE.FCH_TERMINO == ''){
           //cualqiera vacio
           console.log('alguno vacio');
-          alert('Favor de llenar todos los campos requeridos');
+          Swal.fire(
+            '',
+            'Favor de llenar todos los campos requeridos',
+            'info'
+          )
+          
         }
       }
 
@@ -698,12 +920,22 @@ export class RegistroNewDataComponent implements OnInit {
   async postDatosIdiomas(){
     await this.datosIdiomasService.addIdiomas(this.newRegistrarIdiomas).subscribe(
       res=>{
-        alert("Datos registrados exitosamente");
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        )
+        //alert("Datos registrados exitosamente");
         this.limpiarInputsIdiomas();
         this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
       },
       err=>{
-        alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+       // alert("Ha ocurrido un error, favor de intentarlo nuevamente")
         console.log(err);
         
       }
@@ -712,15 +944,50 @@ export class RegistroNewDataComponent implements OnInit {
 
   async validacionInfoIdiomas(){
     var DI = this.newRegistrarIdiomas;
+    
     if(DI.IDIOMA != '' && DI.LECTURA != '' && DI.ESCRITURA != '' && DI.CONVERSACION != ''){
       console.log('todos los inputs llenos');
-      this.postDatosIdiomas();
-      
 
+      if((DI.LECTURA >= 1 && DI.LECTURA <= 100)&&(DI.ESCRITURA >= 1 && DI.ESCRITURA <= 100)&&(DI.CONVERSACION >= 1 && DI.CONVERSACION <= 100)){
+        this.postDatosIdiomas();
+      }else{
+        if(DI.LECTURA < 1 || DI.LECTURA > 100){
+          Swal.fire(
+            '',
+            'El valor "LECTURA" es inválido',
+            'info'
+          )
+  
+        }
+
+        if(DI.ESCRITURA < 1 || DI.ESCRITURA > 100){
+          Swal.fire(
+            '',
+            'El valor "ESCRITURA" es inválido',
+            'info'
+          )
+  
+        }
+
+        if(DI.CONVERSACION < 1 || DI.CONVERSACION > 100){
+          Swal.fire(
+            '',
+            'El valor "CONVERSACION" es inválido',
+            'info'
+          )
+  
+        }
+
+      }
+      
     }else{
       console.log('alguno vacio');
-      
-      alert('Favor de llenar todos los campos requeridos');
+      Swal.fire(
+        '',
+        'Favor de llenar todos los campos requeridos',
+        'info'
+      )
+      //alert('Favor de llenar todos los campos requeridos');
     }
 
   }
@@ -737,13 +1004,23 @@ export class RegistroNewDataComponent implements OnInit {
     await this.datosDocumentosService.addDocumento(this.newRegisDocumentos).subscribe(
       
       res=>{
-        alert("Datos registrados exitosamente");
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los documentos fueron almacenados',
+          'success'
+        )
+        //alert("Datos registrados exitosamente");
         this.limpiarInputsDocs();
         this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
         ///this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
       },
       err=>{
-        alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        //alert("Ha ocurrido un error, favor de intentarlo nuevamente")
         console.log(err);
         
       }
@@ -758,17 +1035,32 @@ export class RegistroNewDataComponent implements OnInit {
 
     }else{
       if(this.newRegisDocumentos.TIPO == 0 && this.newRegisDocumentos.DOCUMENTO != ''){
-        alert('Favor de especificar el tipo de documento');
+        Swal.fire(
+          '',
+          'Favor de especificar el tipo de documento',
+          'info'
+        )
+        //alert('Favor de especificar el tipo de documento');
 
       }
 
       if(this.newRegisDocumentos.TIPO != 0 && this.newRegisDocumentos.DOCUMENTO == ''){
-        alert('Aún no ha seleccionado un archivo');
+        Swal.fire(
+          '',
+          'Aún no ha seleccionado un archivo',
+          'info'
+        )
+        //alert('Aún no ha seleccionado un archivo');
 
       }
 
       if(this.newRegisDocumentos.TIPO == 0 && this.newRegisDocumentos.DOCUMENTO == ''){
-        alert('Favor de llenar todos los datos requiridos');
+        Swal.fire(
+          '',
+          'Favor de llenar todos los campos requeridos',
+          'info'
+        )
+        //alert('Favor de llenar todos los datos requiridos');
       }
 
     }
@@ -834,7 +1126,9 @@ export class RegistroNewDataComponent implements OnInit {
       
       console.log('previzuliazacion');
 
-      if(event.target.files[0].type == 'image/png'){
+      this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:application/pdf;base64,","");
+
+     /* if(event.target.files[0].type == 'image/png'){
         console.log('SOY PNG');
         this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/png;base64,","");
 
@@ -842,12 +1136,10 @@ export class RegistroNewDataComponent implements OnInit {
         console.log('SOY JPEG');
         this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/jpeg;base64,","");
         
-      }
-     // this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/png;base64,","");
-      //this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.replace("data:image/jpeg;base64,","");
-      //this.newRegisDocumentos.DOCUMENTO = this.previzualizacionDoc.slice(22);
+      }*/
       
       console.log(this.previzualizacionDoc);
+     
     
     });
   }

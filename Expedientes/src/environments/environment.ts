@@ -5,6 +5,7 @@
 
 export const environment = {
   production: false,
+  HOLI : 'HOLI environment'
 
   //URLGETLISTARNOMBRES : 'http://localhost:5000/datospersonales/get'
 

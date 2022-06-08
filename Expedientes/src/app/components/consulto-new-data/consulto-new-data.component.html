@@ -1,4 +1,5 @@
-<br><br><h3>Consulta de datos generales y documentos</h3><br><br>
+<app-navbar></app-navbar><br><br><br>
+<h4>Consulta de datos generales y documentos</h4><br><br>
 
 <form class="form-inline" role="form">
     <div class="row">
@@ -97,6 +98,9 @@
           <label><b>ESTADO CIVIL: </b>{{datosPersonales[0].EDO_CIV}}</label><br>
           <label><b>SEXO: </b>{{datosPersonales[0].SEXO}}</label><br>
           <label><b>NUM. EMPLEADO: </b>{{datosPersonales[0].CVE_EMPLEADO}}</label><br>
+          <div *ngIf="listaMediaFilLenght != 0">
+            <label><b>TIPO DE SANGRE: </b>{{listaMediaFil[0].SANGRE}}</label><br>
+          </div>
           <br><br>
           <br>
 
@@ -298,15 +302,33 @@
   <div class="modal-body">
 
       <!--es la presentacion de los documentos-->
-      <object class="pdfview" type="aplication/pdf">
-      </object>
+      
       <div class="row">
         <div class="col-2"></div>
 
-        <div class="col-8">
+        <div class="col-8"  *ngIf="tipoDoc == 'NEW2022' ; else imagenesRegisOlds">
+          <div class="previzualizacion">
             <h3>Previzualizacion</h3>
-            <img [src]="previzualizacionDoc" width="100%" height="650px"  >  
+
+            <!-- <img [src]="previzualizacionDoc" width="100%" height="450px"  >  -->
+            <pdf-viewer [src]="previzualizacionDoc" 
+                [render-text]="true"
+                [original-size]="false"
+                style="width: 100%; height: 100%"></pdf-viewer>
+
+          </div>
+          <br><br>
+         
+           <!--  <label>{{tipoDoc}}</label>
+             <h3>Previzualizacion</h3>
+            <img [src]="previzualizacionDoc" width="100%" height="650px"  >  -->
         </div>
+       
+        <ng-template #imagenesRegisOlds>
+          <img [src]="previzualizacionDoc" width="100%" height="450px"> 
+         <!-- <label>{{previzualizacionDoc}}</label>
+          <p>No hay datos registrados</p>-->
+        </ng-template>
 
         <div class="col-2">
 
@@ -324,7 +346,7 @@
 
   <div class="modal-footer">
       <button class="btn btn-success" (click)=" downloadImage();modal.close()">Descargar</button>
-      <button class="btn btn-danger" (click)="modal.close()">Cerrar</button>
+      <button class="btn btn-danger" (click)="cerrarModalVerDocs();modal.close()">Cerrar</button>
 
   </div>
 </ng-template>
