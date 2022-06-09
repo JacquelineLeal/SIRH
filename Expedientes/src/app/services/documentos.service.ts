@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentosService {
 
-  urlPostDocumentos = 'http://localhost:5000/documentos/post';
-  urlGetDocumentos = '';
-  urlTraerImg = 'http://localhost:5000/documentos/get'
+  urlPostDocumentos = environment.urlPostDocumentos ;
+  
+  urlTraerImg = environment.urlTraerImg ;
 
-  urlTraerListaDocumentosIniciales = 'http://localhost:5000/documentos/get-lista-docs-iniciales';
+  urlTraerListaDocumentosIniciales = environment.urlTraerListaDocumentosIniciales ;
 
-  urlTraerListaDocsInsertadosByIdEnlace = 'http://localhost:5000/documentos/getDocsById/';
+  urlTraerListaDocsInsertadosByIdEnlace = environment.urlTraerListaDocsInsertadosByIdEnlace;
 
-  urlEditarDocumentos = 'http://localhost:5000/documentos/put';
+  urlEditarDocumentos = environment.urlEditarDocumentos ;
 
-  urlTraeListaDocsByCveEmp = 'http://localhost:5000/documentos/getDocsByCveEmp/';
+  urlTraeListaDocsByCveEmp = environment.urlTraeListaDocsByCveEmp;
 
   constructor(private http:HttpClient) { }
 

@@ -110,7 +110,8 @@ const routes: Routes = [
       role:'CAPTURISTA' 
     },
     canActivate:[LoginguardGuard]
-  }
+  },
+  {path: '**', redirectTo:'login'}
  // {path:'registro-datos', component: RegistroDatosComponent},
   //{path:'edito-datos', component: EditoDatosComponent},
   //{path: 'consulto-datos', component: ConsultoDatosComponent}

@@ -69,7 +69,7 @@ export class RegistrarPersonaComponent implements OnInit {
     
   }
 
-  registrarDatosPDE(){ 
+ /* registrarDatosPDE(){ 
 
     this.datosInicialesService.addDatosPDE(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
       res=>{
@@ -90,6 +90,6 @@ export class RegistrarPersonaComponent implements OnInit {
       
     );
 
-  }
+  }*/
 
 }

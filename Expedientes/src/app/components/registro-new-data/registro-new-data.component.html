@@ -62,7 +62,7 @@
                     </svg>
                   </button> 
     
-                  <button class="btn btn-success" (click)="abrirModalConfirmacionCapData(confirmacionRegistros)">¿Se capturó toda la Información?</button>
+                  <button class="btn btn-success" (click)="abrirModalConfirmacionCapData(confirmacionRegistros, nombres.Id,nombres.NOMBRE,nombres.APE_PATERNO,nombres.APE_MATERNO)">¿Se capturó toda la Información?</button>
             </td>
         </tr> 
     </tbody>
@@ -402,15 +402,16 @@
     </div>
 
     <div class="modal-body">
-        ¿Se terminó de capturar toda la información de la persona?
+        ¿Se terminó de capturar toda la información de la persona  <b> {{NombreCompleto}}</b> ?
+      
         <br><br><br>
         <small>
-            Si selecciona "Listo" la persona dejará de aparecer en el listado
+            Si selecciona "Listo" la persona dejará de aparecer en el listado.
         </small>
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-success" (click)="modal.close()">Listo</button>
+        <button type="submit" class="btn btn-success" (click)="UpdateInfoCompletaDataTramite()">Listo</button>
         <button type="submit" class="btn btn-danger" (click)="modal.close()">Aún falta Información</button>
     </div>
 

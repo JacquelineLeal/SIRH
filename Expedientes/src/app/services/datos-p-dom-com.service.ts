@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 }) 
 export class DatosPDomComService {
 
-  urlGetListaNombresRegis = 'http://localhost:5000/registro-nombres/get';
-  urlPostNombresToDP = 'http://localhost:5000/registro-nombres/post';
+  urlGetListaNombresRegis = environment.urlGetListaNombresRegis ;
+  urlPostNombresToDP = environment.urlPostNombresToDP ;
   
-  urlGetDataPersonalByCveEmp = 'http://localhost:5000/registro-nombres/get-data-personal-list/';
+  urlGetDataPersonalByCveEmp = environment.urlGetDataPersonalByCveEmp ;
+ 
 
   constructor(private http:HttpClient) { }
 
@@ -23,7 +25,7 @@ export class DatosPDomComService {
 
   getDatosPersonalesPerExis(CVE_EMPLEADO: any){
     return this.http.get(this.urlGetDataPersonalByCveEmp + CVE_EMPLEADO);
-
+ 
   }
 
 

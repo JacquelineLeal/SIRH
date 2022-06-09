@@ -36,12 +36,12 @@ export class ListAggDocsExpedienteComponent implements OnInit {
   constructor(public router:Router, private datosInicialesExpedientes:DatosInicialesExpedientesService) { }
 
   ngOnInit(): void {
-    this.listarDatos();
+   // this.listarDatos();
   }
 
   
  
-  async btnClickGoToEditarEmpleado(Id: any, IdDomicilio: any, IdEstudios: any){ 
+ /* async btnClickGoToEditarEmpleado(Id: any, IdDomicilio: any, IdEstudios: any){ 
     this.capturaIds.Id = Id;
     this.capturaIds.IdDomicilio = IdDomicilio;
     this.capturaIds.IdEstudios = IdEstudios;
@@ -62,7 +62,7 @@ export class ListAggDocsExpedienteComponent implements OnInit {
         console.log(err);
         
     }
-  )
+  )*/
 
    
    
@@ -79,7 +79,7 @@ export class ListAggDocsExpedienteComponent implements OnInit {
     this.router.navigateByUrl('edit-info-personal'); */
 
 
-  }
+ /* }
  
   async btnClickGoToSubirDocs(Id: any, IdDomicilio: any, IdEstudios: any){
     this.capturaIds.Id = Id;
@@ -171,7 +171,7 @@ export class ListAggDocsExpedienteComponent implements OnInit {
 
     }
     
-  }
+  }*/
 
   
 

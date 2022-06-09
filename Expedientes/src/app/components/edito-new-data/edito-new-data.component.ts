@@ -619,7 +619,7 @@ export class EditoNewDataComponent implements OnInit {
        err => console.log(err)
        
      );
-   }
+  }
 
    async validacionInfoEscolar(){
     var DE = this.newRegistrarDatosEscolares;
@@ -739,7 +739,7 @@ export class EditoNewDataComponent implements OnInit {
 
 
   //-------------------------------
-  async putInfoPersonalDomComData(){
+ /* async putInfoPersonalDomComData(){
     
     await this.datosInicialesService.updateDatosPDomCom(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
        res=>{
@@ -927,7 +927,7 @@ export class EditoNewDataComponent implements OnInit {
 
     }
     
-  }
+  }*/
 
 
   //------------------------------
@@ -1059,7 +1059,7 @@ export class EditoNewDataComponent implements OnInit {
        }
        
      );
-   }
+  }
 
    validacionInsertarDocumentos(){
     if(this.newRegisDocumentos.TIPO != 0 &&  this.DocSeleccionado != ''){

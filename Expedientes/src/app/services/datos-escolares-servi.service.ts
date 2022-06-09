@@ -1,19 +1,21 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatosEscolaresServiService {
 
-  urlGetDatosEscolares ='http://localhost:5000/datosescolares/get';
-  urlPostDatosEscolares = 'http://localhost:5000/datosescolares/post';
-  urlGetDatosEscolaresById = 'http://localhost:5000/datosescolares/get/';
-  urlPutDatosEscolares = 'http://localhost:5000/datosescolares/put';
+  //urlGetDatosEscolares ='http://localhost:5000/datosescolares/get';
+  urlPostDatosEscolares = environment.urlPostDatosEscolares;
+  urlGetDatosEscolaresById = environment.urlGetDatosEscolaresById;
+  urlPutDatosEscolares = environment.urlPutDatosEscolares;
 
-  urlGetDatosEscolareByIdEnlace = 'http://localhost:5000/datosescolares/get/';
+  urlGetDatosEscolareByIdEnlace = environment.urlGetDatosEscolareByIdEnlace;
+  urlGetDatosEscoByCveEmp = environment.urlGetDatosEscoByCveEmp;
 
-  urlGetDatosEscoByCveEmp = "http://localhost:5000/datosescolares/get-by-cve/";
+  
  
 
   constructor(private http:HttpClient) { }

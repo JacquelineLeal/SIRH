@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,17 +11,17 @@ import {HttpClient} from '@angular/common/http';
 export class IdiomasService {
 
 
-  urlPostIdiomas = 'http://localhost:5000/idiomas/post';
-  urlGetIdiomasByIdEnlace = 'http://localhost:5000/idiomas/get/';
-  urlTraerImg = 'http://localhost:5000/documentos/get';
+  urlPostIdiomas = environment.urlPostIdiomas;
+  urlGetIdiomasByIdEnlace = environment.urlGetIdiomasByIdEnlace;
+ // urlTraerImg = 'http://localhost:5000/documentos/get';
 
-  urlGetIdiomasByCveEmp = 'http://localhost:5000/idiomas/get-idiomas-cve/';
-  urlPutIdiomas = 'http://localhost:5000/idiomas/put';
+  urlGetIdiomasByCveEmp = environment.urlGetIdiomasByCveEmp;
+  urlPutIdiomas = environment.urlPutIdiomas;
 
 
   //____________DATA FABIAN_________________
-  urlGetNumerosEmpleados = 'http://localhost:5000/fabian/getNumEmp';
-  urlGetTop1ByCveEmpleados = 'http://localhost:5000/fabian/getTopByCve/';
+ //THIS urlGetNumerosEmpleados = 'http://localhost:5000/fabian/getNumEmp';
+  //THIS urlGetTop1ByCveEmpleados = 'http://localhost:5000/fabian/getTopByCve/';
 
   constructor(private http:HttpClient) { }
 
@@ -31,9 +33,9 @@ export class IdiomasService {
   getIdiomasById(IdEnlace: any){
     return this.http.get(this.urlGetIdiomasByIdEnlace + IdEnlace);
   }
-  getImagen(){
+ /* getImagen(){
     return this.http.get(this.urlTraerImg);
-  }
+  }*/
 
   getIdiomasByCveEmp(CVE_EMPLEADO: any){
     return this.http.get(this.urlGetIdiomasByCveEmp + CVE_EMPLEADO);
@@ -49,12 +51,12 @@ export class IdiomasService {
   //        API PARA LOS DATOS DEL FABIAN 
 
 
-  getTop1ByCveFabian(CVE_EMPLEADO: any){
+ /* getTop1ByCveFabian(CVE_EMPLEADO: any){
     return this.http.get(this.urlGetTop1ByCveEmpleados + CVE_EMPLEADO);
   }
   getNumEmpleadosFabian(){
     return this.http.get(this.urlGetNumerosEmpleados);
-  }
+  }*/
 
 
 }

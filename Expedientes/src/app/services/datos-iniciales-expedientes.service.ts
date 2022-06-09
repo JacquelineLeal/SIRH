@@ -16,7 +16,7 @@ import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 export class DatosInicialesExpedientesService {
   //VARIABLES PARA ALMACENAR LOS ID´S DE LA TABLA DATOS PERSONALES Y ID DE DOMICILIO PARA BUSCAR LOS DATOS Y PODER EDITAR
 
-   holi = environment.HOLI;
+   
    
    Id: String = '';
    IdDomicilio: String = '';
@@ -240,20 +240,20 @@ export class DatosInicialesExpedientesService {
   }
 
  // urlListaNombres = process.env.URLGETLISTARNOMBRES;
-  urlListaNombres = 'http://localhost:5000/datospersonales/get';
-  urlAgregarDatosPersonalesDomicilio ='http://localhost:5000/datospersonales/post';
-  urlEditarDatosPersonalesDomicilio = 'http://localhost:5000/datospersonales/put';
+  // THIS urlListaNombres = 'http://localhost:5000/datospersonales/get';
+  // THIS urlAgregarDatosPersonalesDomicilio ='http://localhost:5000/datospersonales/post';
+ // THIS urlEditarDatosPersonalesDomicilio = 'http://localhost:5000/datospersonales/put';
 
-  urlListaNombreSearchByNombre = 'http://localhost:5000/datospersonales/search-by-name';
+ /* urlListaNombreSearchByNombre = 'http://localhost:5000/datospersonales/search-by-name';
   urlListaNombreSearchByNomAP ='http://localhost:5000/datospersonales/search-by-name-ap';
-  urlListaNombreSearchByNomComplete='http://localhost:5000/datospersonales/search-by-name-complete';
+  urlListaNombreSearchByNomComplete='http://localhost:5000/datospersonales/search-by-name-complete';*/
 
-  urlTraerDatosPDByIDParaEditar = 'http://localhost:5000/datospersonales/get-by-ids';
+  // THIS urlTraerDatosPDByIDParaEditar = 'http://localhost:5000/datospersonales/get-by-ids';
   
 //--------------------------------------------------------------------------------------------
-  urlPostDatosPDomComTRAMITE = 'http://localhost:5000/all-data/post-tramite';
+  urlPostDatosPDomComTRAMITE = environment.urlPostDatosPDomComTRAMITE;
 
-  urlPostDatosPDomCom = 'http://localhost:5000/all-data/post';
+  urlPostDatosPDomCom = environment.urlPostDatosPDomCom;
 //  urlPostUpdaDP_InsertDom_UpdaCom2 = 'http://localhost:5000/all-data/post-opcion-dos';
 //  urlPostUpdaDP_UpdaDom_InsertCom3 = 'http://localhost:5000/all-data/post-opcion-tres';
 
@@ -262,47 +262,38 @@ export class DatosInicialesExpedientesService {
 //____________NUEVAS OPCIONES__________________________________________________________
 
 
-url_OP1_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op1';
-url_OP2_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op2';
-url_OP3_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op3';
-url_OP4_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op4';
-url_OP5_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op5';
-url_OP6_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op6';
-url_OP7_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op7';
-url_OP8_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op8';
+url_OP1_PostDatosPDomComMerdiaFil = environment.url_OP1_PostDatosPDomComMerdiaFil;
+url_OP2_PostDatosPDomComMerdiaFil = environment.url_OP2_PostDatosPDomComMerdiaFil;
+url_OP3_PostDatosPDomComMerdiaFil = environment.url_OP3_PostDatosPDomComMerdiaFil;
+url_OP4_PostDatosPDomComMerdiaFil = environment.url_OP4_PostDatosPDomComMerdiaFil;
+url_OP5_PostDatosPDomComMerdiaFil = environment.url_OP5_PostDatosPDomComMerdiaFil;
+url_OP6_PostDatosPDomComMerdiaFil = environment.url_OP6_PostDatosPDomComMerdiaFil;
+url_OP7_PostDatosPDomComMerdiaFil = environment.url_OP7_PostDatosPDomComMerdiaFil;
+url_OP8_PostDatosPDomComMerdiaFil = environment.url_OP8_PostDatosPDomComMerdiaFil;
+
+urlPutInfoCompletaDataPersonalTramite = environment.urlPutInfoCompletaDataPersonalTramite;
 
 
 
 
 
-  urlPutDatosPDomCom = 'http://localhost:5000/all-data/put';
+  urlPutDatosPDomCom = environment.urlPutDatosPDomCom;
+  urlGetEstadoCivil = environment.urlGetEstadoCivil;
+  urlGetPaisNac = environment.urlGetPaisNac;
+  urlGetEstados = environment.urlGetEstados;
+  urlGetMunicipios = environment.urlGetMunicipios;
 
+  urlGetCiudades =environment.urlGetCiudades;
+  urlGetListaEscolaridadValInputs = environment.urlGetListaEscolaridadValInputs;
+  urlBuscarByCve = environment.urlBuscarByCve;
+  urlBuscarByNombre = environment.urlBuscarByNombre;
+  urlBuscarByNameAp = environment.urlBuscarByNameAp;
+  urlBuscarByCompleteName = environment.urlBuscarByCompleteName;
 
-
-  urlGetEstadoCivil = 'http://localhost:5000/datos-inputs/get/estadoCivil';
-
-  urlGetPaisNac = 'http://localhost:5000/datos-inputs/get/paisNacionalidad';
-
-  urlGetEstados = 'http://localhost:5000/datos-inputs/get/estados';
-
-  urlGetMunicipios ='http://localhost:5000/datos-inputs/get/municipios';
-
-  urlGetCiudades ='http://localhost:5000/datos-inputs/get/ciudades';
-
-  urlGetListaEscolaridadValInputs = 'http://localhost:5000/datos-inputs/get/lista-escolaridades';
-
-  urlBuscarByCve = 'http://localhost:5000/edit/search-by-cve';
-
-  urlBuscarByNombre = 'http://localhost:5000/edit/search-by-name';
-
-  urlBuscarByNameAp = 'http://localhost:5000/edit/search-by-name-ap';
-
-  urlBuscarByCompleteName = 'http://localhost:5000/edit/search-by-name-complete';
-
-  urlGetDatosPersonalesEdit = 'http://localhost:5000/edit/get-data-personal-edit/';
-  urlGetDatosDomEdit = 'http://localhost:5000/edit/get-data-dom-edit/';
-  urlGetDatosComplementariosEdit = 'http://localhost:5000/edit/get-data-complementarios-edit/';
-  urlGetDatosMediaFiliacionEdit = 'http://localhost:5000/edit/get-data-mediafiliacion-edit/';
+  urlGetDatosPersonalesEdit = environment.urlGetDatosPersonalesEdit;
+  urlGetDatosDomEdit = environment.urlGetDatosDomEdit;
+  urlGetDatosComplementariosEdit = environment.urlGetDatosComplementariosEdit;
+  urlGetDatosMediaFiliacionEdit = environment.urlGetDatosMediaFiliacionEdit;
 
 
 
@@ -312,9 +303,9 @@ url_OP8_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op8';
 
 
   //get datos para la lista componente  ver listado personal (list-agg-docs-expediente)
-  getListaDeNombresEmpleados(){ 
+ /* getListaDeNombresEmpleados(){ 
     return this.http.get(this.urlListaNombres);
-  }
+  }*/
 
   
  // busquedas de los inputs 
@@ -339,7 +330,7 @@ url_OP8_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op8';
 
  
   //agregar la info personal y domicilio del componente registrar-usuario  
-  addDatosPDE(datos:Datos){
+ /* addDatosPDE(datos:Datos){
     return this.http.post(this.urlAgregarDatosPersonalesDomicilio,datos);
   }
 
@@ -353,7 +344,7 @@ url_OP8_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op8';
 
   getDatosEmpleadoById(Ids: IdsParaEditarDataPD){
     return this.http.post(this.urlTraerDatosPDByIDParaEditar, Ids);
-  }
+  }*/
 
 
   //----------NUEVAS PETICIONES NEW DESING------------------
@@ -405,6 +396,12 @@ url_OP8_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op8';
     return this.http.post(this.url_OP8_PostDatosPDomComMerdiaFil, datos);
   }
 
+  //UPDATE DATA PERSONAL TRAMITE SET INFO COMPLETA A SI
+  Update_InfoCompletaDataPersonalTramite(Id: any){
+    return this.http.post(this.urlPutInfoCompletaDataPersonalTramite, Id);
+  }
+
+
 
 
 
@@ -430,9 +427,10 @@ url_OP8_PostDatosPDomComMerdiaFil = 'http://localhost:5000/all-data/post-op8';
 
   
   //OPCION 4
-  updateDatosPDomCom(datos:Datos){
+  //se usa en edito new data
+ /* updateDatosPDomCom(datos:Datos){
     return this.http.put(this.urlPutDatosPDomCom, datos);
-  }
+  }*/
 
 
   getEstadosCivil(){ 

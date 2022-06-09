@@ -82,7 +82,7 @@ export class EditInfoPersonalComponent implements OnInit {
   }
 
 
-  async putInfoInicial(){
+ /* async putInfoInicial(){
     await this.datosInicialesService.editarDatosPD(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
       res=>{
         alert('Los cambios fueron guardados correctamente');
@@ -95,7 +95,7 @@ export class EditInfoPersonalComponent implements OnInit {
       }
     )
 
-  }
+  }*/
 
 
 

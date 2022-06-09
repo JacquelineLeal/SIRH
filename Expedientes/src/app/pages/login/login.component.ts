@@ -61,9 +61,61 @@ export class LoginComponent implements OnInit {
           
 
         }else{
+
           //otro if para ver qe tipo de usuario es si es capturista esto y si es archivo direccionar a 
           //otra page vista del hildo, si no es ninguno de los 2 alert qe no tiene acceso a ese sistema
-          console.log(this.listaResLogin.accessToken);
+
+          if(this.listaResLogin.sistema == "EXPEDIENTES"){
+            if(this.listaResLogin.rol == 'CAPTURISTA'){
+              console.log(this.listaResLogin.accessToken);
+              Swal.fire(
+                '',
+                `${this.listaResLogin.message}`
+                
+              )
+              //alert(this.listaResLogin.message);
+              this.cookieService.set('token_access',this.listaResLogin.accessToken, 0, '/');
+              this.cookieService.set('rol_user',this.listaResLogin.rol , 0, '/');
+              this.router.navigateByUrl('registro-new-data');
+
+            }else{
+              if(this.listaResLogin.rol == 'ARCHIVO'){
+                console.log(this.listaResLogin.accessToken);
+                Swal.fire(
+                  '',
+                  `${this.listaResLogin.message}`
+                  
+                )
+                //alert(this.listaResLogin.message);
+                this.cookieService.set('token_access',this.listaResLogin.accessToken, 0, '/');
+                this.cookieService.set('rol_user',this.listaResLogin.rol , 0, '/');
+                this.router.navigateByUrl('ver-expediente');
+
+              }else{
+                Swal.fire(
+                  'ERROR',
+                  'Se ha producido un error, usted no tiene acceso a este sistema',
+                  'error'
+                );
+
+              }
+  
+            }
+
+          }else{
+            Swal.fire(
+              'ERROR',
+              'Usted no tiene acceso a este sistema',
+              'error'
+            );
+            
+            
+
+          }
+
+         
+
+        /*  console.log(this.listaResLogin.accessToken);
           Swal.fire(
             '',
             `${this.listaResLogin.message}`
@@ -72,7 +124,7 @@ export class LoginComponent implements OnInit {
           //alert(this.listaResLogin.message);
           this.cookieService.set('token_access',this.listaResLogin.accessToken, 0, '/');
           this.cookieService.set('rol_user',this.listaResLogin.rol , 0, '/');
-          this.router.navigateByUrl('registro-new-data');
+          this.router.navigateByUrl('registro-new-data');*/
 
         }
 

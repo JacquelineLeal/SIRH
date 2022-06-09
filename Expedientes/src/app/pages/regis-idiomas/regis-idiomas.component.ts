@@ -25,7 +25,7 @@ export class RegisIdiomasComponent implements OnInit {
   ngOnInit(): void {
   } 
 
-  async traerNumerosEmpleados(){
+/*  async traerNumerosEmpleados(){
     await this.datosIdiomasService.getNumEmpleadosFabian().subscribe(
       res=>{
         this.listaNumerosEmpleados = res;
@@ -128,7 +128,7 @@ export class RegisIdiomasComponent implements OnInit {
  
  
  
-   }
+   }*/
 
   
  /* async getListaByCve(){

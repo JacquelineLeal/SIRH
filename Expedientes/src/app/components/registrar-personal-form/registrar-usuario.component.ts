@@ -192,7 +192,7 @@ export class RegistrarUsuarioComponent implements OnInit {
      
   }
 
-  async traerById(){
+ /* async traerById(){
     await this.datosInicialesService.getDatosEmpleadoById(this.arregloIdsParaTraerInfo).subscribe(
       res=>{
         //console.log(res);
@@ -218,7 +218,11 @@ export class RegistrarUsuarioComponent implements OnInit {
 
 
   
-  }
+  }*/
+
+
+
+
  /* sitraevalores(){
     this.newRegistrarDatos = this.arregloParaVerSiEstaVacioLosInputs;
 

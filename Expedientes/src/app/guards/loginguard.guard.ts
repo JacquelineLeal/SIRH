@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } fro
 import { Observable, retry } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 @Injectable({
@@ -36,7 +37,11 @@ export class LoginguardGuard implements CanActivate {
     const cookie_Token = this.cookieService.check('token_access');
     const cookie_rol = this.cookieService.get('rol_user');
     var valorBoolean: boolean;
+
+    console.log('path', route.url);
+    
     console.log('rolcok', cookie_rol);
+    console.log('routedatarole',route.data['role']);
     if(cookie_Token === true && (cookie_rol === route.data['role'])){
       valorBoolean= true;
       console.log('soy igual');
@@ -48,8 +53,13 @@ export class LoginguardGuard implements CanActivate {
         console.log('no soy igual');
         this.cookieService.delete('token_access','/');
         
-;
-        alert('no tiene acceso');
+//          ;
+        Swal.fire(
+          'ERROR',
+          'Acceso denegado, vuelva a iniciar sesión',
+          'error'
+        );
+        //alert('no tiene acceso');
         this.router.navigateByUrl('login');
 
       }

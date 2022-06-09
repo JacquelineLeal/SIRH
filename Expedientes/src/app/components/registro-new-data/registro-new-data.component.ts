@@ -25,6 +25,14 @@ export class RegistroNewDataComponent implements OnInit {
     
   }
 
+  //PARA MODAL ¿SE CAPTURO TODA LA INFO?
+  IdInfoCompleta: any = {
+    Id: String
+  };
+
+  //PARA MODAL ¿SE CAPTURO TODA LA INFO? 
+  NombreCompleto = '';
+
   cortarStringBase64: String = "";
 
   archivoCapturado: any= [];
@@ -297,7 +305,10 @@ export class RegistroNewDataComponent implements OnInit {
 
   }
 
-  abrirModalConfirmacionCapData(confirmacionRegistros: any){
+  abrirModalConfirmacionCapData(confirmacionRegistros: any, Id: any, NOMBRE:any, APE_PATERNO:any,APE_MATERNO:any){
+    this.IdInfoCompleta.Id = Id;
+    this.NombreCompleto = NOMBRE + ' ' + APE_PATERNO + ' ' + APE_MATERNO;
+    
     this.modal.open(confirmacionRegistros,{size:'md'});
 
   }
@@ -706,7 +717,7 @@ export class RegistroNewDataComponent implements OnInit {
 
   async getImagen(){
     
-    await this.datosIdiomasService.getImagen().subscribe(
+    await this.datosDocumentosService.getImagen().subscribe(
       res=>{
         this.xd = res;
        // console.log(this.xd[0].PIZQUIERDO.type);
@@ -903,6 +914,8 @@ export class RegistroNewDataComponent implements OnInit {
 
   }
 
+  
+
 
 
 
@@ -990,6 +1003,32 @@ export class RegistroNewDataComponent implements OnInit {
       //alert('Favor de llenar todos los campos requeridos');
     }
 
+  }
+
+  async UpdateInfoCompletaDataTramite(){
+    await this.datosInicialesService.Update_InfoCompletaDataPersonalTramite(this.IdInfoCompleta).subscribe(
+      res=>{
+        Swal.fire(
+          'La persona desaparecerá de la lista',
+          'Si desea capturar o hacer cambios en la información dirijase a "Registro existentes" una vez que la persona cuente con número de empleado',
+          'success'
+        );
+        this.modal.dismissAll();
+        this.GetNombresRegistro(); 
+        console.log(res); 
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(this.datosInicialesService.ValoresInputsRegistroDataPD);
+        
+        console.log(err);
+      }
+    )
   }
 
 
