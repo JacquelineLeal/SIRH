@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ContentComponent } from './components/content/content.component';
-import { RegistrarUsuarioComponent } from './components/registrar-personal-form/registrar-usuario.component';
-import { ListAggDocsExpedienteComponent } from './pages/list-agg-docs-expediente/list-agg-docs-expediente.component';
-import { EditInfoPersonalComponent } from './pages/edit-info-personal/edit-info-personal.component';
+//import { ContentComponent } from './components/content/content.component';
+//import { RegistrarUsuarioComponent } from './components/registrar-personal-form/registrar-usuario.component';
+//import { ListAggDocsExpedienteComponent } from './pages/list-agg-docs-expediente/list-agg-docs-expediente.component';
+//import { EditInfoPersonalComponent } from './pages/edit-info-personal/edit-info-personal.component';
 import { RegistrarPersonaComponent } from './pages/registrar-persona/registrar-persona.component';
-import { SubirDocsExpedienteComponent } from './components/subir-docs-expediente/subir-docs-expediente.component';
-import { ModalSubirDocsComponent } from './components/modal-subir-docs/modal-subir-docs.component';
-import { VerExpedienteComponent } from './components/ver-expediente/ver-expediente.component';
+//import { SubirDocsExpedienteComponent } from './components/subir-docs-expediente/subir-docs-expediente.component';
+//import { ModalSubirDocsComponent } from './components/modal-subir-docs/modal-subir-docs.component';
+//import { VerExpedienteComponent } from './components/ver-expediente/ver-expediente.component';
 import { LoginComponent } from './pages/login/login.component';
-import { RegitroInfoEscolarComponent } from './pages/regitro-info-escolar/regitro-info-escolar.component';
-import { RegisIdiomasComponent } from './pages/regis-idiomas/regis-idiomas.component';
+//import { RegitroInfoEscolarComponent } from './pages/regitro-info-escolar/regitro-info-escolar.component';
+//import { RegisIdiomasComponent } from './pages/regis-idiomas/regis-idiomas.component';
 import { EditoNewDataComponent } from './components/edito-new-data/edito-new-data.component';
 import { RegistroNewDataComponent } from './components/registro-new-data/registro-new-data.component';
 import { ConsultoNewDataComponent } from './components/consulto-new-data/consulto-new-data.component';
@@ -21,7 +21,8 @@ import { LoginguardGuard } from './guards/loginguard.guard';
 //import { ConsultoDatosComponent } from './Componentes/consulto-datos/consulto-datos.component';
 
 const routes: Routes = [ 
-  {path:'',redirectTo:'/login',pathMatch:'full'},  
+  {path:'',redirectTo:'/login',pathMatch:'full'}, 
+
   { path:'registrar-persona', 
     component:RegistrarPersonaComponent,
     data:{
@@ -30,7 +31,7 @@ const routes: Routes = [
     canActivate:[LoginguardGuard]
 
   },
-  { path:'list-agg-docs-expediente', 
+ /* { path:'list-agg-docs-expediente', 
     component:ListAggDocsExpedienteComponent,
     data:{
       role:'ARCHIVO'
@@ -64,11 +65,11 @@ const routes: Routes = [
       role:'ARCHIVO'
     },
     canActivate:[LoginguardGuard]
-  },
+  },*/
   { path:'login',
     component:LoginComponent
   },
-  { path:'registrar-info-escolar', 
+ /* { path:'registrar-info-escolar', 
     component:RegitroInfoEscolarComponent,
     data:{
       role:'ARCHIVO'
@@ -81,7 +82,7 @@ const routes: Routes = [
       role:'ARCHIVO'
     },
     canActivate:[LoginguardGuard]
-  },
+  },*/
 
   { path: 'registro-new-data', 
     component: RegistroNewDataComponent,
@@ -111,6 +112,22 @@ const routes: Routes = [
     },
     canActivate:[LoginguardGuard]
   },
+  //-----------------------------
+  {
+    path:'archivo',
+    loadChildren:()=> import('./type-archivo/type-archivo.module').then(m => m.TypeArchivoModule),
+    
+  },
+  {
+    path:'registro',
+    loadChildren:()=> import('./type-capturista/type-capturista.module').then(m => m.TypeCapturistaModule),
+    
+  },
+
+
+
+
+
   {path: '**', redirectTo:'login'}
  // {path:'registro-datos', component: RegistroDatosComponent},
   //{path:'edito-datos', component: EditoDatosComponent},

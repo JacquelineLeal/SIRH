@@ -57,8 +57,8 @@ export class NavbarComponent implements OnInit {
 
   async cerrarSesion(){
     await  this.cookieService.delete('token_access','/');
+    await this.cookieService.delete('rol_user','/');
      this.router.navigateByUrl('login');
- 
    }
 
 

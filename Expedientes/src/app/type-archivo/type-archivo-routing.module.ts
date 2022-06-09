@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { RouterModule, Routes } from '@angular/router';
 
 import { SubirDocsExpedienteComponent } from '../components/subir-docs-expediente/subir-docs-expediente.component';
 import { ModalSubirDocsComponent } from '../components/modal-subir-docs/modal-subir-docs.component';
@@ -8,29 +8,35 @@ import { EditInfoPersonalComponent } from '../pages/edit-info-personal/edit-info
 import { VerExpedienteComponent } from '../components/ver-expediente/ver-expediente.component';
 import { RegitroInfoEscolarComponent } from '../pages/regitro-info-escolar/regitro-info-escolar.component';
 import { RegisIdiomasComponent } from '../pages/regis-idiomas/regis-idiomas.component';
+
 import { ListaTramiteComponent } from './pages/lista-tramite/lista-tramite.component';
 
+import { LoginguardGuard } from '../guards/loginguard.guard';
 
-import { TypeArchivoRoutingModule } from './type-archivo-routing.module';
+const routes: Routes = [
+  {
+    path:'',
+    children: [
+      { path:'list-tramite', 
+        component: ListaTramiteComponent,
+        data:{
+          role:'ARCHIVO'
+        },
+        canActivate:[LoginguardGuard]
+      }
+      ,{path:'**', redirectTo:'list-tramite'}
+      
+    ]
+  }
+]
 
 
 
 @NgModule({
-  declarations: [
-    ListaTramiteComponent
-   /* SubirDocsExpedienteComponent,
-    ModalSubirDocsComponent,
-    ListAggDocsExpedienteComponent,
-    EditInfoPersonalComponent,
-    VerExpedienteComponent,
-    RegitroInfoEscolarComponent,
-    RegisIdiomasComponent*/
-    
-  ],
+ 
   imports: [
-    CommonModule,
-    TypeArchivoRoutingModule
-
+    RouterModule.forChild( routes )
+   
   ]
 })
-export class TypeArchivoModule { }
+export class TypeArchivoRoutingModule { }

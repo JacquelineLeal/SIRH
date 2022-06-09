@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import Swal from 'sweetalert2';
 
@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.newDatosUsuario);
     
-
   }
 
   async btnClickInicioSesion(){
@@ -89,8 +88,9 @@ export class LoginComponent implements OnInit {
                 //alert(this.listaResLogin.message);
                 this.cookieService.set('token_access',this.listaResLogin.accessToken, 0, '/');
                 this.cookieService.set('rol_user',this.listaResLogin.rol , 0, '/');
-                this.router.navigateByUrl('ver-expediente');
-
+                this.router.navigateByUrl('archivo/list-tramite');
+          
+ 
               }else{
                 Swal.fire(
                   'ERROR',

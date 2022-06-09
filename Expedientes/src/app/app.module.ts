@@ -38,7 +38,7 @@ import { RegistroInfoExisPersonalComponent } from './components/registro-info-ex
 @NgModule({
   declarations: [
     AppComponent,
-    FooterComponent,
+    FooterComponent, 
     NavbarComponent,
     RegistrarUsuarioComponent,
     ContentComponent,
