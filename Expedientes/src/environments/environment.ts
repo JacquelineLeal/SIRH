@@ -4,6 +4,7 @@
 //require('dotenv').config();
 
 export const environment = {
+  
   production: false,
 
   //RUTAS DATOS INICIALES EXPEDIENTES SERVICE

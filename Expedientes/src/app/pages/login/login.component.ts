@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
               //alert(this.listaResLogin.message);
               this.cookieService.set('token_access',this.listaResLogin.accessToken, 0, '/');
               this.cookieService.set('rol_user',this.listaResLogin.rol , 0, '/');
-              this.router.navigateByUrl('registro-new-data');
+              this.router.navigateByUrl('registro/personal-tramite');
 
             }else{
               if(this.listaResLogin.rol == 'ARCHIVO'){

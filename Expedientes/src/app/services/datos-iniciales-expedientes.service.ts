@@ -33,7 +33,7 @@ export class DatosInicialesExpedientesService {
    ValoresInputsRegistroDataPD:any = {};
    
    
-   verSiInputsVacios:any = {};
+   //verSiInputsVacios:any = {};
 
    var$ = new EventEmitter<any>();
 
@@ -43,10 +43,11 @@ export class DatosInicialesExpedientesService {
     Id: '',
     INFO_COMPLETA:'',
     FECHA_REGISTRO_DATA_PERSONAL: this.date,
-    ESTATUS : 'P',
+    ESTATUS : 'T',//T DE TRAMITE
     NOMBRE:'',
     APE_PATERNO:'',
     APE_MATERNO:'',
+    CONSECUTIVO: 1,
         
     SEXO:'',
     FECHA_NAC: this.date,
@@ -122,10 +123,11 @@ export class DatosInicialesExpedientesService {
     Id: '',
     INFO_COMPLETA:'',
     FECHA_REGISTRO_DATA_PERSONAL: this.date,
-    ESTATUS : 'P',
+    ESTATUS : 'T',
     NOMBRE:'',
     APE_PATERNO:'',
     APE_MATERNO:'',
+    CONSECUTIVO: 1,
         
     SEXO:'',
     FECHA_NAC: this.date,
@@ -184,7 +186,7 @@ export class DatosInicialesExpedientesService {
 
   }
   
-  updateDatos: DatosUpdate = {
+ /* updateDatos: DatosUpdate = {
 
     Id: '',
    
@@ -237,7 +239,7 @@ export class DatosInicialesExpedientesService {
     IdComplemen: ''
 
 
-  }
+  }*/
 
  // urlListaNombres = process.env.URLGETLISTARNOMBRES;
   // THIS urlListaNombres = 'http://localhost:5000/datospersonales/get';
@@ -497,6 +499,7 @@ export interface DatosUpdate{
   APE_PATERNO: String;
   APE_MATERNO: String;
 
+
   SEXO: String;
   FECHA_NAC: Date; 
   EST_CIVIL: String;
@@ -549,6 +552,7 @@ export interface Datos{
   NOMBRE:String;
   APE_PATERNO: String;
   APE_MATERNO: String;
+  CONSECUTIVO: Number;
 
   SEXO: String;
   FECHA_NAC: Date; 

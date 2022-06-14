@@ -69,6 +69,7 @@ export interface DatosEscolares{
   NOMBRE:String;
   APE_PATERNO: String;
   APE_MATERNO: String;
+  CONSECUTIVO: Number;
 
   CVE_EMPLEADO: String;
   ESCOLARIDAD: String;
