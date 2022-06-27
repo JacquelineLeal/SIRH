@@ -125,7 +125,10 @@ export class ConsultarComponent implements OnInit {
      await this.datosInicialesService.GetDatosPersonEditar(CVE_EMPLEADO).subscribe(
        res=>{
          this.datosPersonales = res;
-         this.bufferToBase64ImageSourceRegisAnteriores(this.datosPersonales[0].FRONTAL.data);
+         this.previzualizacionDoc =  this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + this.datosPersonales[0].FRONTAL);
+         this.valorImagenParaDescargar = 'data:image/jpg;base64, ' + this.datosPersonales[0].FRONTAL;
+
+         //this.bufferToBase64ImageSourceRegisAnteriores(this.datosPersonales[0].FRONTAL.data);
          
          console.log('DATOSSSSSSPERFOS',this.datosPersonales);
          this.datosPersonalesLenght = Object.keys(this.datosPersonales).length;
@@ -135,7 +138,7 @@ export class ConsultarComponent implements OnInit {
              this.datosDomicilio = resDom;
              console.log(this.datosDomicilio);
              this.datosDomicilioLenght = Object.keys(this.datosDomicilio).length;
-             
+              
  
              this.datosInicialesService.GetDatosComplementariosEditar(CVE_EMPLEADO).subscribe(
                resCom=>{
@@ -276,18 +279,18 @@ export class ConsultarComponent implements OnInit {
    
  
      //this.modal.open(verInfoGeneral,{size:'xl'});
-   }
+  }
  
-   abrirModalVerDocumentos(verDocs: any,NOMBRE:any, APE_PATERNO:any, APE_MATERNO:any, CVE_EMPLEADO: any){
+  abrirModalVerDocumentos(verDocs: any,NOMBRE:any, APE_PATERNO:any, APE_MATERNO:any, CVE_EMPLEADO: any){
      this.nombreCompleto = NOMBRE + ' ' + APE_PATERNO +' '+ APE_MATERNO;
      this.numEmpleado = CVE_EMPLEADO;
      this.getListaDocumentosCve(CVE_EMPLEADO);
  
      this.modal.open(verDocs,{size:'xl'});
  
-   }
+  }
  
-   async openDescargar(contDescargarDocs:any, documento:any){
+  async openDescargar(contDescargarDocs:any, documento:any){
      this.nombreDoc = '';
      this.tipoDoc = '';
      console.log('insercion', this.tipoDoc);
@@ -295,7 +298,8 @@ export class ConsultarComponent implements OnInit {
  
      if(documento.TIPO_INSERCION === null){
        console.log('soy null', documento.TIPO_INSERCION);
-       await  this.bufferToBase64ImageSourceRegisAnteriores(documento.DOCUMENTO.data);
+       this.valorImagenParaDescargar = 'data:image/jpg;base64, ' + documento.DOCUMENTO;
+       this.previzualizacionDoc =  this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + documento.DOCUMENTO); //this.bufferToBase64ImageSourceRegisAnteriores(documento.DOCUMENTO.data);
        this.nombreDoc = documento.desc_doc;
        this.tipoDoc = documento.TIPO_INSERCION;
       
@@ -305,7 +309,8 @@ export class ConsultarComponent implements OnInit {
      }else{
        if(documento.TIPO_INSERCION === 'NEW2022'){
          console.log('no soy null', documento.TIPO_INSERCION);
-        await   this.bufferToBase64ImageSourceNewRegis(documento.DOCUMENTO.data);
+         this.valorImagenParaDescargar =  'data:application/pdf;base64, ' + documento.DOCUMENTO;
+         this.previzualizacionDoc = 'data:application/pdf;base64, ' + documento.DOCUMENTO;// await   this.bufferToBase64ImageSourceNewRegis(documento.DOCUMENTO.data);
          this.nombreDoc = documento.desc_doc;
          this.tipoDoc = documento.TIPO_INSERCION;
          
@@ -322,7 +327,7 @@ export class ConsultarComponent implements OnInit {
  
      this.modal.open(contDescargarDocs,{size:'xl'});
  
-   }
+  }
  
  
    async getListaByCve(){
@@ -646,69 +651,6 @@ export class ConsultarComponent implements OnInit {
    }
  
  
-   
-     //CONVERTIR A BASE 64 LOS ARRAY TRAIDOS DE LA BD
-   //LA VAR DATOS ES PARA LAS IMAGENES QE YO INSERTÉ EN BASE64 LA VAR QUITA1ER
-   //LE QUITA A DATOS EL 1ER ELEMENTO "  Y YA QEDA LA BASE 64 LISTA
-   //A LAS IMAGENES QE YO NO INSERTÉ SE LE PASA LA VARIABLE BASE64STRING
-   bufferToBase64ImageSourceRegisAnteriores(buffer: any) {
- 
-     const base64String = btoa(new Uint8Array(buffer).reduce((data, byte)=> {
-       return data + String.fromCharCode(byte);
-     }, ''));
- 
- 
- 
-     console.log('data:image/jpg;base64, ')
-     console.log(base64String);
-     this.valorImagenParaDescargar = 'data:image/jpg;base64, ' + base64String;
-     
-     
-     //AQUI SE LE PASA BASE64STRING EN VEZ DE QUITA1ER SE PUEDE PONER UN IF 
-     this.previzualizacionDoc = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + base64String);//'data:data:image/jpg;base64,' + base64String;//
-     console.log('buffertobase');
-     
-     console.log(this.previzualizacionDoc);
-     return this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + base64String);
- 
-   }
- 
-   //CONVERTIR A BASE 64 LOS ARRAY TRAIDOS DE LA BD
-   //LA VAR DATOS ES PARA LAS IMAGENES QE YO INSERTÉ EN BASE64 LA VAR QUITA1ER
-   //LE QUITA A DATOS EL 1ER ELEMENTO "  Y YA QEDA LA BASE 64 LISTA
-   //A LAS IMAGENES QE YO NO INSERTÉ SE LE PASA LA VARIABLE BASE64STRING
-   bufferToBase64ImageSourceNewRegis(buffer: any) {
-     var Datos ='';
-     var Bytes = 0;
-     const base64String = btoa(new Uint8Array(buffer).reduce((data, byte)=> {
-     Datos = data;
-     Bytes = byte;
-     
-       
-       return data + String.fromCharCode(byte);
-     }, ''));
-     
-     console.log('data:image/jpg;base64, ');
-     console.log(Datos);
-     var quita1er = Datos.slice(1);
-     console.log('bytes', Bytes);
-     
- 
-     console.log('quitar', quita1er);
-     this.valorImagenParaDescargar =  'data:application/pdf;base64, ' + quita1er; //'data:image/jpg;base64, ' + quita1er;
-     console.log('newvalor',this.valorImagenParaDescargar); 
-     
-     //AQUI SE LE PASA BASE64STRING EN VEZ DE QUITA1ER SE PUEDE PONER UN IF 
-     this.previzualizacionDoc =  'data:application/pdf;base64, ' + quita1er;//this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + quita1er);// //
-     console.log('buffertobase');
-     
-     console.log(this.previzualizacionDoc);
-     this.valorImagenParaDescargar = 'data:application/pdf;base64, ' + quita1er;
-      console.log('newvalor',this.valorImagenParaDescargar); 
-     
-     return this.sanitizer.bypassSecurityTrustUrl('data:application/pdf;base64, ' + quita1er);
-   }
- 
    cerrarModalVerDocs(){
      this.tipoDoc = '';
    }
@@ -716,15 +658,11 @@ export class ConsultarComponent implements OnInit {
  
  
    downloadImage() {
-     //this.tipoDoc = '';
- 
+     
      const linkSource = this.valorImagenParaDescargar;
      const downloadLink = document.createElement("a");
      downloadLink.href = linkSource;
-    // downloadLink.download = this.nombreDoc+'.'+this.numEmpleado+'.pdf';
-     //downloadLink.click();
- 
- 
+    
      if(this.tipoDoc === 'NEW2022'){
        console.log('soy 2022');
        downloadLink.download = this.nombreDoc+'.'+this.numEmpleado+'.pdf';
@@ -736,20 +674,6 @@ export class ConsultarComponent implements OnInit {
        downloadLink.click();
        
      }
- 
- 
- 
-    /* const pageImage = new Image();
-     pageImage.src = this.valorImagenParaDescargar;
-     pageImage.onload = function(){
-       const canvas = document.createElement('canvas');
-       canvas.width = pageImage.naturalWidth;
-       canvas.height = pageImage.naturalHeight;
- 
-       const ctx = canvas.getContext('2d');
-       //ctx?.imageSmoothingEnabled = false;
-       ctx?.drawImage(pageImage,0,0);
-       console.log(canvas, pageImage);*/ 
  
    }
  

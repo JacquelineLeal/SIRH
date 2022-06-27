@@ -317,7 +317,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-info" (click)="validacionInfoEscolar()">Actualizar</button>
+        <button type="submit" class="btn btn-info" (click)="validacionInfoEscolar(); modal.close()">Actualizar</button>
         <button type="submit" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
     </div>
 
@@ -362,7 +362,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-info" (click)="validacionInfoIdiomas()">Actualizar</button>
+        <button type="submit" class="btn btn-info" (click)="validacionInfoIdiomas(); modal.close()">Actualizar</button>
         <button type="submit" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
     </div>
 
@@ -429,7 +429,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-info" (click)="validacionInsertarDocumentos()">Actualizar</button>
+        <button type="submit" class="btn btn-info" (click)="validacionInsertarDocumentos(); modal.close()">Actualizar</button>
         <button type="submit" class="btn btn-danger" (click)="modal.close()">Cancelar</button>
     </div>
 

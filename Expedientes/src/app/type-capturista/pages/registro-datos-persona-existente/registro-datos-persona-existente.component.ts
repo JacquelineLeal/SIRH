@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
-
+import { CookieService } from 'ngx-cookie-service';
 
  
 import {DatosEscolares, DatosEscolaresServiService } from 'src/app/services/datos-escolares-servi.service';
@@ -28,6 +28,8 @@ export class RegistroDatosPersonaExistenteComponent implements OnInit {
   previzualizacionDoc: any = [];
 
   listaDocsByCveEmp : any = [];
+  IdExpediente: Number;
+  lengthCriteriosExpediente: Number;
 
 
   datosDomicilio: any = [];
@@ -104,7 +106,9 @@ export class RegistroDatosPersonaExistenteComponent implements OnInit {
 
     NOMBRE: '',
     APE_PATERNO: '',
-    APE_MATERNO: ''
+    APE_MATERNO: '',
+    USUARIO:this.cookieService.get('user'),
+    IdExpediente: 0
   }
 
 
@@ -116,7 +120,8 @@ export class RegistroDatosPersonaExistenteComponent implements OnInit {
     private datosInicialesService: DatosInicialesExpedientesService,
     private datosIdiomasService : IdiomasService,
     private datosDocumentosService : DocumentosService,
-    private sanitizer : DomSanitizer
+    private sanitizer : DomSanitizer,
+    private cookieService: CookieService
     
   ) { }
 
@@ -158,6 +163,9 @@ export class RegistroDatosPersonaExistenteComponent implements OnInit {
 
 
   async abrirModalInfoPersonal(regisInfoPersonal: any, CVE_EMPLEADO: any){
+        this.lengthCriteriosExpediente = 0;
+        this.IdExpediente = 0;
+        await this.getExpedienteCriteriosCve(CVE_EMPLEADO);
   
         this.datosInicialesService.newRegistrarDatos.NOMBRE = '';
         this.datosInicialesService.newRegistrarDatos.APE_PATERNO = '';
@@ -553,6 +561,7 @@ export class RegistroDatosPersonaExistenteComponent implements OnInit {
     this.newRegisDocumentos.APE_PATERNO = APE_PATERNO;
     this.newRegisDocumentos.APE_MATERNO = APE_MATERNO;
     this.getListaDocumentosCve(CVE_EMPLEADO);
+    this.getIdExpedienteCve(CVE_EMPLEADO);
    // this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
     
     this.modal.open(subirDocumentos,{size: 'xl'});
@@ -821,7 +830,161 @@ export class RegistroDatosPersonaExistenteComponent implements OnInit {
 
   ///-------------------------------------------------------------------------
  async clickBtnGuardarInfo(){
+  if (this.lengthCriteriosExpediente == 0) {
+    console.log('TRUE DEL CRITERIO');
+
     if(this.datosDomicilioLength == 0){
+     
+      if(this.datosComplemenLength == 0){
+
+        if(this.listaMediaFilLength == 0){
+          //OPCION 1
+          await this.Op1_PostDataDPDomComMediaFil();
+
+        }else{
+          if(this.listaMediaFilLength > 0){
+            //OPCION 2
+            await this.Op2_PostDataDPDomComMediaFil();
+
+          }
+        }
+
+        
+      }else{
+        if(this.datosComplemenLength > 0){
+          if(this.listaMediaFilLength == 0){
+            //OPCION 3
+            await this.Op3_PostDataDPDomComMediaFil();
+
+          }else{
+            if(this.listaMediaFilLength > 0){
+              //OPCION 4
+              await this.Op4_PostDataDPDomComMediaFil();
+  
+            }
+          }
+
+        }
+      }
+
+    }else{
+      
+      if(this.datosComplemenLength == 0){
+        if(this.listaMediaFilLength == 0){
+          //OPCION 5
+          await this.Op5_PostDataDPDomComMediaFil();
+
+        }else{
+          if(this.listaMediaFilLength > 0){
+            //OPCION 6
+            await this.Op6_PostDataDPDomComMediaFil();
+
+          }
+        }
+       
+
+      }else{
+       
+        if(this.datosComplemenLength >0){
+          if(this.listaMediaFilLength == 0){
+            //OPCION 7
+            await this.Op7_PostDataDPDomComMediaFil();
+
+          }else{
+            if(this.listaMediaFilLength > 0){
+              //OPCION 8
+              await this.Op8_PostDataDPDomComMediaFil();
+  
+            }
+          }
+        }
+      }
+    }
+    
+  }else{
+
+    console.log('ELSE DEL CRITERIO');
+    
+    if(this.datosDomicilioLength == 0){
+     
+      if(this.datosComplemenLength == 0){
+
+        if(this.listaMediaFilLength == 0){
+          //OPCION 9
+          await this.Op9_PostDataDPDomComMediaFil();
+
+        }else{
+          if(this.listaMediaFilLength > 0){
+            //OPCION 10
+            await this.Op10_PostDataDPDomComMediaFil();
+
+          }
+        }
+
+        
+      }else{
+        if(this.datosComplemenLength > 0){
+          if(this.listaMediaFilLength == 0){
+            //OPCION 11
+            await this.Op11_PostDataDPDomComMediaFil();
+
+          }else{
+            if(this.listaMediaFilLength > 0){
+              //OPCION 12
+              await this.Op12_PostDataDPDomComMediaFil();
+  
+            }
+          }
+
+        }
+      }
+
+    }else{
+      
+      if(this.datosComplemenLength == 0){
+        if(this.listaMediaFilLength == 0){
+          //OPCION 13
+          await this.Op13_PostDataDPDomComMediaFil();
+
+        }else{
+          if(this.listaMediaFilLength > 0){
+            //OPCION 14
+            await this.Op14_PostDataDPDomComMediaFil();
+
+          }
+        }
+       
+
+      }else{
+       
+        if(this.datosComplemenLength >0){
+          if(this.listaMediaFilLength == 0){
+            //OPCION 15
+            await this.Op15_PostDataDPDomComMediaFil();
+
+          }else{
+            if(this.listaMediaFilLength > 0){
+              console.log('sesupone qe en este dbe entrar');
+              console.log('number EXP',);
+              
+              
+              //OPCION 16
+              await this.Op16_PostDataDPDomComMediaFil();
+  
+            }
+          }
+         
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+  /*if(this.datosDomicilioLength == 0){
      
       if(this.datosComplemenLength == 0){
 
@@ -891,7 +1054,7 @@ export class RegistroDatosPersonaExistenteComponent implements OnInit {
 
       }
 
-    }
+    }*/
 
   }
 
@@ -1271,6 +1434,200 @@ async Op8_PostDataDPDomComMediaFil(){
 }
 //----------------------------------------------------------
 
+
+//OPCION 9
+async Op9_PostDataDPDomComMediaFil(){  
+  await this.datosInicialesService.Op9_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      console.log(res); 
+      this.modal.dismissAll();
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
+ 
+//OPCION 10
+async Op10_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op10_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
+
+//OPCION 11
+async Op11_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op11_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
+
+//OPCION 12
+async Op12_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op12_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
+
+//OPCION 13
+async Op13_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op13_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
+
+//OPCION 14
+async Op14_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op14_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
+
+//OPCION 15
+async Op15_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op15_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log(err);
+    }
+  )
+}
+
+//OPCION 16
+async Op16_PostDataDPDomComMediaFil(){
+  await this.datosInicialesService.Op16_addDatosPDomComMediaFil(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    res=>{
+      Swal.fire(
+        'El REGISTRO FUE EXITOSO!',
+        'Los datos fueron registrados',
+        'success'
+      );
+      this.modal.dismissAll();
+      console.log(res); 
+      //this.router.navigateByUrl('registro-new-data');
+    },
+    err=>{
+      Swal.fire(
+        'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+        'Si persisten los problemas comuníquese con el administrador',
+        'error'
+      )
+      console.log('ARREGLOOO',this.datosInicialesService.ValoresInputsRegistroDataPD);
+      
+      console.log(err);
+    }
+  )
+}
 
 
 //-----------------------------------------------------------
@@ -1736,6 +2093,43 @@ async Op8_PostDataDPDomComMediaFil(){
 
 
   }
+
+
+  async getIdExpedienteCve(CVE_EMPLEADO: any){
+    await this.datosDocumentosService.getIdExpedienteByCveEmp(CVE_EMPLEADO).subscribe(
+      res=>{
+        this.IdExpediente = res[0].IdExpediente;
+        this.newRegisDocumentos.IdExpediente = this.IdExpediente;
+        console.log('EXPID',this.IdExpediente);
+        
+      },
+      err=>{
+        console.log(err);
+      }
+    )
+  }
+
+  async getExpedienteCriteriosCve(CVE_EMPLEADO: any){
+    
+    await this.datosDocumentosService. getExpedienteCriteriosByCveEmp(CVE_EMPLEADO).subscribe(
+      res=>{
+        this.IdExpediente = res[0].IdExpediente;
+        this.datosInicialesService.newRegistrarDatos.IdExpediente = this.IdExpediente;
+        this.lengthCriteriosExpediente = Object.keys(res).length;
+        console.log('lenghtttcrite',this.lengthCriteriosExpediente);
+        
+        
+        
+      },
+      err=>{
+        console.log(err);
+      }
+    )
+  }
+
+ 
+
+  
 
 
 

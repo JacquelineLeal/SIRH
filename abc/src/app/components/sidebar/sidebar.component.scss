@@ -1,0 +1,21 @@
+
+
+
+   @import "../../../assets/scss/core/navbars/navbar";//"../../../assets/scss/core/navbars/navbar";//"    ../core/navbars/navbar";
+   @import "../../../assets/scss/core/navbars/navbar-vertical";
+   @import "../../../assets/scss/core/navbars/navbar-search";
+   @import "../../../assets/scss/core/navbars/navbar-dropdown";
+   @import "../../../assets/scss/core/navbars/navbar-collapse";
+
+   .nav-link {
+    color: yellow;
+
+    &:hover {
+        color: $nav-link-hover-color;
+    }
+
+    i.ni {
+        position: relative;
+        top: 2px;
+    }
+}

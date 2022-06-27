@@ -29,4 +29,5 @@ export interface DatosLogin{
 	NOMBRE_USUARIO:String, 
 	PASSW:String,
 	TIPO_USUARIO:String
+
 }

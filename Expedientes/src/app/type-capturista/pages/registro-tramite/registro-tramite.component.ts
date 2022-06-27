@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
+import { CookieService } from 'ngx-cookie-service';
 
  
 import {DatosEscolares, DatosEscolaresServiService } from 'src/app/services/datos-escolares-servi.service';
@@ -42,6 +43,16 @@ export class RegistroTramiteComponent implements OnInit {
   fileUrl: any;
   salida: any =[];
 
+  ListaDatosPersonales: any =[];
+  listaMediaFil: any =[];
+  lengthCriteriosExpediente: Number;
+
+  datosDomicilio: any = [];
+  datosComplementarios: any = [];
+  listaMediaFilLength: number;
+  datosDomicilioLength: number;
+  datosComplemenLength: number;
+
   
   listaEstadoCivil: any = [];
   listaPaisNac: any = [];
@@ -51,6 +62,7 @@ export class RegistroTramiteComponent implements OnInit {
   listaValoresEscolaridad: any = [];
   listaDocumentosIni: any =[];
   listaDocsInsertadosByIdEnlace: any = [];
+  IdExpediente: Number;
 
   listaDatosEscolares:any =[];
   listaDatosIdiomas: any = [];
@@ -62,16 +74,20 @@ export class RegistroTramiteComponent implements OnInit {
 
   arrayForInsertDatosPer: DatosPersonalesTable ={
     
+  
+    INFO_COMPLETA:'NO',
     FECHA_REGISTRO_DATA_PERSONAL: this.date,
     //Id: 0,
     ESTATUS : 'P',
     NOMBRE:'',
     APE_PATERNO:'',
     APE_MATERNO:'',
+    
         
     SEXO:'',
     FECHA_NAC: this.date,
     EST_CIVIL:'',
+    
     CVE_RFC:'',
     CURP:'',
     CVE_ELECTOR:'',
@@ -89,10 +105,7 @@ export class RegistroTramiteComponent implements OnInit {
     TABLAS:'1000000000000000000000000',
     FCH_UAC: this.date,
 
-
-    OBSERVACIONES:'',
-
-    INFO_COMPLETA: 'NO'
+    OBSERVACIONES:''
   }
 
   newRegistrarDatosEscolares: DatosEscolares = {
@@ -142,6 +155,8 @@ export class RegistroTramiteComponent implements OnInit {
     IdDocumentos: 0,
     TIPO_INSERCION: 'NEW2022',
 
+    USUARIO: this.cookieService.get('user'),
+    IdExpediente: 0,
     NOMBRE: '',
     APE_PATERNO: '',
     APE_MATERNO: ''
@@ -211,7 +226,8 @@ export class RegistroTramiteComponent implements OnInit {
     IdEnlace: '',
     IdDomicilio: '',
     IdComplemen: '',
-    IdMediaFiliacion:''
+    IdMediaFiliacion:'',
+    IdExpediente:0
 
 
   }
@@ -225,7 +241,8 @@ export class RegistroTramiteComponent implements OnInit {
     private datosInicialesService: DatosInicialesExpedientesService,
     private datosIdiomasService : IdiomasService,
     private datosDocumentosService : DocumentosService,
-    private sanitizer : DomSanitizer
+    private sanitizer : DomSanitizer,
+    private cookieService: CookieService
   ) { }
 
   ngOnInit(): void {
@@ -289,7 +306,7 @@ export class RegistroTramiteComponent implements OnInit {
     this.newRegisDocumentos.NOMBRE = NOMBRE;
     this.newRegisDocumentos.APE_PATERNO = APE_PATERNO;
     this.newRegisDocumentos.APE_MATERNO = APE_MATERNO;
-    
+    this.traerIdExpedienteByIdEnlace(this.newRegisDocumentos.IdEnlace);
     this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
     console.log(Id);
     
@@ -412,65 +429,271 @@ export class RegistroTramiteComponent implements OnInit {
   }
 
   async clickBtnRegistroInfoP(regisInfoPersonal: any, Id:any, NOMBRE:any, APE_PATERNO:any,APE_MATERNO:any, FECHA_REGISTRO_DATA_PERSONAL:any, INFO_COMPLETA:any, FCH_UAC:any){
-    
-   
-    this.datosInicialesService.newRegistrarDatos.Id = Id;
-    this.datosInicialesService.newRegistrarDatos.NOMBRE = NOMBRE;
-    this.datosInicialesService.newRegistrarDatos.APE_PATERNO = APE_PATERNO;
-    this.datosInicialesService.newRegistrarDatos.APE_MATERNO = APE_MATERNO;
-    this.datosInicialesService.newRegistrarDatos.FECHA_REGISTRO_DATA_PERSONAL = FECHA_REGISTRO_DATA_PERSONAL;
-    this.datosInicialesService.newRegistrarDatos.INFO_COMPLETA = INFO_COMPLETA;
-    this.datosInicialesService.newRegistrarDatos.FCH_UAC = FCH_UAC;
-    this.datosInicialesService.newRegistrarDatos.CONSECUTIVO = 1;
-    
-    
-    
-    this.datosInicialesService.newRegistrarDatos.SEXO = '';
-    //this.datosInicialesService.newRegistrarDatos.FECHA_NAC = '';
-    this.datosInicialesService.newRegistrarDatos.EST_CIVIL = '';
-    this.datosInicialesService.newRegistrarDatos.SANGRE = '';
-    this.datosInicialesService.newRegistrarDatos.CVE_RFC = '';
-    this.datosInicialesService.newRegistrarDatos.CURP = '';
-    this.datosInicialesService.newRegistrarDatos.CVE_ELECTOR = '';
-    this.datosInicialesService.newRegistrarDatos.LICENCIA = '';
-    this.datosInicialesService.newRegistrarDatos.PASAPORTE = '';
-    this.datosInicialesService.newRegistrarDatos.CARTILLA = '';
-    this.datosInicialesService.newRegistrarDatos.PAIS_NAC = 0;
-    this.datosInicialesService.newRegistrarDatos.EDO_NAC = 0;
-    this.datosInicialesService.newRegistrarDatos.MUN_NAC = 0;
-    this.datosInicialesService.newRegistrarDatos.NACIONALIDAD = 0;
 
-    this.datosInicialesService.newRegistrarDatos.EMAIL = '';
-    this.datosInicialesService.newRegistrarDatos.TELEFONO = '';
-    this.datosInicialesService.newRegistrarDatos.CELULAR = '';
+    //--------------------------------------------------------------------------------------------------------------------------------------
+        this.lengthCriteriosExpediente = 0;
+        this.IdExpediente = 0;
+        await this.getExpedienteCriteriosId(Id);
+  
+        this.datosInicialesService.newRegistrarDatos.NOMBRE = '';
+        this.datosInicialesService.newRegistrarDatos.APE_PATERNO = '';
+        this.datosInicialesService.newRegistrarDatos.APE_MATERNO = '';
+        this.datosInicialesService.newRegistrarDatos.SEXO = '';
+      // this.datosInicialesService.newRegistrarDatos.FECHA_NAC = ;
+        this.datosInicialesService.newRegistrarDatos.EST_CIVIL = '';
+        this.datosInicialesService.newRegistrarDatos.SANGRE = '';
+        this.datosInicialesService.newRegistrarDatos.CVE_RFC = ''
+        this.datosInicialesService.newRegistrarDatos.CURP = '';
+        this.datosInicialesService.newRegistrarDatos.CVE_ELECTOR = '';
+        this.datosInicialesService.newRegistrarDatos.LICENCIA = '';
+        this.datosInicialesService.newRegistrarDatos.PASAPORTE = '';
+        this.datosInicialesService.newRegistrarDatos.CARTILLA = '';
+        this.datosInicialesService.newRegistrarDatos.PAIS_NAC = 0;
+        this.datosInicialesService.newRegistrarDatos.EDO_NAC = 0;
+        this.datosInicialesService.newRegistrarDatos.MUN_NAC = 0;
+        this.datosInicialesService.newRegistrarDatos.NACIONALIDAD = 0;
 
-    this.datosInicialesService.newRegistrarDatos.CALLE = '';
-    this.datosInicialesService.newRegistrarDatos.ENTRE_CALLE = '';
-    this.datosInicialesService.newRegistrarDatos.NO_EXTERIOR = '';
-    this.datosInicialesService.newRegistrarDatos.NO_INTERIOR = '';
-    this.datosInicialesService.newRegistrarDatos.COLONIA = '';
-    this.datosInicialesService.newRegistrarDatos.CODIGO_POSTAL = '';
-    this.datosInicialesService.newRegistrarDatos.ENTIDAD = '';
-    this.datosInicialesService.newRegistrarDatos.MUNICIPIO = '';
-    this.datosInicialesService.newRegistrarDatos.CIUDAD = '';
+        this.datosInicialesService.newRegistrarDatos.EMAIL = '';
+        this.datosInicialesService.newRegistrarDatos.TELEFONO = '';
+        this.datosInicialesService.newRegistrarDatos.CELULAR = '';
+        this.datosInicialesService.newRegistrarDatos.CALLE ='' ;
+        this.datosInicialesService.newRegistrarDatos.ENTRE_CALLE = ' ';
+        this.datosInicialesService.newRegistrarDatos.Y_CALLE = ' ';
+        this.datosInicialesService.newRegistrarDatos.NO_EXTERIOR = ' ';
+        this.datosInicialesService.newRegistrarDatos.NO_INTERIOR = ' ';
+        this.datosInicialesService.newRegistrarDatos.COLONIA = ' ';
+        this.datosInicialesService.newRegistrarDatos.CODIGO_POSTAL = ' ';
+        this.datosInicialesService.newRegistrarDatos.ENTIDAD =' ' ;
+        this.datosInicialesService.newRegistrarDatos.MUNICIPIO = ' ';
+        this.datosInicialesService.newRegistrarDatos.CIUDAD = ' ';
 
-    this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = '';
-    this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = '';
-    this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = '';
-    this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = '';
-    this.datosInicialesService.newRegistrarDatos.ES_PADRE = '';
-    this.datosInicialesService.newRegistrarDatos.TIENE_DISCAPACIDAD = '';
-    this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = '';
-    this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = '';
+        this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = ' ';
+        this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = ' ';
+        this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = ' ';
+        this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = ' ';
+        this.datosInicialesService.newRegistrarDatos.ES_PADRE = ' ';
+        this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = ' ';
+        this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = ' ';
+
+
+
+      await this.datosPDC.getDatosPersonalesTramiteById(Id).subscribe(
+        res=>{
+          this.ListaDatosPersonales = res;
+          this.datosInicialesService.newRegistrarDatos.Id = this.ListaDatosPersonales[0].Id;
+          this.datosInicialesService.newRegistrarDatos.FECHA_REGISTRO_DATA_PERSONAL= this.ListaDatosPersonales[0].FECHA_REGISTRO_DATA_PERSONAL;
+
+          this.datosInicialesService.newRegistrarDatos.ESTATUS= this.ListaDatosPersonales[0].ESTATUS;
+          this.datosInicialesService.newRegistrarDatos.NOMBRE= this.ListaDatosPersonales[0].NOMBRE;
+          this.datosInicialesService.newRegistrarDatos.APE_PATERNO= this.ListaDatosPersonales[0].APE_PATERNO;
+          this.datosInicialesService.newRegistrarDatos.APE_MATERNO= this.ListaDatosPersonales[0].APE_MATERNO;
+
+          this.datosInicialesService.newRegistrarDatos.SEXO= this.ListaDatosPersonales[0].SEXO;
+          this.datosInicialesService.newRegistrarDatos.FECHA_NAC= this.ListaDatosPersonales[0].FECHA_NAC;
+          this.datosInicialesService.newRegistrarDatos.EST_CIVIL= this.ListaDatosPersonales[0].EST_CIVIL;
+
+          this.datosInicialesService.newRegistrarDatos.CVE_RFC= this.ListaDatosPersonales[0].CVE_RFC;
+          this.datosInicialesService.newRegistrarDatos.CURP= this.ListaDatosPersonales[0].CURP;
+          this.datosInicialesService.newRegistrarDatos.CVE_ELECTOR= this.ListaDatosPersonales[0].CVE_ELECTOR;
+          this.datosInicialesService.newRegistrarDatos.LICENCIA= this.ListaDatosPersonales[0].LICENCIA;
+
+          this.datosInicialesService.newRegistrarDatos.PASAPORTE= this.ListaDatosPersonales[0].PASAPORTE;
+          this.datosInicialesService.newRegistrarDatos.CARTILLA= this.ListaDatosPersonales[0].CARTILLA;
+
+          this.datosInicialesService.newRegistrarDatos.PAIS_NAC= this.ListaDatosPersonales[0].PAIS_NAC;
+          this.datosInicialesService.newRegistrarDatos.EDO_NAC= this.ListaDatosPersonales[0].EDO_NAC;
+          this.datosInicialesService.newRegistrarDatos.MUN_NAC= this.ListaDatosPersonales[0].MUN_NAC;
+          this.datosInicialesService.newRegistrarDatos.NACIONALIDAD= this.ListaDatosPersonales[0].NACIONALIDAD;
+
+          this.datosInicialesService.newRegistrarDatos.CVE_EMPLEADO= this.ListaDatosPersonales[0].CVE_EMPLEADO;
+          this.datosInicialesService.newRegistrarDatos.TABLAS= this.ListaDatosPersonales[0].TABLAS;
+          this.datosInicialesService.newRegistrarDatos.FCH_UAC= this.ListaDatosPersonales[0].FCH_UAC;
+
+          this.datosInicialesService.newRegistrarDatos.OBSERVACIONES= this.ListaDatosPersonales[0].OBSERVACIONES;
+          this.datosInicialesService.newRegistrarDatos.INFO_COMPLETA= this.ListaDatosPersonales[0].INFO_COMPLETA;
+
+
+          console.log(this.ListaDatosPersonales);
+
+          this.datosPDC.getDomicilioByIdEnlace(Id).subscribe(
+            resDom=>{
+              this.datosDomicilio = resDom;
+              this.datosDomicilioLength = Object.keys(this.datosDomicilio).length;
+
+
+              if(this.datosDomicilioLength == 0){
+                this.datosInicialesService.newRegistrarDatos.CONSECUTIVO = 1;
+                console.log('true',this.datosDomicilioLength);
+                this.datosPDC.getComplementariaByIdEnlace(Id).subscribe(
+                  resCom=>{
+                    this.datosComplementarios = resCom;
+                    this.datosComplemenLength = Object.keys(this.datosComplementarios).length;
+
+                    if(this.datosComplemenLength == 0){
+                      
+                      //TRAER EL SANGRE
+                      this.datosPDC.getMediaFiliacionByIdEnlace(Id).subscribe(
+                        resMediaFil=>{
+                          this.listaMediaFil = resMediaFil;
+                          console.log('MEDIAFIL',this.listaMediaFil);
+                          this.listaMediaFilLength = Object.keys(this.listaMediaFil).length;
+                          if(this.listaMediaFilLength == 0){
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }else{
+                            this.datosInicialesService.newRegistrarDatos.SANGRE = this.listaMediaFil[0].SANGRE;
+                            this.datosInicialesService.newRegistrarDatos.IdMediaFiliacion = this.listaMediaFil[0].IdMediaFiliacion;
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }
+                        }
+                      )
+
+
+                    }else{
+                      this.datosInicialesService.newRegistrarDatos.IdComplemen = this.datosComplementarios[0].IdComplemen;
+                      this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = this.datosComplementarios[0].PERTENECE_ETNIA;
+                      this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = this.datosComplementarios[0].NOM_ETNIA;
+                      this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = this.datosComplementarios[0].HABLA_LEN_INDIGENA;
+                      this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = this.datosComplementarios[0].LENGUA_INDIGENA;
+                      this.datosInicialesService.newRegistrarDatos.ES_PADRE = this.datosComplementarios[0].ES_PADRE;
+                      this.datosInicialesService.newRegistrarDatos.TIENE_DISCAPACIDAD = this.datosComplementarios[0].TIENE_DISCAPACIDAD;
+                      this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = this.datosComplementarios[0].NOM_DISCAPACIDAD;
+                      this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = this.datosComplementarios[0].ES_AGENTEMP_PERITO;
+                      this.datosInicialesService.newRegistrarDatos.IdEnlace = this.datosComplementarios[0].IdEnlace;
+                  
+
+                      //TRAER EL SANGRE
+                      this.datosPDC.getMediaFiliacionByIdEnlace(Id).subscribe(
+                        resMediaFil=>{
+                          this.listaMediaFil = resMediaFil;
+                          console.log('MEDIAFIL',this.listaMediaFil);
+                          this.listaMediaFilLength = Object.keys(this.listaMediaFil).length;
+                          if(this.listaMediaFilLength == 0){
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }else{
+                            this.datosInicialesService.newRegistrarDatos.SANGRE = this.listaMediaFil[0].SANGRE;
+                            this.datosInicialesService.newRegistrarDatos.IdMediaFiliacion = this.listaMediaFil[0].IdMediaFiliacion;
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }
+                        }
+                      )
+                      //this.modal.open(regisInfoPersonal,{size:'xl'});
+
+
+                    }
+
+                  }
+                )
+
+              }else{
+                this.datosInicialesService.newRegistrarDatos.CONSECUTIVO = this.datosDomicilio[0].CONSECUTIVO + 1;
+                console.log('FALSE',this.datosDomicilio);
+
+                this.datosInicialesService.newRegistrarDatos.IdDomicilio = this.datosDomicilio[0].IdDomicilio;
+                this.datosInicialesService.newRegistrarDatos.EMAIL = this.datosDomicilio[0].EMAIL;
+                this.datosInicialesService.newRegistrarDatos.TELEFONO = this.datosDomicilio[0].TELEFONO;
+                this.datosInicialesService.newRegistrarDatos.CELULAR = this.datosDomicilio[0].CELULAR;
+                this.datosInicialesService.newRegistrarDatos.CALLE = this.datosDomicilio[0].CALLE;
+                this.datosInicialesService.newRegistrarDatos.ENTRE_CALLE = this.datosDomicilio[0].ENTRE_CALLE;
+                this.datosInicialesService.newRegistrarDatos.Y_CALLE = this.datosDomicilio[0].Y_CALLE;
+                this.datosInicialesService.newRegistrarDatos.NO_EXTERIOR = this.datosDomicilio[0].NO_EXTERIOR;
+                this.datosInicialesService.newRegistrarDatos.NO_INTERIOR = this.datosDomicilio[0].NO_INTERIOR;
+                this.datosInicialesService.newRegistrarDatos.COLONIA = this.datosDomicilio[0].COLONIA;
+                this.datosInicialesService.newRegistrarDatos.CODIGO_POSTAL = this.datosDomicilio[0].CODIGO_POSTAL;
+                this.datosInicialesService.newRegistrarDatos.ENTIDAD = this.datosDomicilio[0].ENTIDAD;
+                this.datosInicialesService.newRegistrarDatos.MUNICIPIO = this.datosDomicilio[0].MUNICIPIO;
+                this.datosInicialesService.newRegistrarDatos.CIUDAD = this.datosDomicilio[0].CIUDAD;
     
 
-    this.modal.open(regisInfoPersonal,{size:'xl'});
+                this.datosPDC.getComplementariaByIdEnlace(Id).subscribe(
+                  resCom=>{ 
+                    this.datosComplementarios = resCom;
+                    this.datosComplemenLength = Object.keys(this.datosComplementarios).length;
+
+                    if(this.datosComplemenLength == 0){
+                     // this.modal.open(regisInfoPersonal,{size:'xl'});
+                      //TRAER EL SANGRE
+                      this.datosPDC.getMediaFiliacionByIdEnlace(Id).subscribe(
+                        resMediaFil=>{
+                          this.listaMediaFil = resMediaFil;
+                          console.log('MEDIAFIL',this.listaMediaFil);
+                          this.listaMediaFilLength = Object.keys(this.listaMediaFil).length;
+                          if(this.listaMediaFilLength == 0){
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }else{
+                            this.datosInicialesService.newRegistrarDatos.SANGRE = this.listaMediaFil[0].SANGRE;
+                            this.datosInicialesService.newRegistrarDatos.IdMediaFiliacion = this.listaMediaFil[0].IdMediaFiliacion;
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }
+                        }
+                      )
+
+                    }else{
+                      this.datosInicialesService.newRegistrarDatos.IdComplemen = this.datosComplementarios[0].IdComplemen;
+                      this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = this.datosComplementarios[0].PERTENECE_ETNIA;
+                      this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = this.datosComplementarios[0].NOM_ETNIA;
+                      this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = this.datosComplementarios[0].HABLA_LEN_INDIGENA;
+                      this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = this.datosComplementarios[0].LENGUA_INDIGENA;
+                      this.datosInicialesService.newRegistrarDatos.ES_PADRE = this.datosComplementarios[0].ES_PADRE;
+                      this.datosInicialesService.newRegistrarDatos.TIENE_DISCAPACIDAD = this.datosComplementarios[0].TIENE_DISCAPACIDAD;
+                      this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = this.datosComplementarios[0].NOM_DISCAPACIDAD;
+                      this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = this.datosComplementarios[0].ES_AGENTEMP_PERITO;
+                      this.datosInicialesService.newRegistrarDatos.IdEnlace = this.ListaDatosPersonales[0].Id;
+
+                      //TRAER EL SANGRE
+                      this.datosPDC.getMediaFiliacionByIdEnlace(Id).subscribe(
+                        resMediaFil=>{
+                          this.listaMediaFil = resMediaFil;
+                          this.listaMediaFilLength = Object.keys(this.listaMediaFil).length;
+                          console.log('MEDIAFIL',this.listaMediaFil);
+                          
+                          if(this.listaMediaFilLength == 0){
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }else{
+                            this.datosInicialesService.newRegistrarDatos.SANGRE = this.listaMediaFil[0].SANGRE;
+                            this.datosInicialesService.newRegistrarDatos.IdMediaFiliacion = this.listaMediaFil[0].IdMediaFiliacion;
+                            this.modal.open(regisInfoPersonal,{size:'xl'});
+
+                          }
+                        }
+                      )
+
+                      //this.modal.open(regisInfoPersonal,{size:'xl'});
+                    }
+                  }
+                )
+              }
+            },
+            err=>{
+              console.log(err);
+            }
+          )
+          //this.modal.open(regisInfoPersonal,{size:'xl
+        },
+        err=>{
+          Swal.fire(
+            'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+            'Si persisten los problemas comuníquese con el administrador',
+            'error'
+          )
+          //alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+          console.log(err);
+          
+        }
+      )
+
+
     
 
-     
-    
-    console.log(Id);
-    console.log(NOMBRE);
+    //this.modal.open(regisInfoPersonal,{size:'xl'});
+    //console.log(Id);
+    //console.log(NOMBRE);
       
       
     
@@ -478,10 +701,187 @@ export class RegistroTramiteComponent implements OnInit {
   }
 
 
+  async getExpedienteCriteriosId(Id: any){
+    
+    await this.datosDocumentosService.getExpedienteCriteriosByIdEnlace(Id).subscribe(
+      res=>{
+        this.lengthCriteriosExpediente = Object.keys(res).length;
+        console.log('lenghtttcrite',this.lengthCriteriosExpediente);
+
+        if(this.lengthCriteriosExpediente === 0){
+
+        }else{
+          this.IdExpediente = res[0].IdExpediente;
+          this.datosInicialesService.newRegistrarDatos.IdExpediente = this.IdExpediente;
+        }  
+      },
+      err=>{
+        console.log(err);
+      }
+    )
+  }
+
+
   ///clickBtnGuardarInfoModalRegisIP
   async POSTclickBtnGuardarInfoModalRegisIP(){
+
+    if (this.lengthCriteriosExpediente == 0) {
+      console.log('TRUE DEL CRITERIO');
+  
+      if(this.datosDomicilioLength == 0){
+       
+        if(this.datosComplemenLength == 0){
+  
+          if(this.listaMediaFilLength == 0){
+            //OPCION 1
+            await this.Op1_PostDataDPDomComMediaFil_Tramite();
+  
+          }else{
+            if(this.listaMediaFilLength > 0){
+              //OPCION 2
+              await this.Op2_PostDataDPDomComMediaFil_Tramite();
+  
+            }
+          }
+  
+          
+        }else{
+          if(this.datosComplemenLength > 0){
+            if(this.listaMediaFilLength == 0){
+              //OPCION 3
+              await this.Op3_PostDataDPDomComMediaFil_Tramite();
+  
+            }else{
+              if(this.listaMediaFilLength > 0){
+                //OPCION 4
+                await this.Op4_PostDataDPDomComMediaFil_Tramite();
+    
+              }
+            }
+  
+          }
+        }
+  
+      }else{
+        
+        if(this.datosComplemenLength == 0){
+          if(this.listaMediaFilLength == 0){
+            //OPCION 5
+            await this.Op5_PostDataDPDomComMediaFil_Tramite();
+  
+          }else{
+            if(this.listaMediaFilLength > 0){
+              //OPCION 6
+              await this.Op6_PostDataDPDomComMediaFil_Tramite();
+  
+            }
+          }
+         
+  
+        }else{
+         
+          if(this.datosComplemenLength >0){
+            if(this.listaMediaFilLength == 0){
+              //OPCION 7
+              await this.Op7_PostDataDPDomComMediaFil_Tramite();
+  
+            }else{
+              if(this.listaMediaFilLength > 0){
+                //OPCION 8
+                await this.Op8_PostDataDPDomComMediaFil_Tramite();
+    
+              }
+            }
+          }
+        }
+      }
+      
+    }else{
+  
+      console.log('ELSE DEL CRITERIO');
+      
+      if(this.datosDomicilioLength == 0){
+       
+        if(this.datosComplemenLength == 0){
+  
+          if(this.listaMediaFilLength == 0){
+            //OPCION 9
+            await this.Op9_PostDataDPDomComMediaFil_Tramite();
+  
+          }else{
+            if(this.listaMediaFilLength > 0){
+              //OPCION 10
+              await this.Op10_PostDataDPDomComMediaFil_Tramite();
+  
+            }
+          }
+  
+          
+        }else{
+          if(this.datosComplemenLength > 0){
+            if(this.listaMediaFilLength == 0){
+              //OPCION 11
+              await this.Op11_PostDataDPDomComMediaFil_Tramite();
+  
+            }else{
+              if(this.listaMediaFilLength > 0){
+                //OPCION 12
+                await this.Op12_PostDataDPDomComMediaFil_Tramite();
+    
+              }
+            }
+  
+          }
+        }
+  
+      }else{
+        
+        if(this.datosComplemenLength == 0){
+          if(this.listaMediaFilLength == 0){
+            //OPCION 13
+            await this.Op13_PostDataDPDomComMediaFil_Tramite();
+  
+          }else{
+            if(this.listaMediaFilLength > 0){
+              //OPCION 14
+              await this.Op14_PostDataDPDomComMediaFil_Tramite();
+  
+            }
+          }
+         
+  
+        }else{
+         
+          if(this.datosComplemenLength >0){
+            if(this.listaMediaFilLength == 0){
+              //OPCION 15
+              await this.Op15_PostDataDPDomComMediaFil_Tramite();
+  
+            }else{
+              if(this.listaMediaFilLength > 0){
+                console.log('sesupone qe en este dbe entrar');
+                //console.log('number EXP',);
+                
+                
+                //OPCION 16
+                await this.Op16_PostDataDPDomComMediaFil_Tramite();
+    
+              }
+            }
+           
+  
+          }
+  
+        }
+  
+      }
+  
+    }
+
+
+
    //addDatosPDomCom
-    await this.datosInicialesService.addDatosPDomComTRAMITE(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+    /*await this.datosInicialesService.addDatosPDomComTRAMITE(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
       res=>{
         Swal.fire(
           'El REGISTRO FUE EXITOSO!',
@@ -506,10 +906,389 @@ export class RegistroTramiteComponent implements OnInit {
         
       }
       
-    )
+    )*/
     //this.datosInicialesService.newRegistrarDatos = this.datosInicialesService.limpiarInputsRegistro;
 
   }
+
+
+  //OPCION 1
+  async Op1_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op1_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+
+  //OPCION 2
+  async Op2_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op2_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 3
+  async Op3_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op3_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 4
+  async Op4_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op4_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 5
+  async Op5_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op5_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 6
+  async Op6_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op6_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 7
+  async Op7_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op7_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 8
+  async Op8_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op8_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+
+
+  //OPCION 9
+  async Op9_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op9_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+
+  //OPCION 10
+  async Op10_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op10_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 11
+  async Op11_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op11_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 12
+  async Op12_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op12_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 13
+  async Op13_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op13_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 14
+  async Op14_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op14_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 15
+  async Op15_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op15_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+  //OPCION 16
+  async Op16_PostDataDPDomComMediaFil_Tramite(){  
+    await this.datosPDC.Op16_addDatosPDomComMediaFil_Tramite(this.datosInicialesService.ValoresInputsRegistroDataPD).subscribe(
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        );
+        console.log(res); 
+        this.modal.dismissAll();
+        //this.router.navigateByUrl('registro-new-data');
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        console.log(err);
+      }
+    )
+  }
+
+
+
+
+
 
 
   async validarLenghtRFC_CURP_LICENCIA_CARTILLA_PASAPORTE_ELECTOR(){
@@ -552,6 +1331,7 @@ export class RegistroTramiteComponent implements OnInit {
         if(celLenght == 10){
           console.log('todo valido');
          await this.POSTclickBtnGuardarInfoModalRegisIP();
+         this.modal.dismissAll(); 
           //this.clickBtnGuardarInfo();
           
         }else{
@@ -660,7 +1440,7 @@ export class RegistroTramiteComponent implements OnInit {
       //SO QUE 
       console.log('todos los inputs llenos, peticion post');
       await this.ValidarEmailTelCel();
-      this.modal.dismissAll(); 
+      //this.modal.dismissAll(); 
       
     }else{
 
@@ -679,7 +1459,7 @@ export class RegistroTramiteComponent implements OnInit {
         //here
         console.log('make post with los nulos');
        await this.ValidarEmailTelCel();
-       this.modal.dismissAll(); 
+       //this.modal.dismissAll(); 
       
 
       }else{
@@ -716,6 +1496,7 @@ export class RegistroTramiteComponent implements OnInit {
     }
     
   }
+////----------------------------------------------------------------------
 
 
 
@@ -1176,6 +1957,20 @@ export class RegistroTramiteComponent implements OnInit {
   }
 
 
+  async traerIdExpedienteByIdEnlace(IdEnlace: any){
+    
+    await this.datosDocumentosService.getIdExpedienteeByIdEnlace(IdEnlace).subscribe(
+      res=>{
+        this.IdExpediente = res[0].IdExpediente; 
+        this.newRegisDocumentos.IdExpediente = this.IdExpediente; 
+        console.log('IDEXPPP',this.IdExpediente);
+      }
+    )
+  }
+
+  
+
+
   capturarArchivo(event: any ){
 
     const archivo = event.target.files[0];
@@ -1228,7 +2023,7 @@ export class RegistroTramiteComponent implements OnInit {
     });
   }
 
-  click2(){
+  /*click2(){
 
    /* this.cortarStringBase64 = this.previzualizacionDoc.slice(23);
     console.log('cortada');
@@ -1248,10 +2043,10 @@ export class RegistroTramiteComponent implements OnInit {
       //this.newRegisDocumentos.DOCUMENTO=img.base;
      
     });
-    console.log('prevClick2:',this.salida);*/
+    console.log('prevClick2:',this.salida);*
     //this.getImagen();
     //this.base64ToArrayFile(this.previzualizacionDoc);
-  }
+  }*/
 
   //DE UNA IMAGEN LE SACA EL BASE64
   extraerBase64 = async($event: any) => new Promise((resolve, reject)=>{
@@ -1292,7 +2087,7 @@ export class RegistroTramiteComponent implements OnInit {
 
 
 
-async clickk(){
+/*async clickk(){
  
 //  this.bufferToBase64ImageSource(this.xd[0].DOCUMENTO.data);--------------------------------------la buenaaaaa
  // this.base64ToArrayBuffer(this.previzualizacionDoc);
@@ -1315,15 +2110,18 @@ async clickk(){
  
  
   
-}
+}*/
 
 
 
-
+//BUFFER TO BASE 64
+//CONVERTIR BUFFER DEL ARRAY TRAIDOS DE LA BD para pasarlo a base 64 para despues pasarlo a las 
+//etiquedas html <img> y <pdf-viewer>  
 //CONVERTIR A BASE 64 LOS ARRAY TRAIDOS DE LA BD
 //LA VAR DATOS ES PARA LAS IMAGENES QE YO INSERTÉ EN BASE64 LA VAR QUITA1ER
 //LE QUITA A DATOS EL 1ER ELEMENTO "  Y YA QEDA LA BASE 64 LISTA
 //A LAS IMAGENES QE YO NO INSERTÉ SE LE PASA LA VARIABLE BASE64STRING
+/*
 bufferToBase64ImageSource(buffer: any) {
   var Datos ='';
   var Bytes = 0;
@@ -1341,7 +2139,7 @@ bufferToBase64ImageSource(buffer: any) {
    
     
     return data + String.fromCharCode(byte);
-  }, ''));*/
+  }, ''));*
 
 
   console.log('data:image/jpg;base64, ');
@@ -1362,7 +2160,7 @@ bufferToBase64ImageSource(buffer: any) {
 
   return this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + base64String);
 
-}
+}*/
 
 
 

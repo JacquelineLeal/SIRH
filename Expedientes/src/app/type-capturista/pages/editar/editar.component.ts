@@ -7,6 +7,8 @@ import{DatosIdiomas ,IdiomasService} from '../../../services/idiomas.service';
 import {DatosDocumentos, DocumentosService } from 'src/app/services/documentos.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-editar',
@@ -84,7 +86,9 @@ export class EditarComponent implements OnInit {
 
     NOMBRE: '',
     APE_PATERNO: '',
-    APE_MATERNO: ''
+    APE_MATERNO: '',
+    USUARIO: this.cookieService.get('user'),
+    IdExpediente: 0
   }
  
   valoresInputBusqueda: DatosBuscarInputs={
@@ -100,7 +104,8 @@ export class EditarComponent implements OnInit {
     private datosEscolaresService: DatosEscolaresServiService,
     private datosIdiomasService : IdiomasService,
     private datosDocumentosService : DocumentosService,
-    private sanitizer : DomSanitizer
+    private sanitizer : DomSanitizer,
+    private cookieService: CookieService
 
   ) { }
 
@@ -402,14 +407,16 @@ export class EditarComponent implements OnInit {
      if(documento.TIPO_INSERCION === null){
        console.log('soy null', documento.TIPO_INSERCION);
        this.tipoDoc = documento.TIPO_INSERCION;
-       this.bufferToBase64ImageSourceRegisAnteriores(documento.DOCUMENTO.data);
+       this.previzualizacionDoc =  this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + documento.DOCUMENTO);
+       //this.bufferToBase64ImageSourceRegisAnteriores(documento.DOCUMENTO.data);
        
        
  
      }else{
        console.log('no soy null', documento.TIPO_INSERCION);
        this.tipoDoc = documento.TIPO_INSERCION;
-       this.bufferToBase64ImageSourceNewRegis(documento.DOCUMENTO.data);
+       this.previzualizacionDoc = 'data:application/pdf;base64, ' + documento.DOCUMENTO;
+      // this.bufferToBase64ImageSourceNewRegis(documento.DOCUMENTO.data);
        
  
      }
@@ -608,7 +615,7 @@ export class EditarComponent implements OnInit {
          )
           //alert("Se han guardado los cambios");
           this.limpiarInputsRegisInfoEsc();
-          this.modal.dismissAll();
+         // this.modal.dismissAll();
           this.getListaEscolaridades(this.newRegistrarDatosEscolares.CVE_EMPLEADO);
           //this.modal.close(result: any,);
          // this.getInfoEscolar();
@@ -734,7 +741,7 @@ export class EditarComponent implements OnInit {
  
    }
  
- 
+  
    //-------------------------------
   /* async putInfoPersonalDomComData(){
      
@@ -940,7 +947,7 @@ export class EditarComponent implements OnInit {
              'success'
            )
           //alert("Se han guardado los cambios");
-          this.modal.dismissAll();
+         // this.modal.dismissAll();
           this.limpiarInputsIdiomas();
           this.getListaIdiomas(this.newRegistrarIdiomas.CVE_EMPLEADO);
          
@@ -1037,7 +1044,7 @@ export class EditarComponent implements OnInit {
              'success'
            )
           //alert("Se han guardado los cambios");
-          this.modal.dismissAll();
+         // this.modal.dismissAll();
           this.limpiarInputsDocs();
           this.DocSeleccionado = '';
           console.log(this.newRegisDocumentos);

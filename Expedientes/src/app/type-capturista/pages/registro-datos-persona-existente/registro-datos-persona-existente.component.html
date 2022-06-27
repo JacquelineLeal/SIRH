@@ -296,7 +296,7 @@
 
 <ng-template #subirDocumentos let-modal>
     <div class="modal-header">
-        <h4 class="modal-title">Subir documentacion inicial</h4>
+        <h4 class="modal-title">Subir documentación inicial</h4>
     </div>
 
     <div class="modal-body">
@@ -322,10 +322,10 @@
         <button type="submit" class="btn btn-info" (click)="validacionInsertarDocumentos()">Insertar</button>
         <hr><br><br>
         <div class="row">
-            
+        
             <div class="col-7">
                 <div class="previzualizacion">
-                    <h3>Previzualizacion</h3>
+                    <h3>Previzualización</h3>
 
                <!-- <img [src]="previzualizacionDoc" width="100%" height="450px"  >  -->
                 <pdf-viewer [src]="previzualizacionDoc" 
@@ -337,13 +337,36 @@
                <!-- <h3>Previzualizacion</h3>
                 <img [src]="previzualizacionDoc" width="100%" height="450px"  >  -->
             </div>
+            <div class="col-1">
+
+            </div>
+            
             <div class="col-4">
-                <h3>Documentos Insertados</h3>
+                <!--<h3>Documentos Faltantes</h3>
                 <ul *ngFor = "let documento of listaDocsByCveEmp">
                     <li>{{documento.desc_doc}}</li>
-                </ul>
+                </ul>-->
+                <table class="table">
+                    <thead class="thead">
+                      <tr>
+                        <th>DOCUMENTOS INSERTADOS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor = "let documento of listaDocsByCveEmp">
+                            <td>{{documento.desc_doc}}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+
+
             </div>
         </div>
+        <br><br><br>
+      
+
+        
+        
             
         
     </div>

@@ -1,0 +1,84 @@
+<app-nabvarcap></app-nabvarcap>
+
+<h4>Consulta la fecha aproximada del primer pago</h4><br><br>
+
+<form class="form-inline" role="form">
+
+    <div class="row">
+        <div class="col-2">
+            
+            <input type="text" id="CVE_EMPLEADO" class="form-control form-control-sm " name='CVE_EMPLEADO' placeholder="Num.Empleado" [(ngModel)]="valoresInputBusqueda.CVE_EMPLEADO"  />    
+        </div>
+
+        
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-3">
+            
+            <input type="text" id="NOMBRE" class="form-control form-control-sm"  placeholder="Nombres" name="NOMBRE" [(ngModel)]="valoresInputBusqueda.NOMBRE"  />
+        </div>
+
+        <div class="col-2">
+            
+            <input type="text" id="APE_PATERNO" class="form-control form-control-sm"  placeholder="Apellido Paterno" name="APE_PATERNO" [(ngModel)]="valoresInputBusqueda.APE_PATERNO"   />
+        </div>
+
+        
+    </div>
+
+    <br> <br>
+
+    <div class="row">
+        
+
+        <div class="col-3">
+            <label class="form-label" for="FECHA_NAC">Fecha inicial:</label>
+            <input type="date" id="FECHA_NAC" class="form-control form-control-sm"  placeholder="Seleccione" name="FECHA_NAC" [(ngModel)]="ValorBusquedaFechaInicio"  />
+                
+        </div>
+        
+        <div class="col-3">
+            <label class="form-label" for="FECHA_NAC">Fecha final:</label>
+            <input type="date" id="FECHA_NAC" class="form-control form-control-sm"  placeholder="Seleccione" name="FECHA_NAC" [(ngModel)]="ValorBusquedaFechaFin"  />
+                
+        </div>
+        
+    </div>
+    <br>
+    <div class="form-group col-2">
+             
+        <button type="submit" class="btn btn-info" (click)="buscarData()" >Buscar</button> 
+    </div>
+
+
+</form>
+<br><br>
+
+<table class="table">
+    <thead class="thead">
+      <tr> 
+        <th>Num. Empleado</th>
+        <th>Nombre</th>
+        <th>Apellido Paterno</th>
+        <th>Apellido Materno</th> 
+        <th>Estatus</th> 
+        <th>Fecha Inicio Adscripción</th>
+        <th>Fecha de registro alta</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr  *ngFor = "let nombre of listaPersonas">
+        <td>{{nombre.CVE_EMPLEADO}}</td>
+        <td>{{nombre.NOMBRE}}</td>
+        <td>{{nombre.APE_PATERNO}}</td>
+        <td>{{nombre.APE_MATERNO}}</td>
+        <td>{{nombre.ESTATUS_NAME}}</td>
+        <td>{{nombre.fch_iniAdsc}}</td>
+        <td>{{nombre.FCH_REGISTRO}}</td>
+        
+      </tr>
+      
+      
+    </tbody>
+</table> 

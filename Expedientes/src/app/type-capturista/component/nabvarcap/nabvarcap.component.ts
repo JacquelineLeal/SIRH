@@ -49,9 +49,16 @@ export class NabvarcapComponent implements OnInit {
 
   }
 
+  async consultaFechaPrimerPago(){
+    this.router.navigateByUrl('registro/consulta-fecha-pago');
+
+  }
+  
+
   async cerrarSesion(){
     await  this.cookieService.delete('token_access','/');
     await this.cookieService.delete('rol_user','/');
+    await this.cookieService.delete('user','/');
     this.router.navigateByUrl('login');
   }
 

@@ -14,10 +14,15 @@ export class DocumentosService {
   urlTraerListaDocumentosIniciales = environment.urlTraerListaDocumentosIniciales ;
 
   urlTraerListaDocsInsertadosByIdEnlace = environment.urlTraerListaDocsInsertadosByIdEnlace;
+  urlGetIdExpedienteById = environment.urlGetIdExpedienteById;
+  urlGetExpedienteById = environment.urlGetExpedienteById;
 
   urlEditarDocumentos = environment.urlEditarDocumentos ;
 
   urlTraeListaDocsByCveEmp = environment.urlTraeListaDocsByCveEmp;
+
+  urlTraeIdExpedienteByCveEmp = environment.urlTraeIdExpedienteByCveEmp;
+  urlTraeExpedienteByCveEmp = environment.urlTraeExpedienteByCveEmp;
 
   constructor(private http:HttpClient) { }
 
@@ -39,9 +44,28 @@ export class DocumentosService {
     return this.http.get(this.urlTraerListaDocsInsertadosByIdEnlace + IdEnlace)
   }
 
+  getIdExpedienteeByIdEnlace(IdEnlace: any){
+    return this.http.get(this.urlGetIdExpedienteById + IdEnlace)
+  }
+  
+
   getListaDocsByCveEmp(CVE_EMPLEADO: any){
     return this.http.get(this.urlTraeListaDocsByCveEmp + CVE_EMPLEADO)
   }
+
+  getIdExpedienteByCveEmp(CVE_EMPLEADO: any){
+    return this.http.get(this.urlTraeIdExpedienteByCveEmp + CVE_EMPLEADO)
+  }
+
+  getExpedienteCriteriosByCveEmp(CVE_EMPLEADO: any){
+    return this.http.get(this.urlTraeExpedienteByCveEmp + CVE_EMPLEADO)
+  }
+
+  getExpedienteCriteriosByIdEnlace(IdEnlace: any){
+    return this.http.get(this.urlGetExpedienteById + IdEnlace)
+  }
+
+  
 
   
 
@@ -65,6 +89,8 @@ export interface DatosDocumentos{
 
   NOMBRE: String,
   APE_PATERNO: String,
-  APE_MATERNO: String
+  APE_MATERNO: String,
+  USUARIO:String,
+  IdExpediente: Number
 
 }

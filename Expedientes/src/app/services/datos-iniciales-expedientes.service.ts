@@ -101,7 +101,8 @@ export class DatosInicialesExpedientesService {
     IdEnlace: '',
     IdDomicilio: '',
     IdComplemen: '',
-    IdMediaFiliacion: ''
+    IdMediaFiliacion: '',
+    IdExpediente:0
 
     
 
@@ -181,7 +182,8 @@ export class DatosInicialesExpedientesService {
     IdEnlace: '',
     IdDomicilio: '',
     IdComplemen: '',
-    IdMediaFiliacion:''
+    IdMediaFiliacion:'',
+    IdExpediente:0
 
 
   }
@@ -273,6 +275,16 @@ url_OP6_PostDatosPDomComMerdiaFil = environment.url_OP6_PostDatosPDomComMerdiaFi
 url_OP7_PostDatosPDomComMerdiaFil = environment.url_OP7_PostDatosPDomComMerdiaFil;
 url_OP8_PostDatosPDomComMerdiaFil = environment.url_OP8_PostDatosPDomComMerdiaFil;
 
+url_OP9_PostDatosPDomComMerdiaFil = environment.url_OP9_PostDatosPDomComMerdiaFil;
+url_OP10_PostDatosPDomComMerdiaFil = environment.url_OP10_PostDatosPDomComMerdiaFil;
+url_OP11_PostDatosPDomComMerdiaFil = environment.url_OP11_PostDatosPDomComMerdiaFil;
+url_OP12_PostDatosPDomComMerdiaFil = environment.url_OP12_PostDatosPDomComMerdiaFil;
+url_OP13_PostDatosPDomComMerdiaFil = environment.url_OP13_PostDatosPDomComMerdiaFil;
+url_OP14_PostDatosPDomComMerdiaFil = environment.url_OP14_PostDatosPDomComMerdiaFil;
+url_OP15_PostDatosPDomComMerdiaFil = environment.url_OP15_PostDatosPDomComMerdiaFil;
+url_OP16_PostDatosPDomComMerdiaFil = environment.url_OP16_PostDatosPDomComMerdiaFil;
+
+
 urlPutInfoCompletaDataPersonalTramite = environment.urlPutInfoCompletaDataPersonalTramite;
 
 
@@ -291,6 +303,12 @@ urlPutInfoCompletaDataPersonalTramite = environment.urlPutInfoCompletaDataPerson
   urlBuscarByNombre = environment.urlBuscarByNombre;
   urlBuscarByNameAp = environment.urlBuscarByNameAp;
   urlBuscarByCompleteName = environment.urlBuscarByCompleteName;
+
+
+  urlBuscarFchPagoByCve = environment.urlBuscarFchPagoByCve;
+  urlBuscarFchPagoByFechas = environment.urlBuscarFchPagoByFechas;
+  urlBuscarFchPagoByNombres = environment.urlBuscarFchPagoByNombres;
+
 
   urlGetDatosPersonalesEdit = environment.urlGetDatosPersonalesEdit;
   urlGetDatosDomEdit = environment.urlGetDatosDomEdit;
@@ -328,6 +346,25 @@ urlPutInfoCompletaDataPersonalTramite = environment.urlPutInfoCompletaDataPerson
 
     return this.http.post(this.urlBuscarByCompleteName, datos)
   }
+
+
+  //--------------------------------------------------
+
+
+  getListaFchByCve(CVE_EMPLEADO:DatosBuscarInputsFechaPago){
+    return this.http.post(this.urlBuscarFchPagoByCve, CVE_EMPLEADO);
+  }
+
+  getListaFchByFchas(fechas:DatosBuscarInputsFechaPago){
+    return this.http.post(this.urlBuscarFchPagoByFechas, fechas);
+  }
+
+  getListaFchByNombre(nombres:DatosBuscarInputsFechaPago){
+    return this.http.post(this.urlBuscarFchPagoByNombres, nombres);
+  }
+
+
+  
   //---------------------------------------------------------------------------------
 
  
@@ -397,6 +434,56 @@ urlPutInfoCompletaDataPersonalTramite = environment.urlPutInfoCompletaDataPerson
   Op8_addDatosPDomComMediaFil(datos:Datos){
     return this.http.post(this.url_OP8_PostDatosPDomComMerdiaFil, datos);
   }
+
+
+  //--------------------------------------------------------------------------------ENDS
+
+
+  //OPCION 9
+  Op9_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP9_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 10
+  Op10_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP10_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 11
+  Op11_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP11_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 12
+  Op12_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP12_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 13
+  Op13_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP13_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 14
+  Op14_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP14_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 15
+  Op15_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP15_PostDatosPDomComMerdiaFil, datos);
+  }
+
+  //OPCION 16
+  Op16_addDatosPDomComMediaFil(datos:Datos){
+    return this.http.post(this.url_OP16_PostDatosPDomComMerdiaFil, datos);
+  }
+
+
+
+
+
+  //--------------------------------------------------------------------------------ENDS
 
   //UPDATE DATA PERSONAL TRAMITE SET INFO COMPLETA A SI
   Update_InfoCompletaDataPersonalTramite(Id: any){
@@ -605,7 +692,8 @@ export interface Datos{
 	IdEnlace: String;
   IdDomicilio: String;
   IdComplemen: String;
-  IdMediaFiliacion: String
+  IdMediaFiliacion: String;
+  IdExpediente: Number
 }
 
 
@@ -616,6 +704,14 @@ export interface DatosBuscarInputs{
   CVE_EMPLEADO: String;
 }
 
+
+export interface DatosBuscarInputsFechaPago{
+  NOMBRE:String;
+  APE_PATERNO: String;
+  CVE_EMPLEADO: String;
+  FECHA_INICIO: String;
+  FECHA_FIN: String
+}
 
 
 

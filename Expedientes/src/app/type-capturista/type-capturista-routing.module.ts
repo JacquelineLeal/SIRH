@@ -8,6 +8,7 @@ import { RegistroTramiteComponent } from './pages/registro-tramite/registro-tram
 import { EditarComponent } from './pages/editar/editar.component';
 import { ConsultarComponent } from './pages/consultar/consultar.component';
 import { RegistroDatosPersonaExistenteComponent } from './pages/registro-datos-persona-existente/registro-datos-persona-existente.component';
+import { CualQuincenaLesPagaronComponent } from './pages/cual-quincena-les-pagaron/cual-quincena-les-pagaron.component';
 
 const routes : Routes=[
   {
@@ -36,6 +37,13 @@ const routes : Routes=[
       },
       { path:'personal-existente', 
         component: RegistroDatosPersonaExistenteComponent,
+        data:{
+          role:'CAPTURISTA'
+        },
+        canActivate:[LoginguardGuard]
+      },
+      { path:'consulta-fecha-pago', 
+        component: CualQuincenaLesPagaronComponent,
         data:{
           role:'CAPTURISTA'
         },

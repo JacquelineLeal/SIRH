@@ -20,6 +20,7 @@ import { RegistroDatosPersonaExistenteComponent } from './pages/registro-datos-p
 import { NabvarcapComponent } from './component/nabvarcap/nabvarcap.component';
 import { FormRegistroDatosPersonalesComponent } from './component/form-registro-datos-personales/form-registro-datos-personales.component';
 import { FootercapComponent } from './component/footercap/footercap.component';
+import { CualQuincenaLesPagaronComponent } from './pages/cual-quincena-les-pagaron/cual-quincena-les-pagaron.component';
 
 
 
@@ -31,7 +32,8 @@ import { FootercapComponent } from './component/footercap/footercap.component';
     RegistroDatosPersonaExistenteComponent,
     NabvarcapComponent,
     FormRegistroDatosPersonalesComponent,
-    FootercapComponent
+    FootercapComponent,
+    CualQuincenaLesPagaronComponent
   ],
   imports: [ 
     CommonModule,
