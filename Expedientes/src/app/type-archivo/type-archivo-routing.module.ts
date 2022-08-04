@@ -10,6 +10,7 @@ import { RegitroInfoEscolarComponent } from '../pages/regitro-info-escolar/regit
 import { RegisIdiomasComponent } from '../pages/regis-idiomas/regis-idiomas.component';*/
 
 import { ListaTramiteComponent } from './pages/lista-tramite/lista-tramite.component';
+import { ExpedientesExistentesComponent } from './pages/expedientes-existentes/expedientes-existentes.component';
 
 import { LoginguardGuard } from '../guards/loginguard.guard';
 
@@ -19,6 +20,13 @@ const routes: Routes = [
     children: [
       { path:'list-tramite', 
         component: ListaTramiteComponent,
+        data:{
+          role:'ARCHIVO'
+        },
+        canActivate:[LoginguardGuard]
+      },
+      { path:'expedientes', 
+        component: ExpedientesExistentesComponent,
         data:{
           role:'ARCHIVO'
         },

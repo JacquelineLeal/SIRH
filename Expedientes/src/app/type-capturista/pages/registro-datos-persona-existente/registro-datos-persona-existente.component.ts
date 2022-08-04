@@ -36,7 +36,7 @@ export class RegistroDatosPersonaExistenteComponent implements OnInit {
   datosComplementarios: any = [];
   listaMediaFilLength: number;
   datosDomicilioLength: number;
-  datosComplemenLength: number;
+  datosComplemenLength: number; 
 
   listaDocumentosIni: any =[];
   listaEstadoCivil: any = [];
@@ -55,7 +55,7 @@ export class RegistroDatosPersonaExistenteComponent implements OnInit {
     NOMBRE: '',
     APE_PATERNO: '',
     APE_MATERNO: ''
-  }
+  } 
 
   newRegistrarDatosEscolares: DatosEscolares = {
     
@@ -108,7 +108,9 @@ export class RegistroDatosPersonaExistenteComponent implements OnInit {
     APE_PATERNO: '',
     APE_MATERNO: '',
     USUARIO:this.cookieService.get('user'),
-    IdExpediente: 0
+    IdExpediente: 0,
+    STATUS_EXPEDIENTE:'',
+    LUGAR_EXPEDIENTE:''
   }
 
 
@@ -560,6 +562,11 @@ export class RegistroDatosPersonaExistenteComponent implements OnInit {
     this.newRegisDocumentos.NOMBRE = NOMBRE;
     this.newRegisDocumentos.APE_PATERNO = APE_PATERNO;
     this.newRegisDocumentos.APE_MATERNO = APE_MATERNO;
+
+    for(var i=0; i< Object.keys(this.listaDocumentosIni).length; i++){
+      this.listaDocumentosIni[i].estilo = '';
+    }
+
     this.getListaDocumentosCve(CVE_EMPLEADO);
     this.getIdExpedienteCve(CVE_EMPLEADO);
    // this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
@@ -1913,13 +1920,22 @@ async Op16_PostDataDPDomComMediaFil(){
 
 
   async GetListDocsIniciales(){
+    var estilo:any={
+      estilo:''
+    };
+    var respuesta:any={};
     await this.datosDocumentosService.getListaDocsIniciales().subscribe(
       res=>{
-        this.listaDocumentosIni = res;
+        respuesta = res;
+        //this.listaDocumentosIni = res;
+        for(var i =0; i< Object.keys(respuesta).length; i ++){
+          var posisiones = Object.assign(respuesta[i],estilo);
+          this.listaDocumentosIni.push(posisiones);
+        }
         
-        console.log(this.listaDocumentosIni);
         
-
+        console.log('docsIni',this.listaDocumentosIni);
+        //console.log(this.listaDocumentosIni);
       },
       err =>{
         console.log(err);
@@ -2027,10 +2043,146 @@ async Op16_PostDataDPDomComMediaFil(){
     )
   }
 
-  validacionInsertarDocumentos(){
+  async postDatosDocumentosPostCriteriosCve(){
+    console.log(this.newRegisDocumentos);
+    
+    await this.datosDocumentosService.addDocumentoAndAddCriteriosCve(this.newRegisDocumentos).subscribe(
+      
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        )
+        //alert("Datos registrados exitosamente");
+        this.limpiarInputsDocs();
+        this.getListaDocumentosCve(this.newRegisDocumentos.CVE_EMPLEADO);
+        //this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
+        ///this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        //alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+        console.log(err);
+        
+      }
+    )
+  }
+
+
+  async postDatosDocumentosUpdateCriteriosCve(){
+    console.log(this.newRegisDocumentos);
+    
+    //this.base64ToArrayFile(this.newRegisDocumentos.DOCUMENTO);
+
+
+    await this.datosDocumentosService.addDocumentoAndUpdateCriteriosCve(this.newRegisDocumentos).subscribe(
+      
+      res=>{
+        Swal.fire(
+          'El REGISTRO FUE EXITOSO!',
+          'Los datos fueron registrados',
+          'success'
+        )
+        //alert("Datos registrados exitosamente");
+        this.limpiarInputsDocs();
+        this.getListaDocumentosCve(this.newRegisDocumentos.CVE_EMPLEADO);
+        //this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
+        ///this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
+      },
+      err=>{
+        Swal.fire(
+          'SE HA GENERADO UN ERROR,  INTÉNTELO DE NUEVO',
+          'Si persisten los problemas comuníquese con el administrador',
+          'error'
+        )
+        //alert("Ha ocurrido un error, favor de intentarlo nuevamente")
+        console.log(err);
+        
+      }
+    )
+  }
+
+
+
+
+
+
+  async verificarSiEsDocumentoRepetido(){
+    var existeQuestion: boolean = false;
+    console.log("this.newRegisDocumentos.TIPO",this.newRegisDocumentos.TIPO);
+    console.log("listaDocsporId",this.listaDocsByCveEmp);
+    
+  
+    for(var i=0; i<Object.keys(this.listaDocsByCveEmp).length; i++){
+      if(this.newRegisDocumentos.TIPO == this.listaDocsByCveEmp[i].TIPO){
+        console.log('sisoy', this.listaDocsByCveEmp[i].desc_doc);
+        existeQuestion=true;
+        break;
+      }else{
+        console.log('nelprro');
+        existeQuestion=false;
+        
+      }
+
+    }
+    
+    if(existeQuestion == true){
+      Swal.fire(
+        '',
+        'Ya se encuentra un registro del tipo de documento seleccionado',
+        'info'
+      )
+
+    }else{
+      this.postDatosDocumentosUpdateCriteriosCve();
+    }
+
+
+  }
+
+
+  async verificarSiexisteEnTablaCriteriosExpedienteCompleto(){
+    console.log('VALOR ID ENLACE',this.newRegisDocumentos.CVE_EMPLEADO);
+    
+    var lenghtRespuesta: any = '';
+    await this.datosDocumentosService.getExpedienteCriteriosByCveEmp(this.newRegisDocumentos.CVE_EMPLEADO).subscribe(
+      res=>{
+        lenghtRespuesta = Object.keys(res).length;
+        console.log('LENGHTcCRITERIOS',lenghtRespuesta);
+        
+      
+        if(lenghtRespuesta == 0){
+          this.postDatosDocumentosPostCriteriosCve();
+         /* Swal.fire(
+            '',
+            'Para guardar documentación, es necesario haber realizado previamente el registro de información personal, favor de capturarla',
+            'info'
+          )*/
+          //this.verificarSiEsDocumentoRepetido();
+
+        }else{
+
+          this.verificarSiEsDocumentoRepetido();
+          
+        }  
+      },
+      err=>{
+        console.log(err);
+      }
+    )
+    
+  }
+
+  async validacionInsertarDocumentos(){
     if(this.newRegisDocumentos.TIPO != 0 &&  this.newRegisDocumentos.DOCUMENTO != ''){
       console.log('con valores');
-      this.postDatosDocumentos();
+      await  this.verificarSiexisteEnTablaCriteriosExpedienteCompleto();
+      //this.postDatosDocumentos();
       
 
     }else{
@@ -2068,9 +2220,28 @@ async Op16_PostDataDPDomComMediaFil(){
 
 
   async getListaDocumentosCve(CVE_EMPLEADO: any){
+    var listalenght: any;
+
     await this.datosDocumentosService.getListaDocsByCveEmp(CVE_EMPLEADO).subscribe(
       res=>{
         this.listaDocsByCveEmp = res;
+
+        for(var i=0; i < Object.keys(this.listaDocumentosIni).length; i++){
+          for(var j=0; j < Object.keys(this.listaDocsByCveEmp).length; j++ ){
+            if(this.listaDocumentosIni[i].desc_doc == this.listaDocsByCveEmp[j].desc_doc){
+              console.log('si soy', this.listaDocumentosIni[i].desc_doc);
+              this.listaDocumentosIni[i].estilo = 'bg';
+              
+            }else{
+              console.log('no soy');
+              
+            }
+
+          }
+        }
+
+
+
         var lenghtListDocs = Object.keys(this.listaDocsByCveEmp).length;
         console.log('listadocs',this.listaDocsByCveEmp); 
         if(lenghtListDocs == 0){

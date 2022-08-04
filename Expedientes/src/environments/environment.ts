@@ -6,6 +6,9 @@
 export const environment = {
   
   production: false,
+  sistema: "EXPEDIENTES",
+  rolUser1:"CAPTURISTA",
+  rolUser2:"ARCHIVO",
 
   //RUTAS DATOS INICIALES EXPEDIENTES SERVICE
   
@@ -137,6 +140,10 @@ export const environment = {
   urlTraeListaDocsByCveEmp : 'http://localhost:5000/documentos/getDocsByCveEmp/',
   urlTraeIdExpedienteByCveEmp : 'http://localhost:5000/documentos/getIdExpedienteByCveEmp/',
   urlTraeExpedienteByCveEmp : 'http://localhost:5000/documentos/getExpedienteByCveEmp/',
+
+
+  urlPostDocumentosYpostCriteriosByCveEmp:'http://localhost:5000/documentos/post-criterios-doc-cve-emp',
+  urlPostDocumentosYupdateCriteriosByCveEmp:'http://localhost:5000/documentos/post-cve-emp',
   
 
   //RUTAS PARA IDIOMAS SERVICES 

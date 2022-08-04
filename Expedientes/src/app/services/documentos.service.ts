@@ -8,6 +8,9 @@ import { environment } from 'src/environments/environment';
 export class DocumentosService {
 
   urlPostDocumentos = environment.urlPostDocumentos ;
+
+  urlPostDocumentosYpostCriteriosByCveEmp = environment.urlPostDocumentosYpostCriteriosByCveEmp;
+  urlPostDocumentosYupdateCriteriosByCveEmp  = environment.urlPostDocumentosYupdateCriteriosByCveEmp;
   
   urlTraerImg = environment.urlTraerImg ;
 
@@ -33,6 +36,16 @@ export class DocumentosService {
   addDocumento(documentoData: DatosDocumentos){
     
     return this.http.post(this.urlPostDocumentos, documentoData); 
+  }
+
+  addDocumentoAndAddCriteriosCve(documentoData: DatosDocumentos){
+    
+    return this.http.post(this.urlPostDocumentosYpostCriteriosByCveEmp, documentoData); 
+  }
+
+  addDocumentoAndUpdateCriteriosCve(documentoData: DatosDocumentos){
+    
+    return this.http.post(this.urlPostDocumentosYupdateCriteriosByCveEmp, documentoData); 
   }
 
 
@@ -91,6 +104,9 @@ export interface DatosDocumentos{
   APE_PATERNO: String,
   APE_MATERNO: String,
   USUARIO:String,
-  IdExpediente: Number
+  IdExpediente: Number,
+  STATUS_EXPEDIENTE: String,
+  LUGAR_EXPEDIENTE: String
+  
 
 }

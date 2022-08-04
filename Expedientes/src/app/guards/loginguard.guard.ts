@@ -53,7 +53,7 @@ export class LoginguardGuard implements CanActivate {
         console.log('no soy igual');
         this.cookieService.delete('token_access','/');
         
-//          ;
+          ;
         Swal.fire(
           'ERROR',
           'Acceso denegado, vuelva a iniciar sesión',

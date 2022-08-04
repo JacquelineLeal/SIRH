@@ -1,1 +1,65 @@
-<p>lista-tramite works!</p>
+
+<app-navbararch></app-navbararch><br><br><br>
+<h4>Expediente inicial de personal en trámite de alta</h4><br><br>
+
+<form class="form-inline" role="form"> 
+    <div class="row">
+         <div class="form-group col-4"> 
+             <input type="text" id="NOMBRE" class="form-control col-md-2" name='NOMBRE' placeholder="Nombres"  value="arrayForInsertDatosPer.NOMBRE" />    
+         </div>
+
+         <div class="form-group col-2">
+             <input type="text" id="APE_PATERNO" class="form-control col-md-2"  placeholder="Apellido Paterno" name="APE_PATERNO"  value="arrayForInsertDatosPer.APE_PATERNO" />
+         </div>
+
+         <div class="col-2">                                                                                                                <!--[(ngModel)]="arrayForInsertDatosPer.APE_MATERNO"-->
+             
+             <input type="text" id="APE_MATERNO" class="form-control col-4"  placeholder="Apellido Materno" name="APE_MATERNO"  value="arrayForInsertDatosPer.APE_MATERNO"/>
+         </div>
+         <div class="form-group col-2"> 
+             
+            <button type="submit" class="btn btn-info" >Buscar</button> 
+        </div>
+
+         
+
+    </div>
+    <br><br>
+</form>
+
+
+<table class="table">
+    <thead class="thead">
+      <tr>  
+        <th>Nombre</th>
+        <th>Apellido Paterno</th>
+        <th>Apellido Materno</th> 
+        <th>Estatus Expediente</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody><!--*ngFor = "let nombres of listaNombresRegis"-->
+        <tr >
+            <td>nombres.NOMBRE</td>
+            <td>nombres.APE_PATERNO</td>
+            <td>nombres.APE_MATERNO</td>
+            <td><label class="badge rounded-pill btn-success" disabled>Completo</label></td>
+            <td>
+                <!-- (click)="abrirModalInfoIdiomas(regisInfoIdiomas, nombres.Id,nombres.NOMBRE,nombres.APE_PATERNO,nombres.APE_MATERNO)"-->
+                  <button type="button" class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Idiomas/Lenguas">
+                    Ver Expediente
+                  </button> <!--(click)="abrirModalSubirDocumentos(subirDocumentos, nombres.Id,nombres.NOMBRE,nombres.APE_PATERNO,nombres.APE_MATERNO)"-->
+
+    
+                  
+            </td>
+        </tr> 
+    </tbody>
+</table>
+<label class="badge rounded-pill btn-info" disabled>Creado</label>
+<label class="badge rounded-pill btn-warning" disabled>Completo</label>
+
+<label class="badge rounded-pill btn-danger" disabled>Entregado archivo</label>
+<label class="badge rounded-pill btn-success" disabled>Archivado</label>
+
+

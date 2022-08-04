@@ -25,7 +25,7 @@
             <div class="col-2">
                 <label for="SEXO">Sexo:</label>
                     <select id="SEXO" class="form-control" name="SEXO" [(ngModel)]="newRegistrarDatos.SEXO">
-                        <option selected disabled>Seleccione...</option>  
+                        <!--<option selected disabled>Seleccione...</option>-->
                         <option value="M">Masculino</option>
                         <option value="F">Femenino</option>
                         <option value="O">Otro</option>
@@ -42,7 +42,7 @@
             <div class="col-3" >
                 <label class="form-label" for="EST_CIVIL">Estado Civil:</label>
                     <select id="EST_CIVIL"  aria-placeholder="Seleccionar" class="form-control" name="EST_CIVIL" [(ngModel)]="newRegistrarDatos.EST_CIVIL">
-                        <option selected disabled>Seleccione...</option>  
+                        <!--<option selected disabled>Seleccione...</option>  -->
                         <option  *ngFor = "let estadoCivil of listaEstadoCivil" value={{estadoCivil.CVE_CIV}}>{{estadoCivil.EDO_CIV}}</option>
                     </select>  
             </div>
@@ -50,7 +50,7 @@
             <div class="col-2">
                 <label class="form-label" for="SANGRE">Tipo de sangre:</label>
                 <select type="text" id="SANGRE" class="form-control"  placeholder="Tipo de sangre" name="SANGRE" [(ngModel)]="newRegistrarDatos.SANGRE">
-                    <option selected disabled>Seleccione...</option>  
+                    <!--<option selected disabled>Seleccione...</option> -->
                     <option  *ngFor = "let sangre of listaTiposSangre" value={{sangre}}>{{sangre}}</option>
                 </select> 
             </div>
@@ -124,7 +124,7 @@
             <div class="col-3">    
                 <label class="form-label" for="NACIONALIDAD">Nacionalidad:</label>
                 <select type="text" id="NACIONALIDAD" class="form-control"  placeholder="Nacionalidad" name="NACIONALIDAD" [(ngModel)]="newRegistrarDatos.NACIONALIDAD">   
-                    <option *ngFor = "let pais of listaPaisNac" value={{pais.CVE_PAIS}} >{{pais.NACIONALIDAD}}</option>
+                    <option *ngFor = "let pais of listaPaisNac" value={{pais.CVE_PAIS}}>{{pais.NACIONALIDAD}}</option>
                 </select>
             </div>
 

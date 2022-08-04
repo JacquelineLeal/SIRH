@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import Swal from 'sweetalert2';
 
 import {DatosLogin,LoginServiceService} from '../../services/login-service.service'
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -13,6 +14,10 @@ import {DatosLogin,LoginServiceService} from '../../services/login-service.servi
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+
+  sistema = environment.sistema;
+  rolUser1 = environment.rolUser1;
+  rolUser2 = environment.rolUser2;
 
   newDatosUsuario: DatosLogin = {
     CVE_EMPLEADO: '',
@@ -64,8 +69,8 @@ export class LoginComponent implements OnInit {
           //otro if para ver qe tipo de usuario es si es capturista esto y si es archivo direccionar a 
           //otra page vista del hildo, si no es ninguno de los 2 alert qe no tiene acceso a ese sistema
 
-          if(this.listaResLogin.sistema == "EXPEDIENTES"){
-            if(this.listaResLogin.rol == 'CAPTURISTA'){
+          if(this.listaResLogin.sistema == this.sistema){
+            if(this.listaResLogin.rol == this.rolUser1){
               console.log(this.listaResLogin.accessToken);
               Swal.fire(
                 '',
@@ -80,7 +85,7 @@ export class LoginComponent implements OnInit {
               this.router.navigateByUrl('registro/personal-tramite');
 
             }else{
-              if(this.listaResLogin.rol == 'ARCHIVO'){
+              if(this.listaResLogin.rol == this.rolUser2){
                 console.log(this.listaResLogin.accessToken);
                 Swal.fire(
                   '',

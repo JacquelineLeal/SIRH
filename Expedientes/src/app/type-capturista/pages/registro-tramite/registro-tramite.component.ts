@@ -13,6 +13,7 @@ import{DatosIdiomas ,IdiomasService} from '../../../services/idiomas.service';
 import {DatosDocumentos, DocumentosService } from 'src/app/services/documentos.service';
 
 import { DomSanitizer } from '@angular/platform-browser';
+import { LoginComponent } from 'src/app/pages/login/login.component';
 
 
 @Component({
@@ -21,6 +22,9 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./registro-tramite.component.scss']
 })
 export class RegistroTramiteComponent implements OnInit {
+
+  claseListaDocumentos:any = 'bg-success';
+
   array:any ={
     
   }
@@ -84,9 +88,9 @@ export class RegistroTramiteComponent implements OnInit {
     APE_MATERNO:'',
     
         
-    SEXO:'',
+    SEXO:null,
     FECHA_NAC: this.date,
-    EST_CIVIL:'',
+    EST_CIVIL:null,
     
     CVE_RFC:'',
     CURP:'',
@@ -102,7 +106,7 @@ export class RegistroTramiteComponent implements OnInit {
     NACIONALIDAD:0,
 
     CVE_EMPLEADO:'00000',
-    TABLAS:'1000000000000000000000000',
+    TABLAS:'1000000000000000000000000', 
     FCH_UAC: this.date,
 
     OBSERVACIONES:''
@@ -159,7 +163,9 @@ export class RegistroTramiteComponent implements OnInit {
     IdExpediente: 0,
     NOMBRE: '',
     APE_PATERNO: '',
-    APE_MATERNO: ''
+    APE_MATERNO: '',
+    STATUS_EXPEDIENTE:'',
+    LUGAR_EXPEDIENTE:''
   }
 
 
@@ -174,9 +180,9 @@ export class RegistroTramiteComponent implements OnInit {
     APE_MATERNO:'',
     CONSECUTIVO: 1,
         
-    SEXO:'',
+    SEXO:null,
     FECHA_NAC: this.date,
-    EST_CIVIL:'',
+    EST_CIVIL:null,
     SANGRE:'',
     CVE_RFC:'',
     CURP:'',
@@ -227,7 +233,9 @@ export class RegistroTramiteComponent implements OnInit {
     IdDomicilio: '',
     IdComplemen: '',
     IdMediaFiliacion:'',
-    IdExpediente:0
+    IdExpediente:0,
+    STATUS_EXPEDIENTE: '',
+    LUGAR_EXPEDIENTE: ''
 
 
   }
@@ -306,6 +314,11 @@ export class RegistroTramiteComponent implements OnInit {
     this.newRegisDocumentos.NOMBRE = NOMBRE;
     this.newRegisDocumentos.APE_PATERNO = APE_PATERNO;
     this.newRegisDocumentos.APE_MATERNO = APE_MATERNO;
+
+    for(var i=0; i< Object.keys(this.listaDocumentosIni).length; i++){
+      this.listaDocumentosIni[i].estilo = '';
+    }
+
     this.traerIdExpedienteByIdEnlace(this.newRegisDocumentos.IdEnlace);
     this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
     console.log(Id);
@@ -326,7 +339,9 @@ export class RegistroTramiteComponent implements OnInit {
     this.modal.open(confirmacionRegistros,{size:'md'});
 
   }
-   
+  
+
+
   async GetNombresRegistro(){
     await this.datosPDC.getListaNombresRegistrar().subscribe(
       res=>{
@@ -457,23 +472,23 @@ export class RegistroTramiteComponent implements OnInit {
         this.datosInicialesService.newRegistrarDatos.TELEFONO = '';
         this.datosInicialesService.newRegistrarDatos.CELULAR = '';
         this.datosInicialesService.newRegistrarDatos.CALLE ='' ;
-        this.datosInicialesService.newRegistrarDatos.ENTRE_CALLE = ' ';
-        this.datosInicialesService.newRegistrarDatos.Y_CALLE = ' ';
-        this.datosInicialesService.newRegistrarDatos.NO_EXTERIOR = ' ';
-        this.datosInicialesService.newRegistrarDatos.NO_INTERIOR = ' ';
-        this.datosInicialesService.newRegistrarDatos.COLONIA = ' ';
-        this.datosInicialesService.newRegistrarDatos.CODIGO_POSTAL = ' ';
-        this.datosInicialesService.newRegistrarDatos.ENTIDAD =' ' ;
-        this.datosInicialesService.newRegistrarDatos.MUNICIPIO = ' ';
-        this.datosInicialesService.newRegistrarDatos.CIUDAD = ' ';
+        this.datosInicialesService.newRegistrarDatos.ENTRE_CALLE = '';
+        this.datosInicialesService.newRegistrarDatos.Y_CALLE = '';
+        this.datosInicialesService.newRegistrarDatos.NO_EXTERIOR = '';
+        this.datosInicialesService.newRegistrarDatos.NO_INTERIOR = '';
+        this.datosInicialesService.newRegistrarDatos.COLONIA = '';
+        this.datosInicialesService.newRegistrarDatos.CODIGO_POSTAL = '';
+        this.datosInicialesService.newRegistrarDatos.ENTIDAD ='' ;
+        this.datosInicialesService.newRegistrarDatos.MUNICIPIO = '';
+        this.datosInicialesService.newRegistrarDatos.CIUDAD = '';
 
-        this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = ' ';
-        this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = ' ';
-        this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = ' ';
-        this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = ' ';
-        this.datosInicialesService.newRegistrarDatos.ES_PADRE = ' ';
-        this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = ' ';
-        this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = ' ';
+        this.datosInicialesService.newRegistrarDatos.PERTENECE_ETNIA = '';
+        this.datosInicialesService.newRegistrarDatos.NOM_ETNIA = '';
+        this.datosInicialesService.newRegistrarDatos.HABLA_LEN_INDIGENA = '';
+        this.datosInicialesService.newRegistrarDatos.LENGUA_INDIGENA = '';
+        this.datosInicialesService.newRegistrarDatos.ES_PADRE = '';
+        this.datosInicialesService.newRegistrarDatos.NOM_DISCAPACIDAD = '';
+        this.datosInicialesService.newRegistrarDatos.ES_AGENTEMP_PERITO = '';
 
 
 
@@ -1427,8 +1442,17 @@ export class RegistroTramiteComponent implements OnInit {
   async validarInputsRegistroDP_DOM_COM(){
     var DI = this.datosInicialesService.ValoresInputsRegistroDataPD;
     console.log('NAMEEEE',DI.NOMBRE);
-    if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != ''  && DI.FECHA_NAC != '' 
-      && DI.EST_CIVIL != '' && DI.SANGRE!='' && DI.CVE_RFC != '' && DI.CURP != '' && DI.CVE_ELECTOR != '' && DI.LICENCIA != ''
+    /*if(DI.EST_CIVIL == null){
+      console.log('es null');
+      
+
+    }else{
+      console.log('ELSE');
+      
+    }*/
+
+    if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != null  && DI.FECHA_NAC != '' 
+      && DI.EST_CIVIL != null && DI.SANGRE!='' && DI.CVE_RFC != '' && DI.CURP != '' && DI.CVE_ELECTOR != '' && DI.LICENCIA != ''
       && DI.PASAPORTE != '' && DI.CARTILLA != '' && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0 && DI.MUN_NAC != 0 && DI.NACIONALIDAD != 0
       
       && DI.EMAIL !='' && DI.TELEFONO != '' && DI.CELULAR != ''  && DI.CALLE != '' && DI.ENTRE_CALLE != '' && DI.Y_CALLE != '' 
@@ -1444,8 +1468,8 @@ export class RegistroTramiteComponent implements OnInit {
       
     }else{
 
-      if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != ''  && DI.FECHA_NAC != '' 
-      && DI.EST_CIVIL != '' && DI.SANGRE!=''  && DI.CVE_RFC != '' && DI.CURP != ''  && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0  && DI.NACIONALIDAD != 0
+      if(DI.NOMBRE != '' && DI.APE_PATERNO != '' && DI.APE_MATERNO!= '' && DI.SEXO != null  && DI.FECHA_NAC != '' 
+      && DI.EST_CIVIL != null && DI.SANGRE!=''  && DI.CVE_RFC != '' && DI.CURP != ''  && DI.PAIS_NAC != 0 && DI.EDO_NAC != 0  && DI.NACIONALIDAD != 0
       
       && DI.EMAIL !='' && DI.TELEFONO != '' && DI.CELULAR != ''  && DI.CALLE != '' && DI.ENTRE_CALLE != '' && DI.Y_CALLE != '' 
       && DI.NO_EXTERIOR != '' && DI.NO_INTERIOR != '' && DI.COLONIA !='' && DI.CODIGO_POSTAL != '' && DI.ENTIDAD != '' && DI.MUNICIPIO != ''  && DI.CIUDAD != ''
@@ -1466,8 +1490,8 @@ export class RegistroTramiteComponent implements OnInit {
         //si cualquiera esta vacio
         //UNICOS CAMPOS QUE SE PUEDEN GUARDAR NULL SON
         //CVE_ELECTOR, LICENCIA,PASAPORTE,CARTILLA,MUN_NAC, NOMBRE_ETNIA, NOMBRE_LENGUA_INDIGENA, NOM_DISCAPACIDAD
-        if(DI.NOMBRE == '' || DI.APE_PATERNO == '' || DI.APE_MATERNO == '' || DI.SEXO == ''  || DI.FECHA_NAC == '' 
-        || DI.EST_CIVIL == ''  || DI.SANGRE == '' || DI.CVE_RFC == '' || DI.CVE_RFC == '' || DI.CURP == '' || DI.PAIS_NAC == 0 || DI.EDO_NAC == 0  || DI.NACIONALIDAD == 0
+        if(DI.NOMBRE == '' || DI.APE_PATERNO == '' || DI.APE_MATERNO == '' || DI.SEXO == null  || DI.FECHA_NAC == '' 
+        || DI.EST_CIVIL == null  || DI.SANGRE == '' || DI.CVE_RFC == '' || DI.CVE_RFC == '' || DI.CURP == '' || DI.PAIS_NAC == 0 || DI.EDO_NAC == 0  || DI.NACIONALIDAD == 0
         
         || DI.EMAIL =='' || DI.TELEFONO == '' || DI.CELULAR == ''  || DI.CALLE == '' || DI.ENTRE_CALLE == '' || DI.Y_CALLE == '' 
         || DI.NO_EXTERIOR == '' || DI.NO_INTERIOR == '' || DI.COLONIA =='' || DI.CODIGO_POSTAL == '' || DI.ENTIDAD == '' || DI.MUNICIPIO == ''  || DI.CIUDAD == ''
@@ -1628,11 +1652,22 @@ export class RegistroTramiteComponent implements OnInit {
   }
 
   async GetListDocsIniciales(){
+    var estilo:any={
+      estilo:''
+    };
+    var respuesta:any={};
+    
     await this.datosDocumentosService.getListaDocsIniciales().subscribe(
       res=>{
-        this.listaDocumentosIni = res;
+        respuesta = res;
+        //this.listaDocumentosIni = res;
+        for(var i =0; i< Object.keys(respuesta).length; i ++){
+          var posisiones = Object.assign(respuesta[i],estilo);
+          this.listaDocumentosIni.push(posisiones);
+        }
         
-        console.log(this.listaDocumentosIni);
+        
+        console.log('docsIni',this.listaDocumentosIni);
         
 
       },
@@ -1864,8 +1899,6 @@ export class RegistroTramiteComponent implements OnInit {
     console.log(this.newRegisDocumentos);
     
     //this.base64ToArrayFile(this.newRegisDocumentos.DOCUMENTO);
-
-
     await this.datosDocumentosService.addDocumento(this.newRegisDocumentos).subscribe(
       
       res=>{
@@ -1877,6 +1910,8 @@ export class RegistroTramiteComponent implements OnInit {
         //alert("Datos registrados exitosamente");
         this.limpiarInputsDocs();
         this.getDocumentosByIdEnlace(this.newRegisDocumentos.IdEnlace);
+        
+
         ///this.getDatosIdiomas(this.newRegistrarIdiomas.IdEnlace);
       },
       err=>{
@@ -1892,10 +1927,76 @@ export class RegistroTramiteComponent implements OnInit {
     )
   }
 
-  validacionInsertarDocumentos(){
+
+  async verificarSiEsDocumentoRepetido(){
+    var existeQuestion: boolean = false;
+    console.log("this.newRegisDocumentos.TIPO",this.newRegisDocumentos.TIPO);
+    console.log("listaDocsporId",this.listaDocsInsertadosByIdEnlace);
+    
+  
+    for(var i=0; i<Object.keys(this.listaDocsInsertadosByIdEnlace).length; i++){
+      if(this.newRegisDocumentos.TIPO == this.listaDocsInsertadosByIdEnlace[i].TIPO){
+        console.log('sisoy', this.listaDocsInsertadosByIdEnlace[i].desc_doc);
+        existeQuestion=true;
+        break;
+      }else{
+        console.log('nelprro');
+        existeQuestion=false;
+        
+      }
+
+    }
+    
+    if(existeQuestion == true){
+      Swal.fire(
+        '',
+        'Ya se encuentra un registro del tipo de documento seleccionado',
+        'info'
+      )
+
+    }else{
+      this.postDatosDocumentos();
+    }
+
+
+  }
+
+  async verificarSiexisteEnTablaCriteriosExpedienteCompleto(){
+    console.log('VALOR ID ENLACE',this.newRegisDocumentos.IdEnlace);
+    
+    var lenghtRespuesta: any = '';
+    await this.datosDocumentosService.getExpedienteCriteriosByIdEnlace(this.newRegisDocumentos.IdEnlace).subscribe(
+      res=>{
+        lenghtRespuesta = Object.keys(res).length;
+        console.log('LENGHTcCRITERIOS',lenghtRespuesta);
+        
+      
+        if(lenghtRespuesta == 0){
+          Swal.fire(
+            '',
+            'Para guardar documentación, es necesario haber realizado previamente el registro de información personal, favor de capturarla',
+            'info'
+          )
+          //this.verificarSiEsDocumentoRepetido();
+
+        }else{
+
+          this.verificarSiEsDocumentoRepetido();
+          
+        }  
+      },
+      err=>{
+        console.log(err);
+      }
+    )
+    
+  }
+
+  async validacionInsertarDocumentos(){
     if(this.newRegisDocumentos.TIPO != 0 &&  this.newRegisDocumentos.DOCUMENTO != ''){
       console.log('con valores');
-      this.postDatosDocumentos();
+    await  this.verificarSiexisteEnTablaCriteriosExpedienteCompleto();
+     // this.postDatosDocumentos();
       
 
     }else{
@@ -1934,9 +2035,24 @@ export class RegistroTramiteComponent implements OnInit {
 
   async getDocumentosByIdEnlace(IdEnlace: any){
     var listalenght: any;
+    
     await this.datosDocumentosService.getListaDocsByIdEnlace(IdEnlace).subscribe(
       res=>{
+       // respuesta = res;
         this.listaDocsInsertadosByIdEnlace = res;
+        for(var i=0; i < Object.keys(this.listaDocumentosIni).length; i++){
+          for(var j=0; j < Object.keys(this.listaDocsInsertadosByIdEnlace).length; j++ ){
+            if(this.listaDocumentosIni[i].desc_doc == this.listaDocsInsertadosByIdEnlace[j].desc_doc){
+              console.log('si soy', this.listaDocumentosIni[i].desc_doc);
+              this.listaDocumentosIni[i].estilo = 'bg';
+              
+            }else{
+              console.log('no soy');
+               
+            }
+
+          }
+        }
         
         listalenght = Object.keys(this.listaDocsInsertadosByIdEnlace).length;
 

@@ -102,7 +102,12 @@ export class DatosInicialesExpedientesService {
     IdDomicilio: '',
     IdComplemen: '',
     IdMediaFiliacion: '',
-    IdExpediente:0
+    IdExpediente:0,
+    STATUS_EXPEDIENTE: 'Creado',
+    LUGAR_EXPEDIENTE: 'En espera RH'
+
+
+
 
     
 
@@ -183,7 +188,9 @@ export class DatosInicialesExpedientesService {
     IdDomicilio: '',
     IdComplemen: '',
     IdMediaFiliacion:'',
-    IdExpediente:0
+    IdExpediente:0,
+    STATUS_EXPEDIENTE: 'Creado',
+    LUGAR_EXPEDIENTE: 'En espera RH'
 
 
   }
@@ -285,7 +292,7 @@ url_OP15_PostDatosPDomComMerdiaFil = environment.url_OP15_PostDatosPDomComMerdia
 url_OP16_PostDatosPDomComMerdiaFil = environment.url_OP16_PostDatosPDomComMerdiaFil;
 
 
-urlPutInfoCompletaDataPersonalTramite = environment.urlPutInfoCompletaDataPersonalTramite;
+  urlPutInfoCompletaDataPersonalTramite = environment.urlPutInfoCompletaDataPersonalTramite;
 
 
 
@@ -693,7 +700,10 @@ export interface Datos{
   IdDomicilio: String;
   IdComplemen: String;
   IdMediaFiliacion: String;
-  IdExpediente: Number
+  IdExpediente: Number;
+  STATUS_EXPEDIENTE: String;
+  LUGAR_EXPEDIENTE: String;
+
 }
 
 

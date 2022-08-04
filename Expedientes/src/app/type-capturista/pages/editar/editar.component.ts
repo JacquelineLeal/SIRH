@@ -88,7 +88,9 @@ export class EditarComponent implements OnInit {
     APE_PATERNO: '',
     APE_MATERNO: '',
     USUARIO: this.cookieService.get('user'),
-    IdExpediente: 0
+    IdExpediente: 0,
+    STATUS_EXPEDIENTE:'',
+    LUGAR_EXPEDIENTE:''
   }
  
   valoresInputBusqueda: DatosBuscarInputs={
@@ -97,6 +99,7 @@ export class EditarComponent implements OnInit {
     APE_PATERNO: '',
     APE_MATERNO: ''
   }
+  
   constructor(
     public router:Router, 
     public modal:NgbModal,
